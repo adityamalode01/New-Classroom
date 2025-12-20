@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>🎥 Lectures | Smart Classroom</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+}
+
+body{
+  background:#f4f6fb;
+}
+
+/* NAVBAR */
+.navbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 30px;
+  background:linear-gradient(135deg,#4f46e5,#6366f1);
+  color:white;
+}
+.navbar .logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.navbar .logo img{height:40px;}
+.navbar ul{
+  list-style:none;
+  display:flex;
+  gap:20px;
+}
+.navbar ul a{
+  color:white;
+  text-decoration:none;
+  font-weight:500;
+}
+.navbar ul a:hover{color:#ffeb3b;}
+
+/* PAGE SECTION */
+.section-page{
+  max-width:1100px;
+  margin:40px auto;
+  background:white;
+  padding:30px;
+  border-radius:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
+
+.section-page h2{
+  text-align:center;
+  color:#4f46e5;
+  margin-bottom:25px;
+}
+
+/* FILTER FORM */
+.filter-form{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:15px;
+  margin-bottom:30px;
+}
+
+.filter-form select,
+.filter-form input{
+  padding:12px;
+  border-radius:10px;
+  border:1px solid #ccc;
+}
+
+.filter-form button{
+  background:#4f46e5;
+  color:white;
+  border:none;
+  border-radius:10px;
+  padding:12px;
+  cursor:pointer;
+  transition:0.3s;
+}
+.filter-form button:hover{
+  background:#3730a3;
+}
+
+/* LECTURE LIST */
+.material-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+}
+
+.material-item{
+  background:#f9fafb;
+  padding:20px;
+  border-radius:15px;
+  box-shadow:0 6px 15px rgba(0,0,0,0.08);
+  transition:transform 0.3s;
+}
+.material-item:hover{
+  transform:translateY(-6px);
+}
+
+.material-item strong{
+  font-size:1.1rem;
+  color:#111;
+}
+
+.material-item span{
+  display:block;
+  font-size:0.85rem;
+  color:#666;
+  margin:5px 0 10px;
+}
+
+.material-item a{
+  display:inline-block;
+  margin-top:10px;
+  background:#dc2626;
+  color:white;
+  padding:8px 12px;
+  border-radius:8px;
+  text-decoration:none;
+  font-size:0.9rem;
+}
+.material-item a:hover{
+  background:#b91c1c;
+}
+
+/* FOOTER */
+footer{
+  text-align:center;
+  padding:20px;
+  color:#555;
+  margin-top:40px;
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo">
+    <img src="img/logo.jpg" alt="Logo">
+    <span>Classroom</span>
+  </div>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="library.html">Library</a></li>
+    <li><a href="lectures.html">Lectures</a></li>
+    <li><a href="downloads.html">📥 Downloads</a></li>
+  </ul>
+</nav>
+
+<!-- LECTURE SECTION -->
+<div class="section-page">
+  <h2>🎥 Browse Lectures</h2>
+
+  <form class="filter-form" onsubmit="event.preventDefault(); filterLectures();">
+    <select id="branch">
+      <option value="">Branch</option>
+      <option>CSE</option>
+      <option>ECE</option>
+      <option>ME</option>
+    </select>
+
+    <select id="semester">
+      <option value="">Semester</option>
+      <option>1</option><option>2</option><option>3</option><option>4</option>
+    </select>
+
+    <select id="subject">
+      <option value="">Subject</option>
+      <option>Maths</option>
+      <option>Physics</option>
+      <option>DS</option>
+      <option>DBMS</option>
+    </select>
+
+    <input type="text" id="search" placeholder="Search lecture title...">
+
+    <button type="submit">Show Lectures</button>
+  </form>
+
+  <div class="material-list" id="lectureList"></div>
+</div>
+
+<footer>
+  © 2025 Smart Classroom | Learn Better Everyday
+</footer>
+
+<script>
+const lectures = [
+  {title:"DBMS – Normalization", branch:"CSE", semester:"4", subject:"DBMS", link:"https://youtu.be/example1"},
+  {title:"Data Structures – Stack", branch:"CSE", semester:"3", subject:"DS", link:"https://youtu.be/example2"},
+  {title:"Physics – Waves", branch:"ECE", semester:"1", subject:"Physics", link:"https://youtu.be/example3"},
+  {title:"Maths – Matrices", branch:"ME", semester:"2", subject:"Maths", link:"https://youtu.be/example4"}
+];
+
+function filterLectures(){
+  const branch = document.getElementById("branch").value;
+  const semester = document.getElementById("semester").value;
+  const subject = document.getElementById("subject").value;
+  const search = document.getElementById("search").value.toLowerCase();
+  const list = document.getElementById("lectureList");
+  list.innerHTML = "";
+
+  const filtered = lectures.filter(l =>
+    (!branch || l.branch===branch) &&
+    (!semester || l.semester===semester) &&
+    (!subject || l.subject===subject) &&
+    (!search || l.title.toLowerCase().includes(search))
+  );
+
+  if(filtered.length===0){
+    list.innerHTML = "<p>No lectures found for your selection.</p>";
+    return;
+  }
+
+  filtered.forEach(l => {
+    list.innerHTML += `
+      <div class="material-item">
+        <strong>${l.title}</strong>
+        <span>${l.branch} | Sem ${l.semester} | ${l.subject}</span>
+        <a href="${l.link}" target="_blank">▶ Watch Lecture</a>
+      </div>
+    `;
+  });
+}
+</script>
+
+</body>
+</html>

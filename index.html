@@ -1,0 +1,600 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Classroom - Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="website icon" href="bobo.png">
+  
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #f4f6fb;
+      min-height: 100vh;
+    }
+
+    /* Navigation Bar */
+    .navbar {
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
+      padding: 15px 30px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo-container img {
+      height: 45px;
+      width: 45px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .logo-container h1 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .main-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .main-nav a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .main-nav a:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .main-nav a.active {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Dropdown Menu for more pages */
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background: white;
+      min-width: 200px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      border-radius: 8px;
+      z-index: 1000;
+      top: 100%;
+      left: 0;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .dropdown-content a {
+      color: #333;
+      padding: 12px 16px;
+      display: block;
+      border-bottom: 1px solid #eee;
+    }
+
+    .dropdown-content a:hover {
+      background: #f5f5f5;
+      color: #4f46e5;
+    }
+
+    /* Header Content */
+    .hero-header {
+      text-align: center;
+      padding: 60px 20px;
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
+      color: white;
+      margin-bottom: 40px;
+      border-radius: 0 0 25px 25px;
+    }
+
+    .hero-header h2 {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+    }
+
+    .hero-header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Classroom Grid */
+    .classroom {
+      padding: 40px 20px;
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+    }
+
+    /* Card */
+    .card {
+      background: #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-header {
+      height: 120px;
+      background: linear-gradient(120deg, #22c55e, #16a34a);
+      color: #fff;
+      padding: 20px;
+    }
+
+    .card-header h3 {
+      font-size: 18px;
+    }
+
+    .card-header span {
+      font-size: 13px;
+      opacity: 0.9;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    .card-body p {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 15px;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .actions a {
+      text-decoration: none;
+      font-size: 14px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      color: white;
+      flex: 1;
+      text-align: center;
+      transition: opacity 0.3s;
+    }
+
+    .actions a:hover {
+      opacity: 0.9;
+    }
+
+    .notes {
+      background: #2563eb;
+    }
+
+    .video {
+      background: #dc2626;
+    }
+
+    /* Features Section */
+    .features {
+      padding: 60px 20px;
+      background: white;
+      margin: 40px 0;
+      border-radius: 20px;
+    }
+
+    .features h3 {
+      text-align: center;
+      margin-bottom: 40px;
+      color: #4f46e5;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      text-align: center;
+      padding: 30px 20px;
+      background: #f8fafc;
+      border-radius: 15px;
+      transition: transform 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature-icon {
+      font-size: 2.5rem;
+      color: #4f46e5;
+      margin-bottom: 20px;
+    }
+
+    /* Footer */
+    .site-footer {
+      background: #1e1b4b;
+      color: white;
+      padding: 50px 20px 20px;
+      margin-top: 60px;
+      border-top-left-radius: 25px;
+      border-top-right-radius: 25px;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer-brand h3 {
+      color: white;
+      margin-bottom: 10px;
+    }
+
+    .footer-links h4 {
+      color: #a5b4fc;
+      margin-bottom: 15px;
+    }
+
+    .footer-links a {
+      display: block;
+      color: #cbd5e1;
+      text-decoration: none;
+      margin-bottom: 10px;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: white;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .social-icons a {
+      color: white;
+      background: #4f46e5;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+
+    .social-icons a:hover {
+      background: #6366f1;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid #334155;
+      color: #94a3b8;
+      font-size: 0.9rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        gap: 20px;
+        padding: 15px;
+      }
+      
+      .main-nav {
+        justify-content: center;
+      }
+      
+      .hero-header h2 {
+        font-size: 2rem;
+      }
+      
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .main-nav {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .main-nav a {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+      }
+      
+      .card {
+        margin: 0 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVIGATION BAR -->
+  <nav class="navbar">
+    <div class="logo-container">
+      <img src="bobo.png" alt="Smart Classroom Logo">
+      <h1>📚 Smart Classroom</h1>
+    </div>
+    
+    <ul class="main-nav">
+      <li><a href="index.html" class="active"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="library.html"><i class="fas fa-book"></i> Library</a></li>
+      <li><a href="lectures.html"><i class="fas fa-video"></i> Lectures</a></li>
+      <li><a href="downloads.html"><i class="fas fa-download"></i> Downloads</a></li>
+      <li><a href="upload.html"><i class="fas fa-upload"></i> Upload</a></li>
+      
+      <!-- Dropdown for Additional Pages -->
+      <li class="dropdown">
+        <a href="#"><i class="fas fa-ellipsis-h"></i> More</a>
+        <div class="dropdown-content">
+          <a href="skill.html"><i class="fas fa-paint-brush"></i> Skills</a>
+          <a href="experience.html"><i class="fas fa-briefcase"></i> Experience</a>
+          <a href="service.html"><i class="fas fa-concierge-bell"></i> Services</a>
+          <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+          <a href="logout.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+      </li>
+      
+      <li><a href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+      <li><a href="signup.html"><i class="fas fa-user-plus"></i> Sign Up</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <div class="hero-header">
+    <h2>Welcome to Smart Classroom</h2>
+    <p>Your comprehensive digital learning platform designed for engineering students. Access notes, lectures, and resources all in one place.</p>
+    <p style="margin-top: 10px;"><strong>Branch: CSE | Semester: 4</strong></p>
+  </div>
+
+  <!-- CLASSROOM CONTENT -->
+  <section class="classroom">
+    <div class="card">
+      <div class="card-header" style="background:linear-gradient(120deg,#d6d62c,#739c20);">
+        <h3>C Programming</h3>
+        <span>Unit 1 – Unit 4</span>
+      </div>
+      <div class="card-body">
+        <p>Fundamentals of C programming, data types, control structures, functions, and pointers.</p>
+        <div class="actions">
+          <a href="#" class="notes"><i class="fas fa-file-pdf"></i> Notes</a>
+          <a href="#" class="video"><i class="fas fa-play"></i> Lecture</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header" style="background:linear-gradient(120deg,#3dce29,#24cc37);">
+        <h3>C++ Programming</h3>
+        <span>Unit 1 – Unit 4</span>
+      </div>
+      <div class="card-body">
+        <p>Object-oriented programming concepts, classes, inheritance, polymorphism, and templates.</p>
+        <div class="actions">
+          <a href="#" class="notes"><i class="fas fa-file-pdf"></i> Notes</a>
+          <a href="#" class="video"><i class="fas fa-play"></i> Lecture</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header" style="background:linear-gradient(120deg,#1c2cc2,#1870af);">
+        <h3>Computer Fundamentals</h3>
+        <span>Unit 1 – Unit 4</span>
+      </div>
+      <div class="card-body">
+        <p>Basic computer organization, number systems, Boolean algebra, and digital logic.</p>
+        <div class="actions">
+          <a href="#" class="notes"><i class="fas fa-file-pdf"></i> Notes</a>
+          <a href="#" class="video"><i class="fas fa-play"></i> Lecture</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header" style="background:linear-gradient(120deg,#f59e0b,#f97316);">
+        <h3>Operating Systems</h3>
+        <span>Unit 1 – Unit 6</span>
+      </div>
+      <div class="card-body">
+        <p>Processes, memory management, scheduling algorithms, file systems, and security.</p>
+        <div class="actions">
+          <a href="#" class="notes"><i class="fas fa-file-pdf"></i> Notes</a>
+          <a href="#" class="video"><i class="fas fa-play"></i> Lecture</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header" style="background:linear-gradient(120deg,#ec4899,#db2777);">
+        <h3>Python Programming</h3>
+        <span>Unit 1 – Unit 4</span>
+      </div>
+      <div class="card-body">
+        <p>Python syntax, data structures, OOP concepts, file handling, and libraries.</p>
+        <div class="actions">
+          <a href="#" class="notes"><i class="fas fa-file-pdf"></i> Notes</a>
+          <a href="#" class="video"><i class="fas fa-play"></i> Lecture</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header" style="background:linear-gradient(120deg,#8b5cf6,#7c3aed);">
+        <h3>Database Management</h3>
+        <span>Unit 1 – Unit 5</span>
+      </div>
+      <div class="card-body">
+        <p>ER diagrams, normalization, SQL queries, transactions, and database security.</p>
+        <div class="actions">
+          <a href="#" class="notes"><i class="fas fa-file-pdf"></i> Notes</a>
+          <a href="#" class="video"><i class="fas fa-play"></i> Lecture</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES SECTION -->
+  <section class="features">
+    <div class="container">
+      <h3>Platform Features</h3>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-book-open"></i>
+          </div>
+          <h4>Digital Library</h4>
+          <p>Access thousands of textbooks, notes, and reference materials for all engineering branches.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-video"></i>
+          </div>
+          <h4>Video Lectures</h4>
+          <p>Watch recorded lectures from top educators anytime, anywhere at your own pace.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-download"></i>
+          </div>
+          <h4>Download Manager</h4>
+          <p>Track and manage all your downloaded materials in one convenient location.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-share-square"></i>
+          </div>
+          <h4>Content Upload</h4>
+          <p>Share your own notes and materials with the community to help fellow students.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <!-- Brand -->
+      <div class="footer-brand">
+        <h3>📚 Smart Classroom</h3>
+        <p>Learn smarter. Grow faster.</p>
+      </div>
+
+      <!-- Links -->
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <a href="index.html">Home</a>
+        <a href="library.html">Library</a>
+        <a href="lectures.html">Lectures</a>
+        <a href="downloads.html">My Downloads</a>
+      </div>
+
+      <!-- Support -->
+      <div class="footer-links">
+        <h4>Support</h4>
+        <a href="help.html">Help</a>
+        <a href="contact.html">Contact</a>
+        <a href="query.html">Submit Query</a>
+      </div>
+
+      <!-- Social -->
+      <div class="footer-links">
+        <h4>Connect</h4>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-github"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      © 2025 Smart Classroom | Made for Engineering Students
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Your Custom JS -->
+  <script src="script.js"></script>
+</body>
+</html>
+[file content end]

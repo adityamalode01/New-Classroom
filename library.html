@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Digital Library</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: #4b2aad;
+      color: #fff;
+      padding: 15px;
+      text-align: center;
+    }
+
+    .section-page {
+      background: #fff;
+      padding: 20px;
+      margin: 20px auto;
+      width: 90%;
+      max-width: 1000px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .filter-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    select, button {
+      padding: 8px;
+      font-size: 14px;
+    }
+
+    button {
+      background: #4b2aad;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    button:hover {
+      background: #341a7c;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background: #4b2aad;
+      color: white;
+    }
+
+    a {
+      text-decoration: none;
+      color: #4b2aad;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #222;
+      color: #ccc;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>📚 Student Digital Library</h1>
+</header>
+
+<div class="section-page">
+  <h2>Filter Study Materials</h2>
+
+  <div class="filter-form">
+    <select id="branch">
+      <option value="">All Branches</option>
+      <option value="CSE">CSE</option>
+      <option value="ECE">ECE</option>
+    </select>
+
+    <select id="semester">
+      <option value="">All Semesters</option>
+      <option value="1">Semester 1</option>
+      <option value="2">Semester 2</option>
+      <option value="3">Semester 3</option>
+    </select>
+
+    <select id="subject">
+      <option value="">All Subjects</option>
+      <option value="DBMS">DBMS</option>
+      <option value="AI">AI</option>
+      <option value="Maths">Maths</option>
+    </select>
+
+    <select id="sort">
+      <option value="desc">Newest</option>
+      <option value="asc">Oldest</option>
+    </select>
+
+    <button onclick="filterMaterials()">Search</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Subject</th>
+        <th>Notes</th>
+        <th>Lecture</th>
+      </tr>
+    </thead>
+    <tbody id="materialTable"></tbody>
+  </table>
+</div>
+
+<footer>
+  © 2025 Student Library | All Rights Reserved
+</footer>
+
+<script>
+const materials = [
+  {
+    subject: "DBMS",
+    branch: "CSE",
+    semester: "3",
+    file: "uploads/dbms-notes.pdf",
+    video: "https://www.youtube.com/watch?v=HXV3zeQKqGY",
+    date: "2024-01-01"
+  },
+  {
+    subject: "AI",
+    branch: "CSE",
+    semester: "5",
+    file: "uploads/ai-notes.pdf",
+    video: "",
+    date: "2024-02-10"
+  },
+  {
+    subject: "Maths",
+    branch: "ECE",
+    semester: "1",
+    file: "uploads/maths-notes.pdf",
+    video: "https://www.youtube.com/watch?v=Kp2bYWRQylk",
+    date: "2023-12-01"
+  }
+];
+
+function filterMaterials() {
+  const branch = document.getElementById("branch").value;
+  const semester = document.getElementById("semester").value;
+  const subject = document.getElementById("subject").value;
+  const sort = document.getElementById("sort").value;
+
+  let filtered = materials.filter(m =>
+    (!branch || m.branch === branch) &&
+    (!semester || m.semester === semester) &&
+    (!subject || m.subject === subject)
+  );
+
+  filtered.sort((a,b) =>
+    sort === "asc"
+      ? new Date(a.date) - new Date(b.date)
+      : new Date(b.date) - new Date(a.date)
+  );
+
+  const table = document.getElementById("materialTable");
+  table.innerHTML = "";
+
+  if (filtered.length === 0) {
+    table.innerHTML = `<tr><td colspan="3">No materials found</td></tr>`;
+    return;
+  }
+
+  filtered.forEach(m => {
+    table.innerHTML += `
+      <tr>
+        <td>${m.subject}</td>
+        <td>
+          <a href="${m.file}" download onclick="trackDownload('${m.file}')">📥 Download</a> |
+          <a href="${m.file}" target="_blank">👁️ View</a>
+        </td>
+        <td>
+          ${m.video ? `<a href="${m.video}" target="_blank">🎥 Watch</a>` : `<span style="color:gray">No Lecture</span>`}
+        </td>
+      </tr>
+    `;
+  });
+}
+
+function trackDownload(file) {
+  let downloads = JSON.parse(localStorage.getItem("downloads")) || [];
+  if (!downloads.includes(file)) {
+    downloads.push(file);
+    localStorage.setItem("downloads", JSON.stringify(downloads));
+  }
+}
+
+// Load all data initially
+filterMaterials();
+</script>
+
+</body>
+</html>

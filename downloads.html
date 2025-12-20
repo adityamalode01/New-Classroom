@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>📥 My Downloads - Smart Classroom</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      margin:0;
+      font-family: 'Poppins', sans-serif;
+      background: #f4f6fb;
+    }
+
+    /* Navbar (reuse your previous navbar style) */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background: linear-gradient(135deg,#4f46e5,#6366f1);
+      color: white;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+    }
+    .navbar .logo img { height: 40px; margin-right:10px; }
+    .navbar .logo span { font-size:1.6rem; font-weight:600; }
+    .nav-links { list-style:none; display:flex; gap:20px; }
+    .nav-links li a { color:white; text-decoration:none; font-weight:500; }
+    .nav-links li a:hover { color:#ffed4b; }
+
+    header {
+      text-align:center;
+      margin-top:20px;
+      margin-bottom:30px;
+    }
+    header h1 { font-size:2.5rem; color:#4f46e5; }
+
+    /* Downloads Card */
+    .download-card {
+      max-width: 900px;
+      margin: auto;
+      background: #fff;
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .download-card:hover { transform: translateY(-6px); box-shadow: 0 25px 50px rgba(0,0,0,0.15); }
+
+    .download-card h2 {
+      text-align:center;
+      font-size:2.5rem;
+      color:#4f46e5;
+      margin-bottom:30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 1rem;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align:center;
+    }
+    th {
+      background: linear-gradient(135deg,#4f46e5,#6366f1);
+      color:white;
+      font-weight:600;
+    }
+    tr:nth-child(even) { background: #f9f9f9; }
+    a.view-btn, a.download-btn {
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:6px;
+      color:white;
+      transition:0.3s;
+    }
+    a.view-btn { background:#0288d1; }
+    a.view-btn:hover { background:#0277bd; }
+    a.download-btn { background:#43a047; }
+    a.download-btn:hover { background:#388e3c; }
+
+    /* Footer */
+    footer {
+      text-align:center;
+      padding:20px;
+      color:#555;
+      font-size:14px;
+      margin-top:40px;
+    }
+
+    @media(max-width:768px){
+      .download-card { padding:30px 20px; }
+      table { font-size:0.9rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="logo">
+    <img src="img/logo.jpg" alt="Logo">
+    <span>Classroom</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="library.html">Library</a></li>
+    <li><a href="lectures.html">Lectures</a></li>
+    <li><a href="downloads.html" class="active">📥 My Downloads</a></li>
+  </ul>
+</nav>
+
+<header>
+  <h1>📥 My Downloads</h1>
+  <p>Access your downloaded notes and lectures anytime.</p>
+</header>
+
+<!-- Downloads Card -->
+<div class="download-card">
+  <h2>Downloaded Materials</h2>
+  <table id="downloadsTable">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>File Name</th>
+        <th>View</th>
+        <th>Download Again</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Downloads will be populated via JS -->
+    </tbody>
+  </table>
+</div>
+
+<!-- Footer -->
+<footer>
+  © 2025 Smart Classroom | Learn Better Everyday
+</footer>
+
+<!-- Script to load downloads from localStorage -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const downloads = JSON.parse(localStorage.getItem('downloads')) || [];
+  const tbody = document.querySelector('#downloadsTable tbody');
+
+  if(downloads.length === 0){
+    tbody.innerHTML = "<tr><td colspan='4'>❌ No materials downloaded yet.</td></tr>";
+  } else {
+    downloads.forEach((file, index) => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${index+1}</td>
+        <td>${file}</td>
+        <td><a class="view-btn" href="uploads/${file}" target="_blank">👁️ View</a></td>
+        <td><a class="download-btn" href="uploads/${file}" download>📥 Download</a></td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+});
+</script>
+
+</body>
+</html>
