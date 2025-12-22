@@ -5,75 +5,248 @@
 <title>Logging Out | Smart Classroom</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
+:root{
+  --primary:#6366f1;
+  --secondary:#22d3ee;
+  --dark:#020617;
+}
+
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family:'Poppins', sans-serif;
+  font-family:'Poppins',sans-serif;
 }
 
+/* ================= BACKGROUND ================= */
 body{
   height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  background:linear-gradient(135deg,#4f46e5,#6366f1);
+  background:var(--dark);
+  overflow:hidden;
 }
 
-.logout-card{
+/* Aurora */
+.aurora{
+  position:absolute;
+  inset:-50%;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(99,102,241,.35), transparent 45%),
+    radial-gradient(circle at 80% 40%, rgba(34,211,238,.35), transparent 45%),
+    radial-gradient(circle at 50% 70%, rgba(167,139,250,.35), transparent 45%);
+  filter:blur(90px);
+  animation:aurora 22s linear infinite;
+}
+@keyframes aurora{
+  to{transform:rotate(360deg);}
+}
+
+/* Particles */
+.particle{
+  position:absolute;
+  width:6px;
+  height:6px;
   background:white;
-  padding:40px 30px;
-  border-radius:20px;
-  text-align:center;
-  box-shadow:0 20px 40px rgba(0,0,0,0.25);
-  animation:fade 0.5s ease;
-}
-
-@keyframes fade{
-  from{opacity:0; transform:scale(0.9);}
-  to{opacity:1; transform:scale(1);}
-}
-
-.logout-card h2{
-  color:#4f46e5;
-  margin-bottom:10px;
-}
-
-.logout-card p{
-  color:#555;
-  margin-bottom:20px;
-}
-
-.spinner{
-  width:40px;
-  height:40px;
-  border:4px solid #ddd;
-  border-top:4px solid #4f46e5;
   border-radius:50%;
-  animation:spin 1s linear infinite;
-  margin:20px auto;
+  opacity:.12;
+  animation:float linear infinite;
+}
+@keyframes float{
+  from{transform:translateY(110vh);}
+  to{transform:translateY(-10vh);}
 }
 
+/* ================= CARD ================= */
+.card{
+  width:420px;
+  padding:44px 36px 52px;
+  border-radius:30px;
+  background:rgba(255,255,255,0.12);
+  backdrop-filter:blur(22px);
+  border:1px solid rgba(255,255,255,0.18);
+  box-shadow:
+    0 40px 120px rgba(0,0,0,0.7),
+    inset 0 0 40px rgba(99,102,241,0.25);
+  color:white;
+  text-align:center;
+  z-index:2;
+  animation:enter 1s cubic-bezier(.19,1,.22,1);
+}
+@keyframes enter{
+  from{opacity:0; transform:translateY(60px) scale(.85);}
+  to{opacity:1; transform:translateY(0) scale(1);}
+}
+
+h2{
+  font-size:2rem;
+  letter-spacing:.5px;
+}
+p{
+  font-size:.95rem;
+  opacity:.85;
+  margin:10px 0 26px;
+}
+
+/* ================= WALK AREA ================= */
+.walk-zone{
+  width:100%;
+  height:140px;
+  position:relative;
+  overflow:hidden;
+}
+
+/* ================= WALKING ANIMAL ================= */
+.walker{
+  width:120px;
+  height:60px;
+  position:absolute;
+  bottom:14px;
+  left:-150px;
+  animation:walk 4.5s linear infinite;
+}
+@keyframes walk{
+  to{left:100%;}
+}
+
+/* Body */
+.body{
+  width:74px;
+  height:40px;
+  border-radius:22px;
+  position:absolute;
+  left:20px;
+  top:12px;
+}
+
+/* Head */
+.head{
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  position:absolute;
+  left:66px;
+  top:6px;
+}
+
+/* Legs */
+.leg{
+  width:6px;
+  height:18px;
+  background:#0f172a;
+  position:absolute;
+  bottom:0;
+  animation:leg .45s infinite alternate;
+}
+.l1{left:24px;}
+.l2{left:38px;animation-delay:.22s;}
+.l3{left:52px;}
+.l4{left:66px;animation-delay:.22s;}
+
+@keyframes leg{
+  from{transform:rotate(25deg);}
+  to{transform:rotate(-25deg);}
+}
+
+/* Tail */
+.tail{
+  width:18px;
+  height:6px;
+  position:absolute;
+  left:-12px;
+  top:22px;
+  border-radius:10px;
+  animation:tail .6s infinite alternate;
+}
+@keyframes tail{
+  from{transform:rotate(25deg);}
+  to{transform:rotate(-25deg);}
+}
+
+/* Animal themes */
+.dog .body,.dog .head{background:#fde68a;}
+.dog .tail{background:#fcd34d;}
+
+.cat .body,.cat .head{background:#e5e7eb;}
+.cat .tail{background:#9ca3af;}
+
+.bunny .body,.bunny .head{background:#f5f3ff;}
+.bunny .tail{background:#ddd6fe;}
+
+.panda .body,.panda .head{background:white;}
+.panda .tail{background:#111;}
+
+/* ================= LOADER ================= */
+.loader{
+  width:46px;
+  height:46px;
+  margin:18px auto 0;
+  border-radius:50%;
+  border:3px solid rgba(255,255,255,.3);
+  border-top-color:white;
+  animation:spin 1s linear infinite;
+}
 @keyframes spin{
   to{transform:rotate(360deg);}
 }
+
+/* Exit */
+.fade{
+  animation:exit .7s ease forwards;
+}
+@keyframes exit{
+  to{opacity:0; transform:scale(.92);}
+}
 </style>
 </head>
+
 <body>
 
-<div class="logout-card">
-  <h2>👋 Logging you out</h2>
-  <p>Please wait… redirecting to login page</p>
-  <div class="spinner"></div>
+<div class="aurora"></div>
+
+<script>
+for(let i=0;i<45;i++){
+  const p=document.createElement("div");
+  p.className="particle";
+  p.style.left=Math.random()*100+"%";
+  p.style.animationDuration=6+Math.random()*10+"s";
+  document.body.appendChild(p);
+}
+</script>
+
+<div class="card" id="card">
+
+  <div class="walk-zone">
+    <div class="walker" id="walker">
+      <div class="tail"></div>
+      <div class="body"></div>
+      <div class="head"></div>
+      <div class="leg l1"></div>
+      <div class="leg l2"></div>
+      <div class="leg l3"></div>
+      <div class="leg l4"></div>
+    </div>
+  </div>
+
+  <h2>Logging out</h2>
+  <p>Securing your session and redirecting safely</p>
+
+  <div class="loader"></div>
 </div>
 
 <script>
-setTimeout(()=>{
-  window.location.href = "login.html";
-}, 2500);
+/* Random animal */
+const animals=["dog","cat","bunny","panda"];
+walker.classList.add(animals[Math.floor(Math.random()*animals.length)]);
+
+/* Exit + redirect */
+setTimeout(()=>card.classList.add("fade"),2600);
+setTimeout(()=>location.href="login.html",3400);
 </script>
 
 </body>
