@@ -3,164 +3,281 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Classroom Upload Portal</title>
+<title>📤 Classroom Upload Portal</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
 <style>
-    /* GENERAL RESET */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Poppins', sans-serif;
-    }
+:root{
+  --primary:#6a11cb;
+  --secondary:#2575fc;
+  --dark:#020617;
+}
 
-    body {
-        min-height: 100vh;
-        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-    }
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
 
-    .upload-card {
-        background: #fff;
-        width: 100%;
-        max-width: 600px;
-        border-radius: 20px;
-        padding: 40px 30px;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-        position: relative;
-        overflow: hidden;
-    }
+/* ================= BACKGROUND ================= */
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:var(--dark);
+  padding:20px;
+  overflow:hidden;
+}
 
-    .upload-card::before {
-        content: '';
-        position: absolute;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
-        top: -50%;
-        left: -50%;
-        transform: rotate(45deg);
-    }
+/* Aurora */
+.aurora{
+  position:absolute;
+  inset:-50%;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(106,17,203,.35), transparent 45%),
+    radial-gradient(circle at 80% 40%, rgba(37,117,252,.35), transparent 45%),
+    radial-gradient(circle at 50% 70%, rgba(99,102,241,.35), transparent 45%);
+  filter:blur(90px);
+  animation:aurora 22s linear infinite;
+}
+@keyframes aurora{to{transform:rotate(360deg);}}
 
-    .upload-card h2 {
-        text-align: center;
-        color: #333;
-        margin-bottom: 25px;
-        font-size: 2.5rem;
-        position: relative;
-        z-index: 2;
-    }
+/* ================= CARD ================= */
+.upload-card{
+  width:100%;
+  max-width:720px;
+  padding:46px 40px;
+  border-radius:30px;
+  background:rgba(255,255,255,0.12);
+  backdrop-filter:blur(22px);
+  border:1px solid rgba(255,255,255,0.18);
+  box-shadow:0 40px 120px rgba(0,0,0,0.7);
+  position:relative;
+  z-index:2;
+  animation:enter 1s cubic-bezier(.19,1,.22,1);
+}
 
-    .upload-card form {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        position: relative;
-        z-index: 2;
-    }
+@keyframes enter{
+  from{opacity:0; transform:translateY(60px) scale(.9);}
+  to{opacity:1; transform:translateY(0) scale(1);}
+}
 
-    .upload-card label {
-        font-weight: 500;
-        color: #333;
-    }
+/* ================= HEADER ================= */
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:28px;
+}
 
-    .upload-card input[type="text"],
-    .upload-card input[type="url"],
-    .upload-card input[type="file"],
-    .upload-card select {
-        padding: 12px 15px;
-        border-radius: 10px;
-        border: 1px solid #ccc;
-        font-size: 1rem;
-        width: 100%;
-        transition: 0.3s;
-    }
+.header h2{
+  font-size:2.3rem;
+  color:white;
+}
 
-    .upload-card input:focus,
-    .upload-card select:focus {
-        border-color: #2575fc;
-        box-shadow: 0 0 10px rgba(37, 117, 252, 0.3);
-        outline: none;
-    }
+.back-btn{
+  padding:10px 16px;
+  border-radius:12px;
+  background:rgba(255,255,255,0.15);
+  color:white;
+  border:none;
+  cursor:pointer;
+  transition:.3s;
+}
+.back-btn:hover{
+  background:rgba(255,255,255,0.25);
+}
 
-    .upload-card button {
-        background: #6a11cb;
-        color: white;
-        padding: 15px;
-        border-radius: 12px;
-        font-size: 1.2rem;
-        cursor: pointer;
-        border: none;
-        transition: 0.3s;
-    }
+/* ================= FORM ================= */
+form{
+  display:flex;
+  flex-direction:column;
+  gap:22px;
+}
 
-    .upload-card button:hover {
-        background: #2575fc;
-        transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    }
+.section-title{
+  font-size:1.1rem;
+  color:#e5e7eb;
+  border-left:4px solid var(--secondary);
+  padding-left:10px;
+}
 
-    @media (max-width: 650px){
-        .upload-card {
-            padding: 30px 20px;
-        }
-        .upload-card h2 {
-            font-size: 2rem;
-        }
-    }
+label{
+  font-weight:500;
+  font-size:.95rem;
+  color:#e5e7eb;
+  margin-bottom:6px;
+  display:block;
+}
+
+input,select{
+  width:100%;
+  padding:14px 16px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.25);
+  background:transparent;
+  color:white;
+  font-size:1rem;
+  outline:none;
+  transition:.3s;
+}
+
+input::placeholder{color:#c7d2fe;}
+
+input:focus,select:focus{
+  border-color:var(--secondary);
+  box-shadow:0 0 18px rgba(37,117,252,.6);
+}
+
+/* ================= BUTTONS ================= */
+.actions{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.btn{
+  flex:1;
+  padding:14px;
+  border-radius:16px;
+  font-size:1rem;
+  cursor:pointer;
+  border:none;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  transition:.3s;
+}
+
+.upload-btn{
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:white;
+}
+
+.upload-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 15px 35px rgba(0,0,0,.4);
+}
+
+.secondary-btn{
+  background:rgba(255,255,255,0.15);
+  color:white;
+}
+
+.secondary-btn:hover{
+  background:rgba(255,255,255,0.25);
+}
+
+/* Loader */
+.loading{
+  pointer-events:none;
+  background:#64748b !important;
+  position:relative;
+}
+
+.loading::after{
+  content:"";
+  width:22px;
+  height:22px;
+  border:3px solid white;
+  border-top-color:transparent;
+  border-radius:50%;
+  position:absolute;
+  animation:spin 1s linear infinite;
+}
+
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:700px){
+  .upload-card{padding:34px 24px;}
+  .header h2{font-size:2rem;}
+}
 </style>
 </head>
+
 <body>
 
+<div class="aurora"></div>
+
 <div class="upload-card">
-    <h2>📤 Upload Notes & Lecture</h2>
-    <form action="upload.php" method="POST" enctype="multipart/form-data">
-        <div>
-            <label for="branch">Branch</label>
-            <select id="branch" name="branch" required>
-                <option value="">Select Branch</option>
-                <option value="CSE">CSE</option>
-                <option value="ECE">ECE</option>
-                <option value="ME">ME</option>
-                <option value="CE">CE</option>
-            </select>
-        </div>
 
-        <div>
-            <label for="semester">Semester</label>
-            <select id="semester" name="semester" required>
-                <option value="">Select Semester</option>
-                <option>1</option><option>2</option><option>3</option><option>4</option>
-                <option>5</option><option>6</option><option>7</option><option>8</option>
-            </select>
-        </div>
+  <div class="header">
+    <h2>📤 Upload Content</h2>
+    <button class="back-btn" onclick="history.back()">
+      <i class="fas fa-arrow-left"></i> Dashboard
+    </button>
+  </div>
 
-        <div>
-            <label for="subject">Subject</label>
-            <input type="text" id="subject" name="subject" placeholder="e.g., DBMS" required>
-        </div>
+  <form id="uploadForm" action="upload.php" method="POST" enctype="multipart/form-data">
 
-        <div>
-            <label for="file">Upload PDF Notes</label>
-            <input type="file" id="file" name="file" accept="application/pdf" required>
-        </div>
+    <div class="section-title">Academic Details</div>
 
-        <div>
-            <label for="image">Upload Subject Image (Optional)</label>
-            <input type="file" id="image" name="image" accept="image/*">
-        </div>
+    <div>
+      <label for="branch">Branch</label>
+      <select id="branch" name="branch" required>
+        <option value="">Select Branch</option>
+        <option>CSE</option><option>ECE</option>
+        <option>ME</option><option>CE</option>
+      </select>
+    </div>
 
-        <div>
-            <label for="video">Lecture Video Link (YouTube)</label>
-            <input type="url" id="video" name="video" placeholder="https://youtu.be/...">
-        </div>
+    <div>
+      <label for="semester">Semester</label>
+      <select id="semester" name="semester" required>
+        <option value="">Select Semester</option>
+        <option>1</option><option>2</option><option>3</option><option>4</option>
+        <option>5</option><option>6</option><option>7</option><option>8</option>
+      </select>
+    </div>
 
-        <button type="submit">Upload</button>
-    </form>
+    <div>
+      <label for="subject">Subject</label>
+      <input type="text" id="subject" name="subject" placeholder="e.g., DBMS" required>
+    </div>
+
+    <div class="section-title">Upload Files</div>
+
+    <div>
+      <label for="file">PDF Notes</label>
+      <input type="file" id="file" name="file" accept="application/pdf" required>
+    </div>
+
+    <div>
+      <label for="image">Subject Image (Optional)</label>
+      <input type="file" id="image" name="image" accept="image/*">
+    </div>
+
+    <div>
+      <label for="video">Lecture Video Link</label>
+      <input type="url" id="video" name="video" placeholder="https://youtu.be/...">
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="btn upload-btn">
+        <i class="fas fa-cloud-upload-alt"></i> Upload
+      </button>
+      <button type="button" class="btn secondary-btn" onclick="document.getElementById('uploadForm').reset()">
+        <i class="fas fa-eraser"></i> Clear
+      </button>
+      <button type="button" class="btn secondary-btn" onclick="alert('Draft saved (UI only)')">
+        <i class="fas fa-save"></i> Save Draft
+      </button>
+    </div>
+
+  </form>
 </div>
+
+<script>
+document.getElementById("uploadForm").addEventListener("submit",()=>{
+  document.querySelector(".upload-btn").classList.add("loading");
+});
+</script>
 
 </body>
 </html>
