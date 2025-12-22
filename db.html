@@ -1,0 +1,44 @@
+<?php
+include 'db.php'; // Connect to the database
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classroom Home</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+    <h1>Welcome to Classroom</h1>
+</header>
+
+<!-- MAIN CONTENT -->
+<main>
+    <h2>Student List</h2>
+    <ul>
+        <?php
+        $sql = "SELECT * FROM students"; // Replace with your table
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                echo "<li>" . htmlspecialchars($row['name']) . " - " . htmlspecialchars($row['email']) . "</li>";
+            }
+        } else {
+            echo "<li>No students found.</li>";
+        }
+        ?>
+    </ul>
+</main>
+
+<!-- FOOTER -->
+<footer>
+    <p>&copy; 2025 Classroom | Made for Engineering Students</p>
+</footer>
+
+</body>
+</html>

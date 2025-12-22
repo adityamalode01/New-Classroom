@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Classroom Header</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+/* GENERAL RESET */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins', sans-serif;
+}
+
+/* HEADER / NAVBAR */
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:1rem 2rem;
+    background-color:#111;
+    color:white;
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:0.5rem;
+}
+
+.logo img{
+    width:50px;
+    border-radius:50%;
+}
+
+.logo span{
+    font-size:2rem;
+    font-weight:600;
+    color:#f48fb1;
+}
+
+/* NAV LINKS */
+.nav-links{
+    display:flex;
+    align-items:center;
+    gap:1rem;
+    list-style:none;
+}
+
+.nav-links li{
+    position:relative;
+}
+
+.nav-links a{
+    color:white;
+    text-decoration:none;
+    font-weight:500;
+    transition:0.3s;
+}
+
+.nav-links a:hover{
+    color:#f48fb1;
+}
+
+/* SEARCH FORM */
+.search-form{
+    display:flex;
+}
+
+.search-form input{
+    padding:0.4rem 0.6rem;
+    border-radius:5px 0 0 5px;
+    border:none;
+    outline:none;
+}
+
+.search-form button{
+    padding:0.4rem 0.6rem;
+    border-radius:0 5px 5px 0;
+    border:none;
+    background-color:#f48fb1;
+    color:white;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.search-form button:hover{
+    background-color:#ff80ab;
+}
+
+/* DARK MODE BUTTON */
+.dark-toggle{
+    background:#333;
+    color:#f48fb1;
+    border:none;
+    padding:0.5rem 0.8rem;
+    border-radius:5px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.dark-toggle:hover{
+    background:#f48fb1;
+    color:#111;
+}
+
+/* HAMBURGER MENU */
+#menu-toggle{
+    display:none;
+    color:#f48fb1;
+    font-size:2rem;
+    cursor:pointer;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+    .nav-links{
+        display:none;
+        flex-direction:column;
+        background-color:#111;
+        position:absolute;
+        top:70px;
+        right:0;
+        width:220px;
+        padding:1rem;
+        border-radius:0 0 10px 10px;
+    }
+
+    .nav-links.active{
+        display:flex;
+    }
+
+    .nav-links li{
+        margin:0.5rem 0;
+    }
+
+    #menu-toggle{
+        display:block;
+    }
+}
+</style>
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <!-- Logo -->
+        <div class="logo">
+            <img src="img/logo.jpg" alt="Logo">
+            <span>Classroom</span>
+        </div>
+
+        <!-- Hamburger Icon -->
+        <i class="fas fa-bars" id="menu-toggle"></i>
+
+        <!-- Navigation Links -->
+        <ul class="nav-links">
+            <li><a href="index.php">Home</a></li>
+            <li><a href="library.php">Library</a></li>
+            <li><a href="lectures.php">Lectures</a></li>
+            <li><a href="downloads.php">📥 My Downloads</a></li>
+            <li><a href="login.php">Login</a></li>
+            <li><a href="logout.php">Logout</a></li>
+            <li>
+                <form action="search.php" method="get" class="search-form" onsubmit="return validateSearch()">
+                    <input type="text" name="query" id="searchInput" placeholder="Search...">
+                    <button type="submit">🔍</button>
+                </form>
+            </li>
+            <li>
+                <button id="darkModeToggle" class="dark-toggle">🌙</button>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<script>
+// MOBILE MENU TOGGLE
+const menuToggle = document.getElementById('menu-toggle');
+const navLinks = document.querySelector('.nav-links');
+
+menuToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+});
+
+// DARK MODE TOGGLE
+const darkBtn = document.getElementById('darkModeToggle');
+darkBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+});
+
+// SEARCH VALIDATION
+function validateSearch(){
+    const input = document.getElementById('searchInput').value.trim();
+    if(input === ''){
+        alert('Please enter a search term!');
+        return false;
+    }
+    return true;
+}
+</script>
+
+</body>
+</html>
