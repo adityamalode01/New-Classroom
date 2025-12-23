@@ -12,165 +12,833 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 
   <style>
-    body {
-      margin:0;
-      font-family: 'Poppins', sans-serif;
-      background: #f4f6fb;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    /* Navbar (reuse your previous navbar style) */
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      color: #333;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Optimized Animated Background - Less Heavy */
+    .animated-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .bg-circle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(79, 70, 229, 0.08);
+      animation: float 25s infinite linear;
+      will-change: transform;
+    }
+
+    /* Reduced number of circles for better performance */
+    .bg-circle:nth-child(1) {
+      width: 150px;
+      height: 150px;
+      top: 10%;
+      left: 10%;
+      background: rgba(99, 102, 241, 0.05);
+      animation-duration: 40s;
+    }
+
+    .bg-circle:nth-child(2) {
+      width: 200px;
+      height: 200px;
+      top: 60%;
+      left: 80%;
+      background: rgba(67, 97, 238, 0.04);
+      animation-duration: 35s;
+      animation-delay: 5s;
+    }
+
+    .bg-circle:nth-child(3) {
+      width: 100px;
+      height: 100px;
+      top: 20%;
+      left: 85%;
+      background: rgba(129, 140, 248, 0.06);
+      animation-duration: 30s;
+      animation-delay: 10s;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+      33% {
+        transform: translate(30px, -50px) rotate(120deg);
+      }
+      66% {
+        transform: translate(-20px, 20px) rotate(240deg);
+      }
+      100% {
+        transform: translate(0, 0) rotate(360deg);
+      }
+    }
+
+    /* Navbar - Optimized for performance */
     .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 15px 30px;
-      background: linear-gradient(135deg,#4f46e5,#6366f1);
+      background: rgba(79, 70, 229, 0.95);
       color: white;
       border-bottom-left-radius: 20px;
       border-bottom-right-radius: 20px;
+      position: relative;
+      z-index: 100;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease;
+      backdrop-filter: blur(5px);
+      will-change: transform;
     }
-    .navbar .logo img { height: 40px; margin-right:10px; }
-    .navbar .logo span { font-size:1.6rem; font-weight:600; }
-    .nav-links { list-style:none; display:flex; gap:20px; }
-    .nav-links li a { color:white; text-decoration:none; font-weight:500; }
-    .nav-links li a:hover { color:#ffed4b; }
 
-    header {
-      text-align:center;
-      margin-top:20px;
-      margin-bottom:30px;
+    .navbar.scrolled {
+      background: rgba(79, 70, 229, 0.98);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
     }
-    header h1 { font-size:2.5rem; color:#4f46e5; }
+
+    .navbar .logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.6rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .navbar .logo img {
+      height: 40px;
+      width: 40px;
+      margin-right: 10px;
+      border-radius: 8px;
+      object-fit: contain;
+      transition: transform 0.2s ease;
+    }
+
+    .navbar .logo:hover img {
+      transform: scale(1.05);
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links li {
+      position: relative;
+    }
+
+    .nav-links li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 10px 18px;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+      display: block;
+      white-space: nowrap;
+      will-change: transform, background-color;
+    }
+
+    .nav-links li a:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .nav-links li a.active {
+      background: rgba(255, 255, 255, 0.25);
+      color: #ffed4b;
+      font-weight: 600;
+    }
+
+    /* Header - Simplified */
+    header {
+      text-align: center;
+      margin: 40px auto;
+      padding: 0 20px;
+      max-width: 800px;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    header h1 {
+      font-size: 2.8rem;
+      color: white;
+      margin-bottom: 15px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    header p {
+      color: #c7d2fe;
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
 
     /* Downloads Card */
     .download-card {
-      max-width: 900px;
-      margin: auto;
-      background: #fff;
-      padding: 40px 30px;
+      max-width: 1100px;
+      margin: 0 auto 40px;
+      background: rgba(255, 255, 255, 0.97);
+      padding: 35px;
       border-radius: 20px;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      animation: slideUp 0.6s ease-out;
+      position: relative;
+      overflow: hidden;
     }
-    .download-card:hover { transform: translateY(-6px); box-shadow: 0 25px 50px rgba(0,0,0,0.15); }
+
+    .download-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(to right, #4f46e5, #6366f1, #4f46e5);
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
     .download-card h2 {
-      text-align:center;
-      font-size:2.5rem;
-      color:#4f46e5;
-      margin-bottom:30px;
+      text-align: center;
+      font-size: 2.2rem;
+      color: #4f46e5;
+      margin-bottom: 30px;
+      position: relative;
+      padding-bottom: 15px;
+    }
+
+    .download-card h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background: linear-gradient(to right, #4f46e5, #6366f1);
+      border-radius: 2px;
+    }
+
+    /* Table - Optimized */
+    .table-container {
+      overflow-x: auto;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 20px;
       font-size: 1rem;
+      min-width: 700px;
     }
+
     th, td {
-      border: 1px solid #ddd;
-      padding: 12px;
-      text-align:center;
+      padding: 16px 20px;
+      text-align: center;
+      border-bottom: 1px solid #e0e0e0;
+      transition: background-color 0.2s ease;
     }
+
     th {
-      background: linear-gradient(135deg,#4f46e5,#6366f1);
-      color:white;
-      font-weight:600;
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
+      color: white;
+      font-weight: 600;
+      font-size: 1.05rem;
+      position: sticky;
+      top: 0;
     }
-    tr:nth-child(even) { background: #f9f9f9; }
-    a.view-btn, a.download-btn {
-      text-decoration:none;
-      padding:8px 12px;
-      border-radius:6px;
-      color:white;
-      transition:0.3s;
+
+    tbody tr {
+      transition: all 0.2s ease;
     }
-    a.view-btn { background:#0288d1; }
-    a.view-btn:hover { background:#0277bd; }
-    a.download-btn { background:#43a047; }
-    a.download-btn:hover { background:#388e3c; }
+
+    tbody tr:hover {
+      background-color: rgba(79, 70, 229, 0.05);
+    }
+
+    /* Buttons - Optimized */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      will-change: transform, box-shadow;
+      min-width: 120px;
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .view-btn {
+      background: linear-gradient(135deg, #0288d1, #26c6da);
+      color: white;
+      box-shadow: 0 4px 12px rgba(2, 136, 209, 0.2);
+    }
+
+    .view-btn:hover {
+      background: linear-gradient(135deg, #0277bd, #00bcd4);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(2, 136, 209, 0.3);
+    }
+
+    .download-btn {
+      background: linear-gradient(135deg, #43a047, #66bb6a);
+      color: white;
+      box-shadow: 0 4px 12px rgba(67, 160, 71, 0.2);
+    }
+
+    .download-btn:hover {
+      background: linear-gradient(135deg, #388e3c, #4caf50);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(67, 160, 71, 0.3);
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      will-change: transform;
+    }
+
+    .action-btn:active {
+      transform: translateY(2px);
+    }
+
+    .clear-btn {
+      background: linear-gradient(135deg, #f44336, #ef5350);
+    }
+
+    .clear-btn:hover {
+      background: linear-gradient(135deg, #d32f2f, #e53935);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(244, 67, 54, 0.3);
+    }
+
+    .refresh-btn {
+      background: linear-gradient(135deg, #ff9800, #ffb74d);
+    }
+
+    .refresh-btn:hover {
+      background: linear-gradient(135deg, #f57c00, #ffa726);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(255, 152, 0, 0.3);
+    }
+
+    /* File Type Badge */
+    .file-type {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: white;
+    }
+
+    .file-type.pdf {
+      background: linear-gradient(135deg, #f44336, #e53935);
+    }
+
+    .file-type.video {
+      background: linear-gradient(135deg, #2196f3, #1976d2);
+    }
+
+    .file-type.document {
+      background: linear-gradient(135deg, #4caf50, #388e3c);
+    }
+
+    .file-type.presentation {
+      background: linear-gradient(135deg, #9c27b0, #7b1fa2);
+    }
+
+    .file-type.other {
+      background: linear-gradient(135deg, #607d8b, #455a64);
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #666;
+    }
+
+    .empty-state i {
+      font-size: 4rem;
+      color: #c5c5c5;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .empty-state p {
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+      color: #777;
+    }
 
     /* Footer */
     footer {
-      text-align:center;
-      padding:20px;
-      color:#555;
-      font-size:14px;
-      margin-top:40px;
+      text-align: center;
+      padding: 25px;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 14px;
+      margin-top: 60px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(15, 12, 41, 0.5);
+      backdrop-filter: blur(5px);
     }
 
-    @media(max-width:768px){
-      .download-card { padding:30px 20px; }
-      table { font-size:0.9rem; }
+    /* Responsive Design */
+    @media (max-width: 992px) {
+      .navbar {
+        padding: 15px 20px;
+      }
+      
+      .nav-links {
+        gap: 10px;
+      }
+      
+      .nav-links li a {
+        padding: 8px 14px;
+        font-size: 0.95rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+      }
+      
+      .nav-links {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      
+      .download-card {
+        padding: 25px 15px;
+        margin: 0 15px 30px;
+      }
+      
+      header h1 {
+        font-size: 2.2rem;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .action-btn {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+      }
+      
+      .btn {
+        min-width: 100px;
+        padding: 8px 16px;
+        font-size: 0.9rem;
+      }
+      
+      th, td {
+        padding: 12px 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 1.8rem;
+      }
+      
+      header p {
+        font-size: 1rem;
+      }
+      
+      .download-card h2 {
+        font-size: 1.8rem;
+      }
+      
+      .nav-links {
+        gap: 5px;
+      }
+      
+      .nav-links li a {
+        padding: 6px 10px;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Loading Animation */
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .fa-spin {
+      animation: spin 1s linear infinite;
     }
   </style>
 </head>
 <body>
 
+<!-- Optimized Animated Background -->
+<div class="animated-bg">
+  <div class="bg-circle"></div>
+  <div class="bg-circle"></div>
+  <div class="bg-circle"></div>
+</div>
+
 <!-- Navbar -->
-<nav class="navbar">
-  <div class="logo">
-    <img src="img/logo.jpg" alt="Logo">
-    <span>Classroom</span>
+<nav class="navbar" id="navbar">
+  <div class="logo" onclick="window.location.href='index.html'">
+    <img src="https://cdn-icons-png.flaticon.com/512/2232/2232688.png" alt="Logo">
+    <span>Smart Classroom</span>
   </div>
   <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="library.html">Library</a></li>
-    <li><a href="lectures.html">Lectures</a></li>
-    <li><a href="downloads.html" class="active">📥 My Downloads</a></li>
+    <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+    <li><a href="library.html"><i class="fas fa-book"></i> Library</a></li>
+    <li><a href="lectures.html"><i class="fas fa-chalkboard-teacher"></i> Lectures</a></li>
+    <li><a href="downloads.html" class="active"><i class="fas fa-download"></i> Downloads</a></li>
   </ul>
 </nav>
 
 <header>
-  <h1>📥 My Downloads</h1>
-  <p>Access your downloaded notes and lectures anytime.</p>
+  <h1><i class="fas fa-cloud-download-alt"></i> My Downloads</h1>
+  <p>Access all your downloaded study materials in one place. View or download them again anytime.</p>
 </header>
 
 <!-- Downloads Card -->
 <div class="download-card">
   <h2>Downloaded Materials</h2>
-  <table id="downloadsTable">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>File Name</th>
-        <th>View</th>
-        <th>Download Again</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Downloads will be populated via JS -->
-    </tbody>
-  </table>
+  
+  <div class="table-container">
+    <table id="downloadsTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>File Name</th>
+          <th>Type</th>
+          <th>Size</th>
+          <th>View</th>
+          <th>Download</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Downloads will be populated via JS -->
+      </tbody>
+    </table>
+  </div>
+  
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+    <button class="action-btn clear-btn" id="clearDownloads">
+      <i class="fas fa-trash-alt"></i> Clear All Downloads
+    </button>
+    <button class="action-btn refresh-btn" id="refreshDownloads">
+      <i class="fas fa-sync-alt"></i> Refresh List
+    </button>
+    <button class="action-btn" id="addMockData" style="background: linear-gradient(135deg, #9c27b0, #673ab7);">
+      <i class="fas fa-plus-circle"></i> Add Sample Files
+    </button>
+  </div>
 </div>
 
 <!-- Footer -->
 <footer>
-  © 2025 Smart Classroom | Learn Better Everyday
+  <p>© 2025 Smart Classroom | Learn Better Everyday</p>
+  <p style="margin-top: 8px; font-size: 0.9rem; color: rgba(255, 255, 255, 0.5);">
+    Made with <i class="fas fa-heart" style="color: #ff4757;"></i> for Education
+  </p>
 </footer>
 
-<!-- Script to load downloads from localStorage -->
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const downloads = JSON.parse(localStorage.getItem('downloads')) || [];
-  const tbody = document.querySelector('#downloadsTable tbody');
-
-  if(downloads.length === 0){
-    tbody.innerHTML = "<tr><td colspan='4'>❌ No materials downloaded yet.</td></tr>";
-  } else {
-    downloads.forEach((file, index) => {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${index+1}</td>
-        <td>${file}</td>
-        <td><a class="view-btn" href="uploads/${file}" target="_blank">👁️ View</a></td>
-        <td><a class="download-btn" href="uploads/${file}" download>📥 Download</a></td>
-      `;
-      tbody.appendChild(row);
+  // Optimized DOM ready handler
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('Page loaded - initializing downloads manager');
+    
+    // Sample download data
+    const sampleDownloads = [
+      { name: "Mathematics_Chapter_5.pdf", type: "pdf", size: "2.4 MB", date: "2025-01-15" },
+      { name: "Physics_Wave_Theory.mp4", type: "video", size: "45.2 MB", date: "2025-01-14" },
+      { name: "Chemistry_Notes_Organic.docx", type: "document", size: "1.8 MB", date: "2025-01-13" },
+      { name: "Biology_Quiz_Answers.pdf", type: "pdf", size: "850 KB", date: "2025-01-12" },
+      { name: "Computer_Science_Presentation.pptx", type: "presentation", size: "5.7 MB", date: "2025-01-11" },
+      { name: "English_Literature_Summary.pdf", type: "pdf", size: "1.2 MB", date: "2025-01-10" }
+    ];
+    
+    // Initialize downloads in localStorage
+    function initializeDownloads() {
+      if (!localStorage.getItem('classroomDownloads')) {
+        localStorage.setItem('classroomDownloads', JSON.stringify(sampleDownloads));
+      }
+    }
+    
+    // Get file type class
+    function getFileTypeClass(type) {
+      const typeMap = {
+        'pdf': 'pdf',
+        'video': 'video',
+        'document': 'document',
+        'presentation': 'presentation'
+      };
+      return typeMap[type] || 'other';
+    }
+    
+    // Format file size
+    function formatFileSize(bytes) {
+      if (!bytes) return "N/A";
+      if (typeof bytes === 'string') return bytes;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      if (bytes === 0) return '0 Byte';
+      const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+      return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+    }
+    
+    // Render downloads table
+    function renderDownloads() {
+      const downloads = JSON.parse(localStorage.getItem('classroomDownloads')) || [];
+      const tbody = document.querySelector('#downloadsTable tbody');
+      
+      tbody.innerHTML = '';
+      
+      if (downloads.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6">
+              <div class="empty-state">
+                <i class="fas fa-cloud-download-alt"></i>
+                <p>No downloads yet</p>
+                <p>Your downloaded files will appear here</p>
+              </div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+      
+      downloads.forEach((file, index) => {
+        const row = document.createElement('tr');
+        const fileTypeClass = getFileTypeClass(file.type);
+        
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td style="text-align: left; font-weight: 500;">${file.name}</td>
+          <td><span class="file-type ${fileTypeClass}">${file.type.toUpperCase()}</span></td>
+          <td>${file.size}</td>
+          <td><a class="btn view-btn" data-file="${file.name}" data-action="view"><i class="fas fa-eye"></i> View</a></td>
+          <td><a class="btn download-btn" data-file="${file.name}" data-action="download"><i class="fas fa-download"></i> Download</a></td>
+        `;
+        
+        tbody.appendChild(row);
+      });
+      
+      // Add event listeners to buttons (event delegation)
+      tbody.addEventListener('click', function(e) {
+        const target = e.target.closest('.btn');
+        if (!target) return;
+        
+        e.preventDefault();
+        const fileName = target.getAttribute('data-file');
+        const action = target.getAttribute('data-action');
+        
+        if (action === 'view') {
+          handleViewFile(target, fileName);
+        } else if (action === 'download') {
+          handleDownloadFile(target, fileName);
+        }
+      });
+    }
+    
+    // Handle view file
+    function handleViewFile(button, fileName) {
+      const originalHTML = button.innerHTML;
+      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Opening...';
+      button.disabled = true;
+      
+      setTimeout(() => {
+        alert(`Opening: ${fileName}\n\nIn a real application, this would open the file in a viewer or new tab.`);
+        button.innerHTML = originalHTML;
+        button.disabled = false;
+      }, 800);
+    }
+    
+    // Handle download file
+    function handleDownloadFile(button, fileName) {
+      const originalHTML = button.innerHTML;
+      const originalBg = button.style.background;
+      
+      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading...';
+      button.style.background = 'linear-gradient(135deg, #8bc34a, #cddc39)';
+      button.disabled = true;
+      
+      // Simulate download delay
+      setTimeout(() => {
+        // Create a temporary link to trigger download
+        const link = document.createElement('a');
+        link.href = '#';
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Show success state
+        button.innerHTML = '<i class="fas fa-check"></i> Downloaded!';
+        button.style.background = 'linear-gradient(135deg, #4caf50, #8bc34a)';
+        
+        // Revert after 2 seconds
+        setTimeout(() => {
+          button.innerHTML = originalHTML;
+          button.style.background = originalBg;
+          button.disabled = false;
+        }, 2000);
+      }, 1500);
+    }
+    
+    // Handle clear downloads
+    document.getElementById('clearDownloads').addEventListener('click', function() {
+      if (confirm('Are you sure you want to clear all downloads? This action cannot be undone.')) {
+        const button = this;
+        const originalHTML = button.innerHTML;
+        
+        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Clearing...';
+        button.disabled = true;
+        
+        setTimeout(() => {
+          localStorage.setItem('classroomDownloads', JSON.stringify([]));
+          renderDownloads();
+          
+          button.innerHTML = '<i class="fas fa-check"></i> Cleared!';
+          
+          setTimeout(() => {
+            button.innerHTML = originalHTML;
+            button.disabled = false;
+          }, 1500);
+        }, 800);
+      }
     });
-  }
-});
+    
+    // Handle refresh
+    document.getElementById('refreshDownloads').addEventListener('click', function() {
+      const button = this;
+      const originalHTML = button.innerHTML;
+      
+      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
+      button.disabled = true;
+      
+      setTimeout(() => {
+        renderDownloads();
+        button.innerHTML = '<i class="fas fa-check"></i> Refreshed!';
+        
+        setTimeout(() => {
+          button.innerHTML = originalHTML;
+          button.disabled = false;
+        }, 1000);
+      }, 600);
+    });
+    
+    // Handle add mock data
+    document.getElementById('addMockData').addEventListener('click', function() {
+      const button = this;
+      const originalHTML = button.innerHTML;
+      
+      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+      button.disabled = true;
+      
+      setTimeout(() => {
+        localStorage.setItem('classroomDownloads', JSON.stringify(sampleDownloads));
+        renderDownloads();
+        
+        button.innerHTML = '<i class="fas fa-check"></i> Added!';
+        
+        setTimeout(() => {
+          button.innerHTML = originalHTML;
+          button.disabled = false;
+        }, 1500);
+      }, 800);
+    });
+    
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+    
+    // Initialize and render
+    initializeDownloads();
+    renderDownloads();
+    
+    console.log('Downloads manager initialized successfully');
+  });
 </script>
-
 </body>
 </html>
