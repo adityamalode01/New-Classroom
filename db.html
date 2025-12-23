@@ -3,43 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Classroom Home</title>
+    <title>Add Student</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
-    <h1>Welcome to Classroom</h1>
+    <h1>Classroom - Add Student</h1>
 </header>
 
 <main>
-    <h2>Student List</h2>
-    <ul id="studentList"></ul>
+    <form id="studentForm">
+        <input type="text" id="name" placeholder="Student Name" required>
+        <input type="email" id="email" placeholder="Student Email" required>
+        <button type="submit">Add Student</button>
+    </form>
+
+    <br>
+    <a href="home.html">Go to Student List</a>
 </main>
 
-<footer>
-    <p>&copy; 2025 Classroom | Made for Engineering Students</p>
-</footer>
-
 <script>
-    // Simulated student data (replaces database)
-    const students = [
-        { name: "John Doe", email: "john@example.com" },
-        { name: "Jane Smith", email: "jane@example.com" },
-        { name: "Alex Brown", email: "alex@example.com" }
-    ];
+    const form = document.getElementById("studentForm");
 
-    const list = document.getElementById("studentList");
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
 
-    if (students.length > 0) {
-        students.forEach(student => {
-            const li = document.createElement("li");
-            li.textContent = `${student.name} - ${student.email}`;
-            list.appendChild(li);
-        });
-    } else {
-        list.innerHTML = "<li>No students found.</li>";
-    }
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+
+        let students = JSON.parse(localStorage.getItem("students")) || [];
+
+        students.push({ name, email });
+
+        localStorage.setItem("students", JSON.stringify(students));
+
+        alert("Student added successfully!");
+        form.reset();
+    });
 </script>
 
 </body>
