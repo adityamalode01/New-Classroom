@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classroom Home</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>Welcome to Classroom</h1>
+</header>
+
+<main>
+    <h2>Student List</h2>
+    <ul id="studentList"></ul>
+    <br>
+    <a href="index.html">Add New Student</a>
+</main>
+
+<footer>
+    <p>&copy; 2025 Classroom | Made for Engineering Students</p>
+</footer>
+
+<script>
+    const list = document.getElementById("studentList");
+
+    const students = JSON.parse(localStorage.getItem("students")) || [];
+
+    if (students.length > 0) {
+        students.forEach(student => {
+            const li = document.createElement("li");
+            li.textContent = `${student.name} - ${student.email}`;
+            list.appendChild(li);
+        });
+    } else {
+        list.innerHTML = "<li>No students found.</li>";
+    }
+</script>
+
+</body>
+</html>
