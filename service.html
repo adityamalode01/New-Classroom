@@ -4,218 +4,985 @@
   <link rel="shortcut icon" href="bobo.png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Classroom | Services</title>
+  <title>Smart Classroom | Premium Services</title>
 
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #f4f6fb;
+    :root{
+      --primary:#6366f1;
+      --secondary:#22d3ee;
+      --accent:#f472b6;
+      --success:#10b981;
+      --dark:#020617;
+      --light:#f8fafc;
+      --instagram: #E4405F;
+      --github: #333333;
+      --linkedin: #0A66C2;
     }
 
-    /* HERO */
-    .hero {
-      background: linear-gradient(135deg, #6366f1, #4f46e5);
-      color: white;
-      padding: 80px 20px;
-      border-bottom-left-radius: 40px;
-      border-bottom-right-radius: 40px;
-      position: relative;
-      overflow: hidden;
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins', sans-serif;
     }
 
-    .hero::after {
-      content: '';
-      position: absolute;
-      width: 350px;
-      height: 350px;
-      background: rgba(255,255,255,0.15);
-      border-radius: 50%;
-      top: -120px;
-      right: -120px;
+    /* ================= ANIMATED BACKGROUND ================= */
+    body{
+      min-height:100vh;
+      background:linear-gradient(180deg, #0a0a2a 0%, #020617 100%);
+      color:white;
+      overflow-x:hidden;
+      position:relative;
     }
 
-    .hero h1 {
-      font-weight: 600;
+    /* Floating Gradient Orbs */
+    .floating-orbs{
+      position:fixed;
+      width:200vw;
+      height:200vh;
+      top:-50vh;
+      left:-50vw;
+      z-index:-1;
+      opacity:0.3;
     }
 
-    /* SERVICES */
-    .service-card {
-      border: none;
-      border-radius: 18px;
-      padding: 30px 20px;
-      background: white;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-      transition: transform 0.3s, box-shadow 0.3s;
-      height: 100%;
+    .orb{
+      position:absolute;
+      border-radius:50%;
+      filter:blur(70px);
+      animation:float 25s infinite linear;
     }
 
-    .service-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    .orb-1{
+      width:600px;
+      height:600px;
+      background:radial-gradient(circle, var(--primary) 0%, transparent 70%);
+      top:10%;
+      left:10%;
+      animation-duration:30s;
     }
 
-    .service-icon {
-      width: 60px;
-      height: 60px;
-      background: linear-gradient(135deg, #22c55e, #16a34a);
-      color: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 26px;
-      margin: 0 auto 15px;
+    .orb-2{
+      width:500px;
+      height:500px;
+      background:radial-gradient(circle, var(--secondary) 0%, transparent 70%);
+      top:60%;
+      right:10%;
+      animation-duration:35s;
+      animation-delay:5s;
     }
 
-    /* FORM */
-    .quote-box {
-      background: rgba(255,255,255,0.95);
-      border-radius: 20px;
-      padding: 40px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.12);
-      margin-top: 70px;
+    .orb-3{
+      width:400px;
+      height:400px;
+      background:radial-gradient(circle, var(--accent) 0%, transparent 70%);
+      bottom:10%;
+      left:20%;
+      animation-duration:40s;
+      animation-delay:10s;
     }
 
-    .form-control, .form-select {
-      border-radius: 12px;
-      padding: 12px;
+    @keyframes float{
+      0%{transform:translate(0, 0) rotate(0deg);}
+      25%{transform:translate(100px, 50px) rotate(90deg);}
+      50%{transform:translate(50px, 100px) rotate(180deg);}
+      75%{transform:translate(-50px, 50px) rotate(270deg);}
+      100%{transform:translate(0, 0) rotate(360deg);}
     }
 
-    .form-control:focus, .form-select:focus {
-      box-shadow: none;
-      border-color: #6366f1;
+    /* Animated Grid Background */
+    .grid-background{
+      position:fixed;
+      width:100%;
+      height:100%;
+      background:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size:40px 40px;
+      z-index:-2;
+      animation:gridMove 20s linear infinite;
     }
 
-    .btn-submit {
-      background: linear-gradient(135deg, #6366f1, #4f46e5);
-      border: none;
-      padding: 12px;
-      font-size: 16px;
-      border-radius: 12px;
-      color: white;
-      transition: transform 0.3s, box-shadow 0.3s;
+    @keyframes gridMove{
+      0%{transform:translate(0,0);}
+      100%{transform:translate(40px,40px);}
     }
 
-    .btn-submit:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(99,102,241,0.6);
+    /* ================= ENHANCED NAVBAR ================= */
+    .navbar-custom{
+      background:rgba(255,255,255,0.08);
+      backdrop-filter:blur(20px);
+      border-bottom:1px solid rgba(255,255,255,0.1);
+      padding:20px 0;
+      position:sticky;
+      top:0;
+      z-index:1000;
     }
 
-    footer {
-      text-align: center;
-      padding: 30px;
-      color: #777;
-      margin-top: 60px;
+    .navbar-brand{
+      font-size:1.5rem;
+      font-weight:600;
+      color:white !important;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .navbar-brand i{
+      color:var(--secondary);
+    }
+
+    .nav-link{
+      color:rgba(255,255,255,0.9) !important;
+      font-weight:500;
+      padding:10px 20px !important;
+      border-radius:12px;
+      transition:all 0.3s ease;
+      margin:0 5px;
+    }
+
+    .nav-link:hover{
+      color:white !important;
+      background:rgba(255,255,255,0.1);
+      transform:translateY(-2px);
+    }
+
+    .nav-link.active{
+      background:linear-gradient(135deg, var(--primary), var(--secondary));
+      color:white !important;
+    }
+
+    /* ================= ENHANCED HERO ================= */
+    .hero{
+      background:rgba(255,255,255,0.09);
+      backdrop-filter:blur(26px);
+      color:white;
+      padding:120px 20px;
+      border-radius:40px;
+      margin:40px 20px;
+      border:1px solid rgba(255,255,255,0.15);
+      box-shadow:
+        0 40px 150px rgba(0,0,0,0.7),
+        inset 0 1px 0 rgba(255,255,255,0.1);
+      position:relative;
+      overflow:hidden;
+      animation:enter 1s ease;
+    }
+
+    @keyframes enter{
+      from{opacity:0; transform:translateY(40px);}
+      to{opacity:1; transform:translateY(0);}
+    }
+
+    .hero::before{
+      content:'';
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:4px;
+      background:linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+      border-radius:40px 40px 0 0;
+    }
+
+    .hero h1{
+      font-size:3.5rem;
+      font-weight:700;
+      margin-bottom:20px;
+      background:linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+
+    .hero p{
+      font-size:1.2rem;
+      opacity:0.9;
+      max-width:600px;
+      margin:0 auto;
+    }
+
+    /* Floating Elements in Hero */
+    .floating-element{
+      position:absolute;
+      width:60px;
+      height:60px;
+      background:rgba(255,255,255,0.1);
+      border-radius:20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:1.5rem;
+      animation:floatElement 8s ease-in-out infinite;
+    }
+
+    .floating-element:nth-child(1){
+      top:20%;
+      left:10%;
+      animation-delay:0s;
+    }
+
+    .floating-element:nth-child(2){
+      top:30%;
+      right:15%;
+      animation-delay:2s;
+    }
+
+    .floating-element:nth-child(3){
+      bottom:20%;
+      left:15%;
+      animation-delay:4s;
+    }
+
+    .floating-element:nth-child(4){
+      bottom:30%;
+      right:10%;
+      animation-delay:6s;
+    }
+
+    @keyframes floatElement{
+      0%, 100%{transform:translateY(0) rotate(0deg);}
+      50%{transform:translateY(-20px) rotate(10deg);}
+    }
+
+    /* ================= ENHANCED SERVICE CARDS ================= */
+    .service-card{
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.1);
+      border-radius:25px;
+      padding:40px 30px;
+      height:100%;
+      backdrop-filter:blur(20px);
+      transition:all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .service-card::before{
+      content:'';
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:4px;
+      background:linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius:25px 25px 0 0;
+    }
+
+    .service-card:hover{
+      transform:translateY(-15px) scale(1.02);
+      background:rgba(255,255,255,0.12);
+      border-color:var(--secondary);
+      box-shadow:
+        0 30px 60px rgba(0,0,0,0.4),
+        0 0 40px rgba(34,211,238,0.2);
+    }
+
+    .service-icon{
+      width:80px;
+      height:80px;
+      background:linear-gradient(135deg, var(--primary), var(--secondary));
+      color:white;
+      border-radius:20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:2rem;
+      margin:0 auto 25px;
+      transition:transform 0.3s ease;
+    }
+
+    .service-card:hover .service-icon{
+      transform:rotateY(180deg) scale(1.1);
+    }
+
+    .service-card h5{
+      font-size:1.4rem;
+      font-weight:600;
+      margin-bottom:15px;
+      color:white;
+    }
+
+    .service-card p{
+      color:rgba(255,255,255,0.7);
+      font-size:1rem;
+      line-height:1.6;
+    }
+
+    /* Service Badge */
+    .service-badge{
+      position:absolute;
+      top:20px;
+      right:20px;
+      background:linear-gradient(135deg, var(--success), #22c55e);
+      color:white;
+      padding:6px 15px;
+      border-radius:20px;
+      font-size:0.8rem;
+      font-weight:500;
+    }
+
+    /* ================= QUOTE FORM ENHANCEMENT ================= */
+    .quote-box{
+      background:rgba(255,255,255,0.09);
+      backdrop-filter:blur(26px);
+      border-radius:30px;
+      padding:50px;
+      border:1px solid rgba(255,255,255,0.15);
+      box-shadow:
+        0 40px 150px rgba(0,0,0,0.6),
+        inset 0 1px 0 rgba(255,255,255,0.1);
+      margin-top:80px;
+      position:relative;
+      overflow:hidden;
+      animation:slideUp 1s ease;
+    }
+
+    @keyframes slideUp{
+      from{opacity:0; transform:translateY(60px);}
+      to{opacity:1; transform:translateY(0);}
+    }
+
+    .quote-box::before{
+      content:'';
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:4px;
+      background:linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius:30px 30px 0 0;
+    }
+
+    .quote-box h3{
+      font-size:2.2rem;
+      font-weight:600;
+      margin-bottom:10px;
+      color:white;
+      text-align:center;
+    }
+
+    .quote-box .form-label{
+      color:rgba(255,255,255,0.9);
+      font-weight:500;
+      margin-bottom:10px;
+    }
+
+    .form-control, .form-select{
+      background:rgba(255,255,255,0.07);
+      border:1px solid rgba(255,255,255,0.2);
+      color:white;
+      border-radius:15px;
+      padding:15px;
+      transition:all 0.3s ease;
+    }
+
+    .form-control:focus, .form-select:focus{
+      background:rgba(255,255,255,0.1);
+      border-color:var(--secondary);
+      box-shadow:0 0 0 4px rgba(34,211,238,0.2);
+      color:white;
+    }
+
+    .form-control::placeholder{
+      color:rgba(255,255,255,0.5);
+    }
+
+    .form-select option{
+      background:var(--dark);
+      color:white;
+    }
+
+    /* Submit Button Enhancement */
+    .btn-submit{
+      background:linear-gradient(135deg, var(--primary), var(--secondary));
+      border:none;
+      padding:18px;
+      font-size:1.1rem;
+      font-weight:600;
+      border-radius:15px;
+      color:white;
+      transition:all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+    }
+
+    .btn-submit::before{
+      content:'';
+      position:absolute;
+      top:0;
+      left:-100%;
+      width:100%;
+      height:100%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition:left 0.6s;
+    }
+
+    .btn-submit:hover::before{
+      left:100%;
+    }
+
+    .btn-submit:hover{
+      transform:translateY(-4px);
+      box-shadow:0 20px 40px rgba(0,0,0,0.4);
+      background:linear-gradient(135deg, var(--secondary), var(--primary));
+    }
+
+    .btn-submit.loading{
+      pointer-events:none;
+      background:linear-gradient(135deg, #475569, #64748b);
+    }
+
+    .btn-submit.loading span{
+      opacity:0;
+    }
+
+    .btn-submit.loading::after{
+      content:"";
+      width:28px;
+      height:28px;
+      border:3px solid white;
+      border-top-color:transparent;
+      border-radius:50%;
+      position:absolute;
+      animation:spin 1s linear infinite;
+    }
+
+    @keyframes spin{to{transform:rotate(360deg);}}
+
+    /* Status Message */
+    .status-message{
+      text-align:center;
+      padding:15px;
+      border-radius:12px;
+      margin-top:20px;
+      opacity:0;
+      transform:translateY(10px);
+      transition:all 0.4s ease;
+    }
+
+    .status-message.show{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    .status-message.success{
+      background:rgba(16, 185, 129, 0.15);
+      color:#a7f3d0;
+      border:1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .status-message.error{
+      background:rgba(239, 68, 68, 0.15);
+      color:#fecaca;
+      border:1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    /* ================= SOCIAL MEDIA SECTION ================= */
+    .social-section{
+      margin:60px 0 40px;
+      text-align:center;
+    }
+
+    .social-section h4{
+      font-size:1.5rem;
+      margin-bottom:25px;
+      color:white;
+      opacity:0.9;
+    }
+
+    .social-buttons{
+      display:flex;
+      justify-content:center;
+      gap:20px;
+      flex-wrap:wrap;
+    }
+
+    .social-btn{
+      width:55px;
+      height:55px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:1.3rem;
+      color:white;
+      transition:all 0.3s ease;
+      text-decoration:none;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .social-btn:hover{
+      transform:translateY(-5px) scale(1.1);
+      box-shadow:0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    .social-btn .tooltip{
+      position:absolute;
+      bottom:-40px;
+      left:50%;
+      transform:translateX(-50%);
+      background:rgba(0,0,0,0.8);
+      color:white;
+      padding:6px 12px;
+      border-radius:6px;
+      font-size:0.8rem;
+      white-space:nowrap;
+      opacity:0;
+      transition:opacity 0.3s ease;
+      pointer-events:none;
+    }
+
+    .social-btn:hover .tooltip{
+      opacity:1;
+    }
+
+    .instagram-btn{background:linear-gradient(45deg, #405DE6, #E4405F);}
+    .github-btn{background:var(--github);}
+    .linkedin-btn{background:var(--linkedin);}
+    .email-btn{background:linear-gradient(45deg, #EA4335, #34A853);}
+
+    /* ================= FOOTER ================= */
+    footer{
+      text-align:center;
+      padding:50px 20px;
+      color:rgba(255,255,255,0.6);
+      margin-top:80px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      background:rgba(0,0,0,0.2);
+    }
+
+    /* ================= RESPONSIVE ================= */
+    @media(max-width:768px){
+      .hero{
+        padding:80px 20px;
+        margin:20px 15px;
+      }
+      
+      .hero h1{
+        font-size:2.5rem;
+      }
+      
+      .quote-box{
+        padding:30px 20px;
+      }
+      
+      .service-card{
+        padding:30px 20px;
+      }
+      
+      .social-buttons{
+        gap:15px;
+      }
+      
+      .social-btn{
+        width:50px;
+        height:50px;
+        font-size:1.2rem;
+      }
     }
   </style>
 </head>
 <body>
 
-<!-- HERO -->
-<section class="hero text-center">
+<!-- Animated Background -->
+<div class="grid-background"></div>
+<div class="floating-orbs">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<!-- Enhanced Navbar -->
+<nav class="navbar navbar-expand-lg navbar-custom">
   <div class="container">
-    <h1>Our Services</h1>
-    <p class="mt-2">Modern digital solutions designed for growth and performance</p>
+    <a class="navbar-brand" href="#">
+      <i class="fas fa-rocket"></i> Smart Classroom
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <i class="fas fa-bars text-white"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html"><i class="fas fa-home"></i> Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="services.html" class="active"><i class="fas fa-cogs"></i> Services</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="login.html"><i class="fas fa-user"></i> Login</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Enhanced Hero -->
+<section class="hero text-center">
+  <div class="floating-element"><i class="fas fa-code"></i></div>
+  <div class="floating-element"><i class="fas fa-palette"></i></div>
+  <div class="floating-element"><i class="fas fa-bolt"></i></div>
+  <div class="floating-element"><i class="fas fa-star"></i></div>
+  
+  <div class="container">
+    <h1>Premium Digital Services</h1>
+    <p class="mt-3">Transform your digital presence with cutting-edge solutions designed for maximum impact and performance</p>
   </div>
 </section>
 
-<!-- SERVICES -->
+<!-- Enhanced Services -->
 <section class="container py-5">
   <div class="row g-4">
-
-    <div class="col-md-4">
+    <div class="col-lg-4 col-md-6">
       <div class="service-card text-center">
-        <div class="service-icon">🌐</div>
-        <h5>Web Design</h5>
-        <p>Responsive, modern and user-friendly website designs.</p>
+        <span class="service-badge">Popular</span>
+        <div class="service-icon"><i class="fas fa-globe"></i></div>
+        <h5>Web Design & Development</h5>
+        <p>Responsive, modern, and user-friendly websites built with cutting-edge technologies and best practices.</p>
+        <div class="mt-4">
+          <span class="badge bg-primary me-2">HTML5</span>
+          <span class="badge bg-info me-2">CSS3</span>
+          <span class="badge bg-success">JavaScript</span>
+        </div>
       </div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-lg-4 col-md-6">
       <div class="service-card text-center">
-        <div class="service-icon">🎨</div>
-        <h5>UI / UX Design</h5>
-        <p>Intuitive designs focused on better user experience.</p>
+        <span class="service-badge">Hot</span>
+        <div class="service-icon"><i class="fas fa-paint-brush"></i></div>
+        <h5>UI/UX Design</h5>
+        <p>Intuitive user interfaces and seamless user experiences that drive engagement and conversion.</p>
+        <div class="mt-4">
+          <span class="badge bg-primary me-2">Figma</span>
+          <span class="badge bg-info me-2">Adobe XD</span>
+          <span class="badge bg-success">Sketch</span>
+        </div>
       </div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-lg-4 col-md-6">
       <div class="service-card text-center">
-        <div class="service-icon">🖌️</div>
+        <div class="service-icon"><i class="fas fa-palette"></i></div>
         <h5>Graphic Design</h5>
-        <p>Creative visuals to strengthen your brand identity.</p>
+        <p>Creative visuals, branding, and marketing materials that strengthen your brand identity and recognition.</p>
+        <div class="mt-4">
+          <span class="badge bg-primary me-2">Photoshop</span>
+          <span class="badge bg-info me-2">Illustrator</span>
+          <span class="badge bg-success">Canva</span>
+        </div>
       </div>
     </div>
 
+    <div class="col-lg-4 col-md-6">
+      <div class="service-card text-center">
+        <div class="service-icon"><i class="fas fa-mobile-alt"></i></div>
+        <h5>Mobile App Development</h5>
+        <p>Native and cross-platform mobile applications for iOS and Android with intuitive user interfaces.</p>
+        <div class="mt-4">
+          <span class="badge bg-primary me-2">React Native</span>
+          <span class="badge bg-info me-2">Flutter</span>
+          <span class="badge bg-success">Swift</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 col-md-6">
+      <div class="service-card text-center">
+        <div class="service-icon"><i class="fas fa-chart-line"></i></div>
+        <h5>Digital Marketing</h5>
+        <p>Comprehensive digital marketing strategies including SEO, SEM, social media, and content marketing.</p>
+        <div class="mt-4">
+          <span class="badge bg-primary me-2">SEO</span>
+          <span class="badge bg-info me-2">PPC</span>
+          <span class="badge bg-success">SMM</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 col-md-6">
+      <div class="service-card text-center">
+        <span class="service-badge">New</span>
+        <div class="service-icon"><i class="fas fa-robot"></i></div>
+        <h5>AI Integration</h5>
+        <p>Artificial Intelligence solutions including chatbots, predictive analytics, and automation systems.</p>
+        <div class="mt-4">
+          <span class="badge bg-primary me-2">ChatGPT</span>
+          <span class="badge bg-info me-2">TensorFlow</span>
+          <span class="badge bg-success">ML</span>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- QUOTE FORM -->
+  <!-- Enhanced Quote Form -->
   <div class="quote-box">
-    <h3 class="text-center mb-2">Request a Quote</h3>
-    <p class="text-center text-muted mb-4">Tell us what you need, we’ll get back to you</p>
+    <h3><i class="fas fa-comment-dollar"></i> Get Your Custom Quote</h3>
+    <p class="text-center mb-4" style="color:rgba(255,255,255,0.7);">Tell us about your project and we'll prepare a detailed proposal</p>
 
-    <form id="serviceForm" action="https://formspree.io/f/mlgrppwe" method="POST">
-      <div class="mb-3">
-        <label class="form-label">Name</label>
-        <input type="text" name="name" class="form-control" required>
+    <form id="serviceForm" action="https://formspree.io/f/xqakooaw" method="POST">
+      <div class="row g-4">
+        <div class="col-md-6">
+          <label class="form-label"><i class="fas fa-user"></i> Full Name</label>
+          <input type="text" name="name" class="form-control" required placeholder="Enter your full name">
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label"><i class="fas fa-envelope"></i> Email Address</label>
+          <input type="email" name="email" class="form-control" required placeholder="your.email@example.com">
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label"><i class="fas fa-phone"></i> Phone Number</label>
+          <input type="tel" name="phone" class="form-control" placeholder="+91 9876543210">
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label"><i class="fas fa-briefcase"></i> Company/Organization</label>
+          <input type="text" name="company" class="form-control" placeholder="Your company name">
+        </div>
+
+        <div class="col-12">
+          <label class="form-label"><i class="fas fa-list-check"></i> Service(s) Needed</label>
+          <select name="service" class="form-select" required>
+            <option value="">Select service(s) you're interested in</option>
+            <option>Web Design & Development</option>
+            <option>UI/UX Design</option>
+            <option>Graphic Design</option>
+            <option>Mobile App Development</option>
+            <option>Digital Marketing</option>
+            <option>AI Integration</option>
+            <option>Multiple Services</option>
+          </select>
+        </div>
+
+        <div class="col-12">
+          <label class="form-label"><i class="fas fa-calendar"></i> Project Timeline</label>
+          <select name="timeline" class="form-select">
+            <option value="">Select your preferred timeline</option>
+            <option>ASAP (Within 1 month)</option>
+            <option>Standard (1-3 months)</option>
+            <option>Flexible (3-6 months)</option>
+            <option>Just exploring options</option>
+          </select>
+        </div>
+
+        <div class="col-12">
+          <label class="form-label"><i class="fas fa-comment-dots"></i> Project Details</label>
+          <textarea name="message" rows="5" class="form-control" placeholder="Describe your project requirements, goals, and any specific details you'd like to share..."></textarea>
+        </div>
+
+        <div class="col-12">
+          <label class="form-label"><i class="fas fa-indian-rupee-sign"></i> Budget Range (Optional)</label>
+          <select name="budget" class="form-select">
+            <option value="">Select your budget range</option>
+            <option>₹10,000 - ₹50,000</option>
+            <option>₹50,000 - ₹1,00,000</option>
+            <option>₹1,00,000 - ₹5,00,000</option>
+            <option>₹5,00,000+</option>
+            <option>To be discussed</option>
+          </select>
+        </div>
       </div>
 
-      <div class="mb-3">
-        <label class="form-label">Email</label>
-        <input type="email" name="email" class="form-control" required>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Service</label>
-        <select name="service" class="form-select">
-          <option value="">Select a service</option>
-          <option>Web Design</option>
-          <option>UI / UX Design</option>
-          <option>Graphic Design</option>
-          <option>Web Development</option>
-          <option>Logo Design</option>
-        </select>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Message</label>
-        <textarea name="message" rows="4" class="form-control"></textarea>
-      </div>
-
-      <button type="submit" class="btn btn-submit w-100">Send Request 🚀</button>
+      <button type="submit" class="btn-submit w-100 mt-4">
+        <span>Submit Quote Request</span>
+        <i class="fas fa-paper-plane"></i>
+      </button>
+      
+      <div class="status-message" id="statusMessage"></div>
     </form>
+  </div>
+
+  <!-- Social Media Section -->
+  <div class="social-section">
+    <h4>Connect With Us</h4>
+    <div class="social-buttons">
+      <a href="https://instagram.com/Ramesh__6162" target="_blank" class="social-btn instagram-btn">
+        <i class="fab fa-instagram"></i>
+        <span class="tooltip">Follow @Ramesh__6162</span>
+      </a>
+      
+      <a href="mailto:rameshprasadrp901@gmail.com" class="social-btn email-btn">
+        <i class="fas fa-envelope"></i>
+        <span class="tooltip">Email Ramesh</span>
+      </a>
+      
+      <a href="https://github.com" target="_blank" class="social-btn github-btn">
+        <i class="fab fa-github"></i>
+        <span class="tooltip">GitHub Profile</span>
+      </a>
+      
+      <a href="https://linkedin.com" target="_blank" class="social-btn linkedin-btn">
+        <i class="fab fa-linkedin-in"></i>
+        <span class="tooltip">LinkedIn</span>
+      </a>
+    </div>
   </div>
 </section>
 
 <footer>
-  © 2025 Smart Classroom | Designed with ❤️
+  <p><i class="fas fa-copyright"></i> 2025 Smart Classroom | Premium Digital Solutions</p>
+  <p style="margin-top:15px;font-size:0.9rem;">
+    <i class="fas fa-envelope"></i> rameshprasadrp123@gmail.com | 
+    <i class="fas fa-phone"></i> +91 7498147593 |
+    <i class="fas fa-map-marker-alt"></i> India
+  </p>
 </footer>
 
 <script>
-  document.getElementById('serviceForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-
+// ================= FORM SUBMISSION =================
+document.getElementById('serviceForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const submitBtn = this.querySelector('.btn-submit');
+  const statusEl = document.getElementById('statusMessage');
+  const btnText = submitBtn.querySelector('span');
+  
+  // Show loading state
+  submitBtn.classList.add('loading');
+  statusEl.textContent = "Sending your quote request...";
+  statusEl.className = "status-message show";
+  
+  // Form data
+  const formData = new FormData(this);
+  
+  // Simulate sending with delay for better UX
+  setTimeout(() => {
     fetch(this.action, {
       method: this.method,
-      body: new FormData(this),
+      body: formData,
       headers: { 'Accept': 'application/json' }
-    }).then(res => {
-      if (res.ok) {
-        alert('✅ Thank you! We will contact you soon.');
+    })
+    .then(res => {
+      // Remove loading state
+      submitBtn.classList.remove('loading');
+      
+      if(res.ok) {
+        // Success
+        statusEl.textContent = "✅ Thank you! We've received your quote request. We'll contact you within 24 hours.";
+        statusEl.className = "status-message success show";
         this.reset();
+        
+        // Create celebration effect
+        createCelebration();
+        
+        // Hide message after 5 seconds
+        setTimeout(() => {
+          statusEl.classList.remove('show');
+        }, 5000);
       } else {
-        alert('❌ Something went wrong. Try again.');
+        // Error
+        statusEl.textContent = "❌ Something went wrong. Please try again or contact us directly.";
+        statusEl.className = "status-message error show";
       }
-    }).catch(() => alert('⚠️ Network error.'));
+    })
+    .catch(() => {
+      // Network error
+      submitBtn.classList.remove('loading');
+      statusEl.textContent = "⚠️ Network error. Please check your connection and try again.";
+      statusEl.className = "status-message error show";
+    });
+  }, 1200);
+});
+
+// ================= CELEBRATION EFFECT =================
+function createCelebration() {
+  const colors = ['#6366f1', '#22d3ee', '#f472b6', '#10b981', '#fbbf24'];
+  
+  for(let i = 0; i < 20; i++) {
+    const confetti = document.createElement('div');
+    confetti.style.position = 'fixed';
+    confetti.style.width = '12px';
+    confetti.style.height = '12px';
+    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+    confetti.style.left = Math.random() * 100 + 'vw';
+    confetti.style.top = '-20px';
+    confetti.style.opacity = '0.8';
+    confetti.style.zIndex = '9999';
+    confetti.style.pointerEvents = 'none';
+    
+    document.body.appendChild(confetti);
+    
+    const animation = confetti.animate([
+      { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+      { transform: `translateY(${window.innerHeight + 100}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+    ], {
+      duration: Math.random() * 2000 + 2000,
+      easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)'
+    });
+    
+    animation.onfinish = () => confetti.remove();
+  }
+}
+
+// ================= SOCIAL BUTTON TOOLTIPS =================
+function initTooltips() {
+  const socialBtns = document.querySelectorAll('.social-btn');
+  socialBtns.forEach(btn => {
+    btn.addEventListener('mouseenter', function() {
+      const tooltip = this.querySelector('.tooltip');
+      if(tooltip) tooltip.style.opacity = '1';
+    });
+    
+    btn.addEventListener('mouseleave', function() {
+      const tooltip = this.querySelector('.tooltip');
+      if(tooltip) tooltip.style.opacity = '0';
+    });
   });
+}
+
+// ================= INITIALIZE =================
+document.addEventListener('DOMContentLoaded', function() {
+  initTooltips();
+  
+  // Add hover effect to service cards
+  const serviceCards = document.querySelectorAll('.service-card');
+  serviceCards.forEach(card => {
+    card.addEventListener('mouseenter', function() {
+      this.style.transform = 'translateY(-15px) scale(1.02)';
+    });
+    
+    card.addEventListener('mouseleave', function() {
+      this.style.transform = 'translateY(0) scale(1)';
+    });
+  });
+  
+  // Form input focus effects
+  const formInputs = document.querySelectorAll('.form-control, .form-select');
+  formInputs.forEach(input => {
+    input.addEventListener('focus', function() {
+      this.parentElement.style.transform = 'translateY(-2px)';
+    });
+    
+    input.addEventListener('blur', function() {
+      this.parentElement.style.transform = 'translateY(0)';
+    });
+  });
+});
+
+// Bootstrap for navbar toggle
+const bootstrap = window.bootstrap || {};
 </script>
 
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
