@@ -2,17 +2,21 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Logging Out | Smart Classroom</title>
+<title>Secure Logout | Smart Classroom</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
 :root{
   --primary:#6366f1;
   --secondary:#22d3ee;
+  --accent:#f472b6;
   --dark:#020617;
+  --success:#10b981;
 }
 
 *{
@@ -22,231 +26,834 @@
   font-family:'Poppins',sans-serif;
 }
 
-/* ================= BACKGROUND ================= */
+/* ================= ENHANCED BACKGROUND ================= */
 body{
   height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  background:var(--dark);
+  background:linear-gradient(135deg, #0a0a2a 0%, #020617 100%);
   overflow:hidden;
+  position:relative;
 }
 
-/* Aurora */
-.aurora{
+/* Floating Gradient Orbs */
+.floating-orbs{
   position:absolute;
-  inset:-50%;
-  background:
-    radial-gradient(circle at 20% 30%, rgba(99,102,241,.35), transparent 45%),
-    radial-gradient(circle at 80% 40%, rgba(34,211,238,.35), transparent 45%),
-    radial-gradient(circle at 50% 70%, rgba(167,139,250,.35), transparent 45%);
-  filter:blur(90px);
-  animation:aurora 22s linear infinite;
-}
-@keyframes aurora{
-  to{transform:rotate(360deg);}
+  width:200vw;
+  height:200vh;
+  top:-50vh;
+  left:-50vw;
+  z-index:-1;
+  opacity:0.4;
 }
 
-/* Particles */
-.particle{
+.orb{
   position:absolute;
-  width:6px;
-  height:6px;
+  border-radius:50%;
+  filter:blur(80px);
+  animation:float 30s infinite linear;
+}
+
+.orb-1{
+  width:600px;
+  height:600px;
+  background:radial-gradient(circle, var(--primary) 0%, transparent 70%);
+  top:10%;
+  left:10%;
+  animation-duration:35s;
+}
+
+.orb-2{
+  width:500px;
+  height:500px;
+  background:radial-gradient(circle, var(--secondary) 0%, transparent 70%);
+  top:60%;
+  right:10%;
+  animation-duration:40s;
+  animation-delay:5s;
+}
+
+.orb-3{
+  width:400px;
+  height:400px;
+  background:radial-gradient(circle, var(--accent) 0%, transparent 70%);
+  bottom:10%;
+  left:20%;
+  animation-duration:45s;
+  animation-delay:10s;
+}
+
+@keyframes float{
+  0%{transform:translate(0, 0) rotate(0deg);}
+  25%{transform:translate(100px, 50px) rotate(90deg);}
+  50%{transform:translate(50px, 100px) rotate(180deg);}
+  75%{transform:translate(-50px, 50px) rotate(270deg);}
+  100%{transform:translate(0, 0) rotate(360deg);}
+}
+
+/* Star Particles */
+.star-particle{
+  position:absolute;
   background:white;
   border-radius:50%;
-  opacity:.12;
-  animation:float linear infinite;
+  animation:fall linear infinite;
 }
-@keyframes float{
-  from{transform:translateY(110vh);}
-  to{transform:translateY(-10vh);}
+
+@keyframes fall{
+  from{transform:translateY(-10vh) rotate(0deg); opacity:0;}
+  10%{opacity:1;}
+  90%{opacity:1;}
+  to{transform:translateY(110vh) rotate(360deg); opacity:0;}
 }
 
 /* ================= CARD ================= */
 .card{
-  width:420px;
-  padding:44px 36px 52px;
-  border-radius:30px;
-  background:rgba(255,255,255,0.12);
-  backdrop-filter:blur(22px);
-  border:1px solid rgba(255,255,255,0.18);
+  width:480px;
+  padding:50px 40px 60px;
+  border-radius:35px;
+  background:rgba(255,255,255,0.09);
+  backdrop-filter:blur(26px) saturate(180%);
+  border:1px solid rgba(255,255,255,0.15);
   box-shadow:
-    0 40px 120px rgba(0,0,0,0.7),
-    inset 0 0 40px rgba(99,102,241,0.25);
+    0 50px 150px rgba(0,0,0,0.8),
+    inset 0 0 50px rgba(99,102,241,0.2);
   color:white;
   text-align:center;
   z-index:2;
-  animation:enter 1s cubic-bezier(.19,1,.22,1);
+  animation:enter 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position:relative;
+  overflow:hidden;
 }
+
+.card::before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:4px;
+  background:linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+  border-radius:35px 35px 0 0;
+}
+
 @keyframes enter{
-  from{opacity:0; transform:translateY(60px) scale(.85);}
+  from{opacity:0; transform:translateY(80px) scale(0.9);}
   to{opacity:1; transform:translateY(0) scale(1);}
 }
 
 h2{
-  font-size:2rem;
+  font-size:2.2rem;
   letter-spacing:.5px;
+  margin-bottom:10px;
+  background:linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
 }
-p{
-  font-size:.95rem;
+
+.subtitle{
+  font-size:1rem;
   opacity:.85;
-  margin:10px 0 26px;
+  margin-bottom:40px;
+  line-height:1.6;
 }
 
 /* ================= WALK AREA ================= */
 .walk-zone{
   width:100%;
-  height:140px;
+  height:180px;
   position:relative;
   overflow:hidden;
+  margin-bottom:40px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
 }
 
-/* ================= WALKING ANIMAL ================= */
-.walker{
-  width:120px;
-  height:60px;
-  position:absolute;
-  bottom:14px;
-  left:-150px;
-  animation:walk 4.5s linear infinite;
-}
-@keyframes walk{
-  to{left:100%;}
-}
-
-/* Body */
-.body{
-  width:74px;
-  height:40px;
-  border-radius:22px;
-  position:absolute;
-  left:20px;
-  top:12px;
-}
-
-/* Head */
-.head{
-  width:32px;
-  height:32px;
-  border-radius:50%;
-  position:absolute;
-  left:66px;
-  top:6px;
-}
-
-/* Legs */
-.leg{
-  width:6px;
-  height:18px;
-  background:#0f172a;
+.forest-floor{
   position:absolute;
   bottom:0;
-  animation:leg .45s infinite alternate;
-}
-.l1{left:24px;}
-.l2{left:38px;animation-delay:.22s;}
-.l3{left:52px;}
-.l4{left:66px;animation-delay:.22s;}
-
-@keyframes leg{
-  from{transform:rotate(25deg);}
-  to{transform:rotate(-25deg);}
+  width:100%;
+  height:40px;
+  background:linear-gradient(to top, rgba(30,41,59,0.8), rgba(15,23,42,0.9));
+  border-radius:0 0 20px 20px;
 }
 
-/* Tail */
-.tail{
-  width:18px;
-  height:6px;
+/* Grass tufts */
+.grass{
   position:absolute;
-  left:-12px;
-  top:22px;
-  border-radius:10px;
-  animation:tail .6s infinite alternate;
+  bottom:40px;
+  width:4px;
+  height:15px;
+  background:linear-gradient(to top, #10b981, #34d399);
+  border-radius:2px 2px 0 0;
 }
-@keyframes tail{
+
+/* ================= REALISTIC ANIMALS ================= */
+.walker{
+  position:absolute;
+  bottom:50px;
+  left:-180px;
+  animation:walk 5s linear infinite;
+  transform-origin:center bottom;
+}
+
+@keyframes walk{
+  0%{left:-180px; transform:scaleX(1);}
+  45%{transform:scaleX(1) translateY(0);}
+  50%{transform:scaleX(-1) translateY(-5px);}
+  55%{transform:scaleX(-1) translateY(0);}
+  100%{left:calc(100% + 180px); transform:scaleX(-1);}
+}
+
+/* DOG */
+.dog-body{
+  width:80px;
+  height:40px;
+  background:linear-gradient(135deg, #92400e, #f59e0b);
+  border-radius:20px;
+  position:absolute;
+  left:20px;
+  top:15px;
+}
+
+.dog-head{
+  width:35px;
+  height:35px;
+  background:linear-gradient(135deg, #92400e, #f59e0b);
+  border-radius:50%;
+  position:absolute;
+  left:70px;
+  top:5px;
+}
+
+.dog-ear{
+  width:15px;
+  height:25px;
+  background:#78350f;
+  border-radius:10px;
+  position:absolute;
+  left:75px;
+  top:0;
+}
+
+.dog-tail{
+  width:20px;
+  height:6px;
+  background:#f59e0b;
+  position:absolute;
+  left:-5px;
+  top:25px;
+  border-radius:10px;
+  animation:wag 0.4s infinite alternate;
+}
+
+@keyframes wag{
   from{transform:rotate(25deg);}
   to{transform:rotate(-25deg);}
 }
 
-/* Animal themes */
-.dog .body,.dog .head{background:#fde68a;}
-.dog .tail{background:#fcd34d;}
+.dog-leg{
+  width:6px;
+  height:25px;
+  background:#78350f;
+  position:absolute;
+  bottom:0;
+  border-radius:3px;
+  animation:step 0.5s infinite alternate;
+}
 
-.cat .body,.cat .head{background:#e5e7eb;}
-.cat .tail{background:#9ca3af;}
+.dog-leg.l1{left:25px; animation-delay:0s;}
+.dog-leg.l2{left:40px; animation-delay:0.25s;}
+.dog-leg.l3{left:65px; animation-delay:0s;}
+.dog-leg.l4{left:80px; animation-delay:0.25s;}
 
-.bunny .body,.bunny .head{background:#f5f3ff;}
-.bunny .tail{background:#ddd6fe;}
+@keyframes step{
+  from{height:25px;}
+  to{height:20px;}
+}
 
-.panda .body,.panda .head{background:white;}
-.panda .tail{background:#111;}
+/* CAT */
+.cat-body{
+  width:70px;
+  height:35px;
+  background:linear-gradient(135deg, #6b7280, #9ca3af);
+  border-radius:20px;
+  position:absolute;
+  left:25px;
+  top:20px;
+}
 
-/* ================= LOADER ================= */
-.loader{
-  width:46px;
-  height:46px;
-  margin:18px auto 0;
+.cat-head{
+  width:30px;
+  height:30px;
+  background:linear-gradient(135deg, #6b7280, #9ca3af);
   border-radius:50%;
-  border:3px solid rgba(255,255,255,.3);
-  border-top-color:white;
-  animation:spin 1s linear infinite;
-}
-@keyframes spin{
-  to{transform:rotate(360deg);}
+  position:absolute;
+  left:75px;
+  top:10px;
 }
 
-/* Exit */
-.fade{
-  animation:exit .7s ease forwards;
+.cat-ear{
+  width:15px;
+  height:20px;
+  background:#4b5563;
+  clip-path:polygon(50% 0, 0 100%, 100% 100%);
+  position:absolute;
+  left:75px;
+  top:5px;
 }
+
+.cat-ear.right{
+  left:85px;
+}
+
+.cat-tail{
+  width:25px;
+  height:6px;
+  background:#9ca3af;
+  position:absolute;
+  left:-10px;
+  top:25px;
+  border-radius:10px;
+  animation:swish 0.6s infinite alternate;
+}
+
+@keyframes swish{
+  from{transform:rotate(20deg);}
+  to{transform:rotate(-20deg);}
+}
+
+.cat-leg{
+  width:5px;
+  height:22px;
+  background:#4b5563;
+  position:absolute;
+  bottom:0;
+  border-radius:3px;
+  animation:catStep 0.5s infinite alternate;
+}
+
+.cat-leg.l1{left:30px; animation-delay:0s;}
+.cat-leg.l2{left:45px; animation-delay:0.25s;}
+.cat-leg.l3{left:65px; animation-delay:0s;}
+.cat-leg.l4{left:80px; animation-delay:0.25s;}
+
+@keyframes catStep{
+  from{height:22px;}
+  to{height:18px;}
+}
+
+/* FOX */
+.fox-body{
+  width:75px;
+  height:35px;
+  background:linear-gradient(135deg, #ea580c, #f97316);
+  border-radius:20px;
+  position:absolute;
+  left:20px;
+  top:15px;
+}
+
+.fox-head{
+  width:32px;
+  height:32px;
+  background:linear-gradient(135deg, #ea580c, #f97316);
+  border-radius:50%;
+  position:absolute;
+  left:70px;
+  top:5px;
+}
+
+.fox-ear{
+  width:12px;
+  height:20px;
+  background:#c2410c;
+  clip-path:polygon(50% 0, 0 100%, 100% 100%);
+  position:absolute;
+  left:70px;
+  top:0;
+}
+
+.fox-ear.right{
+  left:85px;
+}
+
+.fox-tail{
+  width:35px;
+  height:8px;
+  background:#f97316;
+  position:absolute;
+  left:-15px;
+  top:20px;
+  border-radius:10px;
+  animation:foxWag 0.5s infinite alternate;
+}
+
+@keyframes foxWag{
+  from{transform:rotate(30deg) scaleY(1.2);}
+  to{transform:rotate(-30deg) scaleY(1.2);}
+}
+
+.fox-leg{
+  width:6px;
+  height:24px;
+  background:#c2410c;
+  position:absolute;
+  bottom:0;
+  border-radius:3px;
+  animation:foxStep 0.5s infinite alternate;
+}
+
+.fox-leg.l1{left:25px; animation-delay:0s;}
+.fox-leg.l2{left:40px; animation-delay:0.25s;}
+.fox-leg.l3{left:65px; animation-delay:0s;}
+.fox-leg.l4{left:80px; animation-delay:0.25s;}
+
+@keyframes foxStep{
+  from{height:24px;}
+  to{height:20px;}
+}
+
+/* BUNNY */
+.bunny-body{
+  width:65px;
+  height:40px;
+  background:linear-gradient(135deg, #f5f3ff, #ddd6fe);
+  border-radius:20px;
+  position:absolute;
+  left:25px;
+  top:15px;
+}
+
+.bunny-head{
+  width:28px;
+  height:28px;
+  background:linear-gradient(135deg, #f5f3ff, #ddd6fe);
+  border-radius:50%;
+  position:absolute;
+  left:75px;
+  top:10px;
+}
+
+.bunny-ear{
+  width:10px;
+  height:35px;
+  background:#c4b5fd;
+  border-radius:5px;
+  position:absolute;
+  left:78px;
+  top:-10px;
+}
+
+.bunny-ear.right{
+  left:88px;
+}
+
+.bunny-tail{
+  width:15px;
+  height:15px;
+  background:#ddd6fe;
+  border-radius:50%;
+  position:absolute;
+  left:5px;
+  top:20px;
+  animation:bounce 0.6s infinite alternate;
+}
+
+@keyframes bounce{
+  from{transform:translateY(0);}
+  to{transform:translateY(-3px);}
+}
+
+.bunny-leg{
+  width:5px;
+  height:20px;
+  background:#c4b5fd;
+  position:absolute;
+  bottom:0;
+  border-radius:3px;
+  animation:hop 0.5s infinite alternate;
+}
+
+.bunny-leg.l1{left:35px; animation-delay:0s;}
+.bunny-leg.l2{left:50px; animation-delay:0.25s;}
+.bunny-leg.l3{left:70px; animation-delay:0s;}
+.bunny-leg.l4{left:85px; animation-delay:0.25s;}
+
+@keyframes hop{
+  from{height:20px;}
+  to{height:15px;}
+}
+
+/* ================= PROGRESS LOADER ================= */
+.loader-container{
+  margin-top:30px;
+}
+
+.progress-bar{
+  width:100%;
+  height:8px;
+  background:rgba(255,255,255,0.1);
+  border-radius:4px;
+  overflow:hidden;
+  margin-bottom:15px;
+}
+
+.progress-fill{
+  width:0%;
+  height:100%;
+  background:linear-gradient(90deg, var(--primary), var(--secondary));
+  border-radius:4px;
+  animation:progress 3s linear forwards;
+}
+
+@keyframes progress{
+  0%{width:0%;}
+  100%{width:100%;}
+}
+
+.status-text{
+  font-size:0.9rem;
+  color:rgba(255,255,255,0.7);
+  margin-top:10px;
+  display:flex;
+  justify-content:space-between;
+}
+
+.status-steps{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin-top:25px;
+}
+
+.step{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-size:0.9rem;
+  opacity:0.7;
+  transition:opacity 0.5s ease;
+}
+
+.step.completed{
+  opacity:1;
+  color:var(--success);
+}
+
+.step.completed .step-icon{
+  background:var(--success);
+}
+
+.step-icon{
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.2);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:0.7rem;
+}
+
+/* ================= EXIT ANIMATION ================= */
+.fade{
+  animation:exit 0.8s ease forwards;
+}
+
 @keyframes exit{
-  to{opacity:0; transform:scale(.92);}
+  to{
+    opacity:0;
+    transform:scale(0.95) translateY(20px);
+  }
+}
+
+/* ================= FOOTER ================= */
+.footer{
+  position:absolute;
+  bottom:20px;
+  width:100%;
+  text-align:center;
+  color:rgba(255,255,255,0.4);
+  font-size:0.85rem;
+}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:600px){
+  .card{
+    width:90%;
+    padding:40px 25px 50px;
+    margin:20px;
+  }
+  
+  h2{
+    font-size:1.8rem;
+  }
+  
+  .walk-zone{
+    height:150px;
+  }
 }
 </style>
 </head>
-
 <body>
 
-<div class="aurora"></div>
-
-<script>
-for(let i=0;i<45;i++){
-  const p=document.createElement("div");
-  p.className="particle";
-  p.style.left=Math.random()*100+"%";
-  p.style.animationDuration=6+Math.random()*10+"s";
-  document.body.appendChild(p);
-}
-</script>
+<div class="floating-orbs">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
 
 <div class="card" id="card">
-
-  <div class="walk-zone">
-    <div class="walker" id="walker">
-      <div class="tail"></div>
-      <div class="body"></div>
-      <div class="head"></div>
-      <div class="leg l1"></div>
-      <div class="leg l2"></div>
-      <div class="leg l3"></div>
-      <div class="leg l4"></div>
-    </div>
+  <!-- Animal Walker -->
+  <div class="walk-zone" id="walkZone">
+    <div class="forest-floor"></div>
+    <div class="walker" id="walker"></div>
   </div>
 
-  <h2>Logging out</h2>
-  <p>Securing your session and redirecting safely</p>
+  <h2><i class="fas fa-sign-out-alt"></i> Securely Logging Out</h2>
+  <p class="subtitle">Clearing your session data and redirecting you safely</p>
+  
+  <!-- Progress Loader -->
+  <div class="loader-container">
+    <div class="progress-bar">
+      <div class="progress-fill"></div>
+    </div>
+    
+    <div class="status-text">
+      <span>Session cleanup</span>
+      <span id="progressPercent">0%</span>
+    </div>
+    
+    <div class="status-steps">
+      <div class="step" id="step1">
+        <div class="step-icon"><i class="fas fa-user-lock"></i></div>
+        <span>Clearing session tokens</span>
+      </div>
+      <div class="step" id="step2">
+        <div class="step-icon"><i class="fas fa-shield-alt"></i></div>
+        <span>Encrypting logout data</span>
+      </div>
+      <div class="step" id="step3">
+        <div class="step-icon"><i class="fas fa-redo"></i></div>
+        <span>Redirecting to login</span>
+      </div>
+    </div>
+  </div>
+</div>
 
-  <div class="loader"></div>
+<div class="footer">
+  Smart Classroom • Secure Authentication System
 </div>
 
 <script>
-/* Random animal */
-const animals=["dog","cat","bunny","panda"];
-walker.classList.add(animals[Math.floor(Math.random()*animals.length)]);
+// ================= CREATE STAR PARTICLES =================
+function createStars() {
+  const colors = ['#ffffff', '#c7d2fe', '#a5f3fc', '#f5f3ff'];
+  
+  for(let i = 0; i < 60; i++) {
+    const star = document.createElement('div');
+    star.className = 'star-particle';
+    
+    const size = Math.random() * 4 + 2;
+    const left = Math.random() * 100;
+    const duration = 5 + Math.random() * 10;
+    const delay = Math.random() * 5;
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    
+    star.style.width = `${size}px`;
+    star.style.height = `${size}px`;
+    star.style.left = `${left}%`;
+    star.style.animationDuration = `${duration}s`;
+    star.style.animationDelay = `${delay}s`;
+    star.style.background = color;
+    star.style.opacity = Math.random() * 0.5 + 0.2;
+    
+    document.body.appendChild(star);
+  }
+}
 
-/* Exit + redirect */
-setTimeout(()=>card.classList.add("fade"),2600);
-setTimeout(()=>location.href="login.html",3400);
+// ================= CREATE GRASS =================
+function createGrass() {
+  const walkZone = document.getElementById('walkZone');
+  
+  for(let i = 0; i < 30; i++) {
+    const grass = document.createElement('div');
+    grass.className = 'grass';
+    
+    const left = Math.random() * 100;
+    const height = 10 + Math.random() * 25;
+    
+    grass.style.left = `${left}%`;
+    grass.style.height = `${height}px`;
+    grass.style.opacity = 0.4 + Math.random() * 0.4;
+    
+    walkZone.appendChild(grass);
+  }
+}
+
+// ================= ANIMAL DATA =================
+const animals = [
+  {
+    name: 'dog',
+    color: 'linear-gradient(135deg, #92400e, #f59e0b)',
+    html: `
+      <div class="dog-tail"></div>
+      <div class="dog-body"></div>
+      <div class="dog-head"></div>
+      <div class="dog-ear"></div>
+      <div class="dog-leg l1"></div>
+      <div class="dog-leg l2"></div>
+      <div class="dog-leg l3"></div>
+      <div class="dog-leg l4"></div>
+    `
+  },
+  {
+    name: 'cat',
+    color: 'linear-gradient(135deg, #6b7280, #9ca3af)',
+    html: `
+      <div class="cat-tail"></div>
+      <div class="cat-body"></div>
+      <div class="cat-head"></div>
+      <div class="cat-ear"></div>
+      <div class="cat-ear right"></div>
+      <div class="cat-leg l1"></div>
+      <div class="cat-leg l2"></div>
+      <div class="cat-leg l3"></div>
+      <div class="cat-leg l4"></div>
+    `
+  },
+  {
+    name: 'fox',
+    color: 'linear-gradient(135deg, #ea580c, #f97316)',
+    html: `
+      <div class="fox-tail"></div>
+      <div class="fox-body"></div>
+      <div class="fox-head"></div>
+      <div class="fox-ear"></div>
+      <div class="fox-ear right"></div>
+      <div class="fox-leg l1"></div>
+      <div class="fox-leg l2"></div>
+      <div class="fox-leg l3"></div>
+      <div class="fox-leg l4"></div>
+    `
+  },
+  {
+    name: 'bunny',
+    color: 'linear-gradient(135deg, #f5f3ff, #ddd6fe)',
+    html: `
+      <div class="bunny-tail"></div>
+      <div class="bunny-body"></div>
+      <div class="bunny-head"></div>
+      <div class="bunny-ear"></div>
+      <div class="bunny-ear right"></div>
+      <div class="bunny-leg l1"></div>
+      <div class="bunny-leg l2"></div>
+      <div class="bunny-leg l3"></div>
+      <div class="bunny-leg l4"></div>
+    `
+  }
+];
+
+// ================= RANDOM ANIMAL SELECTION =================
+function selectRandomAnimal() {
+  const walker = document.getElementById('walker');
+  const randomIndex = Math.floor(Math.random() * animals.length);
+  const animal = animals[randomIndex];
+  
+  walker.innerHTML = animal.html;
+  walker.style.color = animal.color;
+  
+  // Update animal name in subtitle
+  const subtitle = document.querySelector('.subtitle');
+  const animalNames = {
+    'dog': 'friendly golden retriever',
+    'cat': 'graceful cat',
+    'fox': 'clever fox',
+    'bunny': 'cute bunny'
+  };
+  
+  const currentName = animalNames[animal.name];
+  subtitle.innerHTML = `Your session is walking away with a ${currentName}.<br>Securely clearing all your data...`;
+  
+  return animal.name;
+}
+
+// ================= PROGRESS ANIMATION =================
+function animateProgress() {
+  const progressFill = document.querySelector('.progress-fill');
+  const progressPercent = document.getElementById('progressPercent');
+  const step1 = document.getElementById('step1');
+  const step2 = document.getElementById('step2');
+  const step3 = document.getElementById('step3');
+  
+  let percent = 0;
+  const interval = setInterval(() => {
+    percent += 1;
+    progressPercent.textContent = `${percent}%`;
+    
+    if(percent >= 100) {
+      clearInterval(interval);
+    } else if(percent >= 66) {
+      step3.classList.add('completed');
+    } else if(percent >= 33) {
+      step2.classList.add('completed');
+    } else if(percent >= 10) {
+      step1.classList.add('completed');
+    }
+  }, 30); // 3 seconds total
+  
+  return interval;
+}
+
+// ================= LOGOUT SEQUENCE =================
+function startLogoutSequence() {
+  const animalName = selectRandomAnimal();
+  console.log(`Selected animal: ${animalName}`);
+  
+  const progressInterval = animateProgress();
+  
+  // Fade out and redirect
+  setTimeout(() => {
+    document.getElementById('card').classList.add('fade');
+    
+    // Clear session data (simulated)
+    if(typeof localStorage !== 'undefined') {
+      localStorage.removeItem('session_token');
+      localStorage.removeItem('user_data');
+    }
+    
+    // Redirect to login
+    setTimeout(() => {
+      window.location.href = 'login.html';
+    }, 800);
+  }, 3000);
+}
+
+// ================= INITIALIZE =================
+document.addEventListener('DOMContentLoaded', function() {
+  createStars();
+  createGrass();
+  startLogoutSequence();
+  
+  // Add some random animal sounds in console (for fun)
+  const animalSounds = {
+    'dog': '🐕 Woof! Woof!',
+    'cat': '🐱 Meow!',
+    'fox': '🦊 Ring-ding-ding-ding-dingeringeding!',
+    'bunny': '🐇 *nibble nibble*'
+  };
+  
+  setTimeout(() => {
+    const currentAnimal = document.querySelector('.walker').innerHTML.includes('dog-body') ? 'dog' :
+                         document.querySelector('.walker').innerHTML.includes('cat-body') ? 'cat' :
+                         document.querySelector('.walker').innerHTML.includes('fox-body') ? 'fox' : 'bunny';
+    
+    console.log(animalSounds[currentAnimal]);
+  }, 1000);
+});
 </script>
 
 </body>
