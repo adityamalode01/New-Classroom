@@ -4,138 +4,1173 @@
     <link rel="shortcut icon" type="website icon" href="bobo.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skills Showcase</title>
+    <title>Designer Showcase | Skills & Projects</title>
+    
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #db818a;
-            color: #ffffff;
-            margin: 0;
+        :root {
+            --primary: #6366f1;
+            --secondary: #22d3ee;
+            --accent: #f472b6;
+            --dark: #020617;
+            --light: #f8fafc;
+            --success: #10b981;
+            --danger: #ef4444;
+            --orange: #f97316;
+            --purple: #a855f7;
         }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* ================= ANIMATED BACKGROUND ================= */
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a0a2a 0%, #020617 100%);
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Floating Particles */
+        .particles-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.15;
+            animation: floatParticle linear infinite;
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Animated Grid */
+        .grid-bg {
+            position: fixed;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background-image: 
+                linear-gradient(rgba(99, 102, 241, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99, 102, 241, 0.05) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: -2;
+            animation: gridMove 30s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(60px, 60px);
+            }
+        }
+
+        /* Floating Orbs */
+        .floating-orbs {
+            position: fixed;
+            width: 200vw;
+            height: 200vh;
+            top: -50vh;
+            left: -50vw;
+            z-index: -1;
+            opacity: 0.2;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: floatOrb 25s infinite linear;
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+            top: 10%;
+            left: 10%;
+            animation-duration: 30s;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
+            top: 60%;
+            right: 10%;
+            animation-duration: 35s;
+            animation-delay: 5s;
+        }
+
+        .orb-3 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            bottom: 10%;
+            left: 20%;
+            animation-duration: 40s;
+            animation-delay: 10s;
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(100px, 50px) rotate(90deg); }
+            50% { transform: translate(50px, 100px) rotate(180deg); }
+            75% { transform: translate(-50px, 50px) rotate(270deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+
+        /* ================= NAVIGATION ================= */
+        .navbar-custom {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: white !important;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .navbar-brand i {
+            color: var(--secondary);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .nav-link-custom {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500;
+            padding: 10px 20px !important;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            margin: 0 5px;
+        }
+
+        .nav-link-custom:hover {
+            color: white !important;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link-custom.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white !important;
+        }
+
+        /* ================= HERO SECTION ================= */
         .hero-section {
+            padding: 100px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .profile-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 40px;
+        }
+
+        .profile-image {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 4px solid transparent;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent)) border-box;
+            padding: 4px;
+            box-shadow: 
+                0 0 50px rgba(99, 102, 241, 0.5),
+                inset 0 0 30px rgba(255, 255, 255, 0.1);
+            animation: floatProfile 6s ease-in-out infinite;
+            transition: transform 0.3s ease;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes floatProfile {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .profile-ring {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border: 3px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            top: -10px;
+            left: -10px;
+            animation: spin 20s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        .hero-title {
+            font-size: 3.8rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+
+        /* Stats Cards */
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 25px;
+            min-width: 150px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-5px);
+            border-color: var(--secondary);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 10px;
+        }
+
+        /* ================= SKILLS SECTION ================= */
+        .skills-section {
+            padding: 80px 20px;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--secondary), transparent);
+            border-radius: 2px;
+        }
+
+        .skill-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 40px 30px;
+            height: 100%;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 25px 25px 0 0;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: var(--secondary);
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.4),
+                0 0 40px rgba(34, 211, 238, 0.2);
+        }
+
+        .skill-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 50px 20px;
-            text-align: left;
+            font-size: 2.2rem;
+            margin: 0 auto 25px;
+            transition: all 0.3s ease;
+            color: white;
         }
-        .hero-section img {
-            max-width: 150px;
-            margin-right: 20px;
-            border-radius: 50%;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+
+        .skill-card:hover .skill-icon {
+            transform: rotateY(180deg) scale(1.1);
         }
-        .curve {
+
+        .skill-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .skill-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        /* Progress Bars */
+        .progress-container {
+            margin-top: 15px;
+        }
+
+        .skill-progress {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
             position: relative;
-            background: #fff;
-            padding: 50px 20px;
-            border-radius: 50px 50px 0 0;
-            box-shadow: 0px -5px 20px rgba(0, 0, 0, 0.1);
+            transition: width 1.5s ease-in-out;
         }
-        .curve::before {
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 5px;
+        }
+
+        /* ================= PROJECTS SECTION ================= */
+        .projects-section {
+            padding: 80px 20px;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            height: 100%;
+            position: relative;
+        }
+
+        .project-card::before {
             content: '';
             position: absolute;
-            top: -50px;
+            top: 0;
             left: 0;
             width: 100%;
-            height: 50px;
-            background: inherit;
-            border-radius: 50% 50% 0 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
         }
-        .skills-section, .projects-section {
-            margin-top: 50px;
+
+        .project-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: var(--secondary);
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.4),
+                0 0 40px rgba(34, 211, 238, 0.2);
         }
-        .skill-card {
-            transition: transform 0.3s;
+
+        .project-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .skill-card:hover {
-            transform: scale(1.05);
+
+        .project-content {
+            padding: 25px;
+        }
+
+        .project-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .project-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .project-tech {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .tech-tag {
+            background: rgba(99, 102, 241, 0.2);
+            color: #c7d2fe;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Project View Button */
+        .project-view {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .project-view:hover {
+            transform: translateX(5px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+            color: white;
+        }
+
+        /* ================= CONTACT SECTION ================= */
+        .contact-section {
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .contact-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .contact-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: white;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .contact-btn .tooltip {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .contact-btn:hover .tooltip {
+            opacity: 1;
+        }
+
+        .instagram-btn { background: linear-gradient(45deg, #405DE6, #E4405F); }
+        .email-btn { background: linear-gradient(45deg, #EA4335, #34A853); }
+        .github-btn { background: #333333; }
+        .whatsapp-btn { background: linear-gradient(45deg, #25D366, #128C7E); }
+
+        /* ================= FOOTER ================= */
+        footer {
+            text-align: center;
+            padding: 50px 20px;
+            color: rgba(255, 255, 255, 0.6);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.2);
+            margin-top: 80px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .profile-image {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .stat-card {
+                min-width: 120px;
+                padding: 20px;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+            
+            .contact-buttons {
+                gap: 15px;
+            }
+            
+            .contact-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="hero-section container">
-        <img src="Deadpool chibi illustration.png" alt="Designer Icon">
-        <div>
-            <h1 class="display-4">Designer Showcase</h1>
-            <p class="lead">Discover what I can do and the projects I've delivered.</p>
+
+<!-- Animated Background -->
+<div class="grid-bg"></div>
+<div class="floating-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+</div>
+<div class="particles-container" id="particles"></div>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <i class="fas fa-palette"></i> Designer Showcase
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <i class="fas fa-bars text-white"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link nav-link-custom" href="#home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-custom" href="#skills">Skills</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-custom" href="#projects">Projects</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-custom" href="#contact">Contact</a>
+                </li>
+            </ul>
         </div>
     </div>
+</nav>
 
-    <div class="curve">
-        <div class="container skills-section">
-            <h2 class="text-center mb-4">Skills</h2>
-            <div class="row row-cols-1 row-cols-md-3 g-4">
-                <div class="col">
-                    <div class="card skill-card">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Web Designing</h5>
-                            <p class="card-text">Crafting visually appealing and functional websites for seamless user experiences.</p>
+<!-- Hero Section -->
+<section class="hero-section" id="home">
+    <div class="container">
+        <div class="profile-container">
+            <div class="profile-ring"></div>
+            <img src="Deadpool chibi illustration.png" alt="Designer Profile" class="profile-image">
+        </div>
+        
+        <h1 class="hero-title">Creative Designer & Developer</h1>
+        <p class="hero-subtitle">
+            Transforming ideas into stunning digital experiences. Specializing in web design, 
+            UI/UX, and graphic design with a focus on innovation and user engagement.
+        </p>
+        
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Projects Delivered</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">98%</div>
+                <div class="stat-label">Client Satisfaction</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3+</div>
+                <div class="stat-label">Years Experience</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">15+</div>
+                <div class="stat-label">Technologies</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Skills Section -->
+<section class="skills-section" id="skills">
+    <div class="container">
+        <h2 class="section-title">Core Skills</h2>
+        
+        <div class="row g-4">
+            <!-- Web Design -->
+            <div class="col-lg-4 col-md-6">
+                <div class="skill-card" data-skill="web">
+                    <div class="skill-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3 class="skill-title">Web Design & Development</h3>
+                    <p class="skill-description">
+                        Creating responsive, modern websites with cutting-edge technologies 
+                        and best practices for optimal user experience.
+                    </p>
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>HTML5/CSS3</span>
+                            <span>95%</span>
+                        </div>
+                        <div class="skill-progress">
+                            <div class="progress-fill" style="width: 95%"></div>
+                        </div>
+                        
+                        <div class="progress-label">
+                            <span>JavaScript</span>
+                            <span>88%</span>
+                        </div>
+                        <div class="skill-progress">
+                            <div class="progress-fill" style="width: 88%"></div>
+                        </div>
+                        
+                        <div class="progress-label">
+                            <span>React</span>
+                            <span>80%</span>
+                        </div>
+                        <div class="skill-progress">
+                            <div class="progress-fill" style="width: 80%"></div>
                         </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="card skill-card">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">UI UX Designing</h5>
-                            <p class="card-text">Designing intuitive and engaging user interfaces for optimal interaction.</p>
+            </div>
+
+            <!-- UI/UX Design -->
+            <div class="col-lg-4 col-md-6">
+                <div class="skill-card" data-skill="uiux">
+                    <div class="skill-icon">
+                        <i class="fas fa-object-group"></i>
+                    </div>
+                    <h3 class="skill-title">UI/UX Design</h3>
+                    <p class="skill-description">
+                        Designing intuitive interfaces and seamless user experiences 
+                        that drive engagement and conversion through thoughtful design.
+                    </p>
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>Figma</span>
+                            <span>92%</span>
+                        </div>
+                        <div class="skill-progress">
+                            <div class="progress-fill" style="width: 92%"></div>
+                        </div>
+                        
+                        <div class="progress-label">
+                            <span>Adobe XD</span>
+                            <span>90%</span>
+                        </div>
+                        <div class="skill-progress">
+                            <div class="progress-fill" style="width: 90%"></div>
+                        </div>
+                        
+                        <div class="progress-label">
+                            <span>User Research</span>
+                            <span>85%</span>
+                        </div>
+                        <div class="skill-progress">
+                            <div class="progress-fill" style="width: 85%"></div>
                         </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="card skill-card">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Graphic Designing</h5>
-                            <p class="card-text">Creating impactful visual content that communicates brand messages effectively.</p>
+            </div>
+
+            <!-- Graphic Design -->
+            <div class="col-lg-4 col-md-6">
+                <div class="skill-card" data-skill="graphic">
+                    <div class="skill-icon">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h3 class="skill-title">Graphic Design</h3>
+                    <p class="skill-description">
+                        Creating impactful visual content and branding that communicates 
+                        messages effectively and strengthens brand identity.
+                    </p>
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>Photoshop</span>
+                            <span>90%</span>
+                        </div>
+                        <div class="skill-progress">
+                            <div class="progress-fill" style="width: 90%"></div>
+                        </div>
+                        
+                        <div class="progress-label">
+                            <span>Illustrator</span>
+                            <span>88%</span>
+                        </div>
+                        <div class="skill-progress">
+                            <div class="progress-fill" style="width: 88%"></div>
+                        </div>
+                        
+                        <div class="progress-label">
+                            <span>Branding</span>
+                            <span>85%</span>
+                        </div>
+                        <div class="skill-progress">
+                            <div class="progress-fill" style="width: 85%"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</section>
 
-        <div class="container projects-section">
-            <h2 class="text-center mb-4">Projects</h2>
-            <div class="row row-cols-1 row-cols-md-2 g-4">
-                <div class="col">
-                    <div class="card h-100">
-                        <img src="project1.jpg" class="card-img-top" alt="Project 1">
-                        <div class="card-body">
-                            <h5 class="card-title">Business Card</h5>
-                            <p class="card-text">We create custom business cards tailored to your brand, combining professional design with premium quality. Let us bring your vision to life with personalized card-making services that leave a lasting impression.</p>
+<!-- Projects Section -->
+<section class="projects-section" id="projects">
+    <div class="container">
+        <h2 class="section-title">Featured Projects</h2>
+        
+        <div class="row g-4">
+            <!-- Business Card Project -->
+            <div class="col-lg-6">
+                <div class="project-card">
+                    <img src="project1.jpg" alt="Business Card Design" class="project-image">
+                    <div class="project-content">
+                        <h3 class="project-title">Premium Business Card Design</h3>
+                        <p class="project-description">
+                            Custom business cards tailored to your brand, combining professional design 
+                            with premium quality. Created a memorable first impression for various clients 
+                            across different industries.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Adobe Illustrator</span>
+                            <span class="tech-tag">Print Design</span>
+                            <span class="tech-tag">Brand Identity</span>
+                            <span class="tech-tag">Typography</span>
                         </div>
+                        <button class="project-view mt-3">
+                            <i class="fas fa-eye"></i> View Project Details
+                        </button>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="card h-100">
-                        <img src="project2.jpg" class="card-img-top" alt="Project 2">
-                        <div class="card-body">
-                            <h5 class="card-title">Garnier Face Wash advertisement</h5>
-                            <p class="card-text">We craft compelling ad designs that showcase your products, like a Garnier Face Wash advertisement, blending creativity with marketing expertise. Let us design eye-catching ad pages that elevate your brand and captivate your audience.</p>
+            </div>
+
+            <!-- Garnier Ad Project -->
+            <div class="col-lg-6">
+                <div class="project-card">
+                    <img src="project2.jpg" alt="Garnier Ad Design" class="project-image">
+                    <div class="project-content">
+                        <h3 class="project-title">Garnier Face Wash Advertisement</h3>
+                        <p class="project-description">
+                            Compelling ad design showcasing Garnier Face Wash products, blending creativity 
+                            with marketing expertise. The campaign resulted in a 35% increase in engagement 
+                            for the client.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Photoshop</span>
+                            <span class="tech-tag">Marketing</span>
+                            <span class="tech-tag">Visual Storytelling</span>
+                            <span class="tech-tag">Consumer Psychology</span>
                         </div>
+                        <button class="project-view mt-3">
+                            <i class="fas fa-eye"></i> View Project Details
+                        </button>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="card h-100">
-                        <img src="project3.jpg" class="card-img-top" alt="Project 3">
-                        <div class="card-body">
-                            <h5 class="card-title">Anime Poster</h5>
-                            <p class="card-text">We craft compelling ad designs that showcase your characters, like an anime poster advertisement, blending creativity with marketing expertise. Let us design eye-catching ad pages that elevate your brand and captivate your audience.</p>
+            </div>
+
+            <!-- Anime Poster Project -->
+            <div class="col-lg-6">
+                <div class="project-card">
+                    <img src="project3.jpg" alt="Anime Poster Design" class="project-image">
+                    <div class="project-content">
+                        <h3 class="project-title">Anime Character Poster Series</h3>
+                        <p class="project-description">
+                            Series of anime character posters combining traditional Japanese art styles 
+                            with modern graphic design techniques. Each poster tells a unique story 
+                            through visual composition and color theory.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Digital Art</span>
+                            <span class="tech-tag">Character Design</span>
+                            <span class="tech-tag">Color Theory</span>
+                            <span class="tech-tag">Storytelling</span>
                         </div>
+                        <button class="project-view mt-3">
+                            <i class="fas fa-eye"></i> View Project Details
+                        </button>
                     </div>
                 </div>
-                  <div class="card h-100">
-                        <img src="project4.png" class="card-img-top" alt="Project 4">
-                        <div class="card-body">
-                            <h5 class="card-title">Amazon Clone Website</h5>
-                            <p class="card-text">The main goal of this project is to build an e-commerce website similar to Amazon. Our clone will allow users to register, login, add product to the cart, delete product from the shopping cart. Our clone will permit only an authenticated user to access the home page.</p>
+            </div>
+
+            <!-- Amazon Clone Project -->
+            <div class="col-lg-6">
+                <div class="project-card">
+                    <img src="project4.png" alt="Amazon Clone Website" class="project-image">
+                    <div class="project-content">
+                        <h3 class="project-title">E-commerce Platform Clone</h3>
+                        <p class="project-description">
+                            Full-featured e-commerce website with user authentication, shopping cart, 
+                            payment integration, and admin dashboard. Built using modern web technologies 
+                            for optimal performance and scalability.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">React</span>
+                            <span class="tech-tag">Node.js</span>
+                            <span class="tech-tag">MongoDB</span>
+                            <span class="tech-tag">Payment Gateway</span>
+                            <span class="tech-tag">REST API</span>
                         </div>
+                        <button class="project-view mt-3">
+                            <i class="fas fa-eye"></i> View Live Demo
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</section>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Contact Section -->
+<section class="contact-section" id="contact">
+    <div class="container">
+        <h2 class="section-title">Let's Connect</h2>
+        <p class="hero-subtitle">
+            Have a project in mind? Let's discuss how we can bring your ideas to life!
+        </p>
+        
+        <div class="contact-buttons">
+            <a href="https://instagram.com/Ramesh__6162" target="_blank" class="contact-btn instagram-btn">
+                <i class="fab fa-instagram"></i>
+                <span class="tooltip">@Ramesh__6162</span>
+            </a>
+            
+            <a href="mailto:rameshprasadrp901@gmail.com" class="contact-btn email-btn">
+                <i class="fas fa-envelope"></i>
+                <span class="tooltip">Email Me</span>
+            </a>
+            
+            <a href="https://github.com" target="_blank" class="contact-btn github-btn">
+                <i class="fab fa-github"></i>
+                <span class="tooltip">GitHub</span>
+            </a>
+            
+            <a href="https://wa.me/917498147593" target="_blank" class="contact-btn whatsapp-btn">
+                <i class="fab fa-whatsapp"></i>
+                <span class="tooltip">WhatsApp</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <p><i class="fas fa-copyright"></i> 2025 Designer Showcase | Crafting Digital Excellence</p>
+        <p style="margin-top:15px;font-size:0.9rem;">
+            <i class="fas fa-envelope"></i> rameshprasadrp123@gmail.com | 
+            <i class="fas fa-phone"></i> +91 7498147593 |
+            <i class="fas fa-map-marker-alt"></i> India
+        </p>
+    </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// ================= CREATE PARTICLE BACKGROUND =================
+function createParticles() {
+    const particlesContainer = document.getElementById('particles');
+    const colors = ['#ffffff', '#c7d2fe', '#a5f3fc', '#f5f3ff', '#fbcfe8'];
+    
+    for(let i = 0; i < 80; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        const size = Math.random() * 6 + 2;
+        const left = Math.random() * 100;
+        const duration = 10 + Math.random() * 20;
+        const delay = Math.random() * 5;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${left}%`;
+        particle.style.animationDuration = `${duration}s`;
+        particle.style.animationDelay = `${delay}s`;
+        particle.style.background = color;
+        particle.style.opacity = Math.random() * 0.3 + 0.1;
+        
+        particlesContainer.appendChild(particle);
+    }
+}
+
+// ================= SKILL CARDS ANIMATION =================
+function animateSkillCards() {
+    const skillCards = document.querySelectorAll('.skill-card');
+    
+    skillCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            const progressBars = this.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 50);
+            });
+        });
+        
+        // Add click effect
+        card.addEventListener('click', function() {
+            this.style.transform = 'translateY(-15px) scale(1.03)';
+            setTimeout(() => {
+                this.style.transform = 'translateY(-15px) scale(1.03)';
+            }, 150);
+        });
+    });
+}
+
+// ================= PROJECT CARDS INTERACTION =================
+function setupProjectCards() {
+    const projectCards = document.querySelectorAll('.project-card');
+    const viewButtons = document.querySelectorAll('.project-view');
+    
+    projectCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            const img = this.querySelector('.project-image');
+            if(img) img.style.transform = 'scale(1.05)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            const img = this.querySelector('.project-image');
+            if(img) img.style.transform = 'scale(1)';
+        });
+    });
+    
+    viewButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const projectTitle = this.closest('.project-card').querySelector('.project-title').textContent;
+            alert(`🚀 Opening ${projectTitle}\n\nProject details and full case study coming soon!`);
+        });
+    });
+}
+
+// ================= CONTACT BUTTONS TOOLTIPS =================
+function setupContactButtons() {
+    const contactButtons = document.querySelectorAll('.contact-btn');
+    
+    contactButtons.forEach(btn => {
+        btn.addEventListener('mouseenter', function() {
+            const tooltip = this.querySelector('.tooltip');
+            if(tooltip) tooltip.style.opacity = '1';
+        });
+        
+        btn.addEventListener('mouseleave', function() {
+            const tooltip = this.querySelector('.tooltip');
+            if(tooltip) tooltip.style.opacity = '0';
+        });
+    });
+}
+
+// ================= SMOOTH SCROLLING =================
+function setupSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            if(targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if(targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+}
+
+// ================= STATS COUNTER ANIMATION =================
+function animateStats() {
+    const statNumbers = document.querySelectorAll('.stat-number');
+    const observerOptions = {
+        threshold: 0.5,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting) {
+                const stat = entry.target;
+                const target = parseInt(stat.textContent);
+                let current = 0;
+                const increment = target / 50;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if(current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    stat.textContent = Math.floor(current) + (stat.textContent.includes('%') ? '%' : '+');
+                }, 30);
+                observer.unobserve(stat);
+            }
+        });
+    }, observerOptions);
+    
+    statNumbers.forEach(stat => observer.observe(stat));
+}
+
+// ================= INITIALIZE EVERYTHING =================
+document.addEventListener('DOMContentLoaded', function() {
+    createParticles();
+    animateSkillCards();
+    setupProjectCards();
+    setupContactButtons();
+    setupSmoothScroll();
+    animateStats();
+    
+    // Add active class to nav links on scroll
+    window.addEventListener('scroll', function() {
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link-custom');
+        
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            if(scrollY >= (sectionTop - 100)) {
+                current = section.getAttribute('id');
+            }
+        });
+        
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if(link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>
