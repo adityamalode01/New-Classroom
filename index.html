@@ -1,13 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Smart Classroom - Home</title>
+  <title>Smart Classroom | Interactive Learning Hub</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="script.js"></script>
-
-  
   
   <!-- Favicon -->
   <link rel="shortcut icon" type="website icon" href="Smart classroom logo.png">
@@ -15,13 +11,24 @@
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  
   <!-- Font Awesome -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   
   <style>
+    :root {
+      --primary: #6366f1;
+      --secondary: #22d3ee;
+      --accent: #f472b6;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --dark: #020617;
+      --light: #f8fafc;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -29,355 +36,729 @@
       font-family: 'Poppins', sans-serif;
     }
 
+    /* ================= ANIMATED BACKGROUND ================= */
     body {
-      background: #f4f6fb;
       min-height: 100vh;
-    }
-
-    /* Navigation Bar */
-    .navbar {
-      background: linear-gradient(135deg, #52aaad, #686868);
-      padding: 15px 30px;
+      background: linear-gradient(135deg, #0a0a2a 0%, #020617 100%);
       color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      /* border-bottom-left-radius: 20px;
-      border-bottom-right-radius: 20px; */
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    }
-
-    .logo-container {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .logo-container img {
-      height: 45px;
-      width: 45px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-
-    .logo-container h1 {
-      font-size: 1.8rem;
-      font-weight: 600;
-      margin: 0;
-    }
-
-    .main-nav {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    .main-nav a {
-      color: white;
-      text-decoration: none;
-      padding: 8px 16px;
-      border-radius: 8px;
-      transition: all 0.3s ease;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .main-nav a:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: translateY(-2px);
-    }
-
-    .main-nav a.active {
-      background: rgba(255, 255, 255, 0.3);
-    }
-
-    /* Dropdown Menu for more pages */
-    .dropdown {
+      overflow-x: hidden;
       position: relative;
     }
 
-    .dropdown-content {
-      display: none;
+    .floating-orbs {
+      position: fixed;
+      width: 200vw;
+      height: 200vh;
+      top: -50vh;
+      left: -50vw;
+      z-index: -1;
+      opacity: 0.3;
+    }
+
+    .orb {
       position: absolute;
-      background: white;
-      min-width: 200px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-      border-radius: 8px;
+      border-radius: 50%;
+      filter: blur(80px);
+      animation: floatOrb 25s infinite linear;
+    }
+
+    .orb-1 {
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+      top: 10%;
+      left: 10%;
+      animation-duration: 30s;
+    }
+
+    .orb-2 {
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
+      top: 60%;
+      right: 10%;
+      animation-duration: 35s;
+      animation-delay: 5s;
+    }
+
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(100px, 50px) rotate(90deg); }
+      50% { transform: translate(50px, 100px) rotate(180deg); }
+      75% { transform: translate(-50px, 50px) rotate(270deg); }
+      100% { transform: translate(0, 0) rotate(360deg); }
+    }
+
+    .grid-bg {
+      position: fixed;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+      background-image: 
+        linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      z-index: -2;
+      animation: gridMove 40s linear infinite;
+    }
+
+    @keyframes gridMove {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(60px, 60px); }
+    }
+
+    /* ================= NAVBAR ================= */
+    .navbar-custom {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(25px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 15px 0;
+      position: sticky;
+      top: 0;
       z-index: 1000;
-      top: 100%;
-      left: 0;
     }
 
-    .dropdown:hover .dropdown-content {
-      display: block;
+    .navbar-brand {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: white !important;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
-    .dropdown-content a {
-      color: #333;
-      padding: 12px 16px;
-      display: block;
-      border-bottom: 1px solid #eee;
+    .logo-circle {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: white;
     }
 
-    .dropdown-content a:hover {
-      background: #f5f5f5;
-      color: #4f46e5;
+    .nav-link-custom {
+      color: rgba(255, 255, 255, 0.9) !important;
+      font-weight: 500;
+      padding: 10px 20px !important;
+      border-radius: 12px;
+      transition: all 0.3s ease;
     }
 
-    /* Header Content */
-    .hero-header {
+    .nav-link-custom:hover {
+      color: white !important;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-link-custom.active {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white !important;
+    }
+
+    /* ================= SEARCH BAR ================= */
+    .search-container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .search-box {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 5px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .search-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      padding: 15px 20px;
+      color: white;
+      font-size: 1rem;
+    }
+
+    .search-input:focus {
+      outline: none;
+    }
+
+    .search-input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .search-btn {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border: none;
+      color: white;
+      padding: 12px 25px;
+      border-radius: 15px;
+      margin-right: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .search-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+    }
+
+    .voice-search-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-right: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .voice-search-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.1);
+    }
+
+    .voice-search-btn.listening {
+      background: var(--danger);
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+
+    /* ================= HERO SECTION ================= */
+    .hero-section {
       text-align: center;
       padding: 60px 20px;
-      background: linear-gradient(135deg, #4f46e5, #6366f1);
-      color: white;
-      margin-bottom: 40px;
-      border-radius: 0 0 25px 25px;
-    }
-
-    .hero-header h2 {
-      font-size: 2.5rem;
-      margin-bottom: 15px;
-    }
-
-    .hero-header p {
-      font-size: 1.1rem;
-      opacity: 0.9;
-      max-width: 600px;
+      max-width: 1200px;
       margin: 0 auto;
     }
 
-    /* Classroom Grid */
-    .classroom {
-      padding: 40px 20px;
-      max-width: 1200px;
-      margin: auto;
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      max-width: 700px;
+      margin: 0 auto 40px;
+    }
+
+    /* ================= QUICK STATS ================= */
+    .stats-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 25px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
     }
 
-    /* Card */
-    .card {
-      background: #fff;
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-    }
-
-    .card-header {
-      height: 120px;
-      background: linear-gradient(120deg, #22c55e, #16a34a);
-      color: #fff;
-      padding: 20px;
-    }
-
-    .card-header h3 {
-      font-size: 18px;
-    }
-
-    .card-header span {
-      font-size: 13px;
-      opacity: 0.9;
-    }
-
-    .card-body {
-      padding: 20px;
-    }
-
-    .card-body p {
-      font-size: 14px;
-      color: #555;
-      margin-bottom: 15px;
-    }
-
-    .actions {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .actions a {
-      text-decoration: none;
-      font-size: 14px;
-      padding: 8px 12px;
-      border-radius: 6px;
-      color: white;
-      flex: 1;
-      text-align: center;
-      transition: opacity 0.3s;
-    }
-
-    .actions a:hover {
-      opacity: 0.9;
-    }
-
-    .notes {
-      background: #2563eb;
-    }
-
-    .video {
-      background: #dc2626;
-    }
-
-    /* Features Section */
-    .features {
-      padding: 60px 20px;
-      background: white;
-      margin: 40px 0;
+    .stat-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 20px;
+      padding: 25px;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
 
-    .features h3 {
+    .stat-card:hover {
+      background: rgba(255, 255, 255, 0.12);
+      transform: translateY(-5px);
+      border-color: var(--secondary);
+    }
+
+    .stat-icon {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      color: var(--secondary);
+    }
+
+    .stat-number {
+      font-size: 2.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* ================= SUBJECT CARDS ================= */
+    .subjects-section {
+      max-width: 1300px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
       text-align: center;
-      margin-bottom: 40px;
-      color: #4f46e5;
+      margin-bottom: 50px;
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 2px;
+    }
+
+    .subjects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 30px;
+    }
+
+    .subject-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 25px;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+    }
+
+    .subject-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      border-color: var(--secondary);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .subject-header {
+      height: 150px;
+      padding: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .subject-header h3 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .subject-header span {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      position: relative;
+      z-index: 1;
+    }
+
+    .subject-body {
+      padding: 25px;
+    }
+
+    .subject-body p {
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+
+    /* ACTION BUTTONS */
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .btn-primary-action {
+      flex: 1;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, var(--primary), #4f46e5);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary-action:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+      background: linear-gradient(135deg, #4f46e5, var(--primary));
+    }
+
+    .btn-danger-action {
+      flex: 1;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, var(--danger), #dc2626);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-danger-action:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+      background: linear-gradient(135deg, #dc2626, var(--danger));
+    }
+
+    /* ================= FEATURE CARDS ================= */
+    .features-section {
+      max-width: 1200px;
+      margin: 80px auto;
+      padding: 0 20px;
     }
 
     .features-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 30px;
-      max-width: 1200px;
-      margin: 0 auto;
     }
 
     .feature-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 25px;
+      padding: 35px 30px;
       text-align: center;
-      padding: 30px 20px;
-      background: #f8fafc;
-      border-radius: 15px;
-      transition: transform 0.3s;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
     }
 
     .feature-card:hover {
-      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.12);
+      transform: translateY(-10px);
+      border-color: var(--secondary);
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
     }
 
     .feature-icon {
-      font-size: 2.5rem;
-      color: #4f46e5;
-      margin-bottom: 20px;
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin: 0 auto 25px;
+      color: white;
     }
 
-    /* Footer */
-    .site-footer {
-      background: #1e1b4b;
+    .feature-card h4 {
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+    }
+
+    .feature-card p {
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.6;
+    }
+
+    /* Feature-specific button styles */
+    .feature-btn {
+      margin-top: 20px;
+      padding: 10px 25px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       color: white;
-      padding: 50px 20px 20px;
-      margin-top: 60px;
-      border-top-left-radius: 25px;
-      border-top-right-radius: 25px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .feature-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateX(5px);
+    }
+
+    /* ================= RECENT ACTIVITY ================= */
+    .activity-section {
+      max-width: 1200px;
+      margin: 80px auto;
+      padding: 0 20px;
+    }
+
+    .activity-list {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border-radius: 25px;
+      padding: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .activity-item {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      transition: background 0.3s ease;
+    }
+
+    .activity-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+    }
+
+    .activity-item:last-child {
+      border-bottom: none;
+    }
+
+    .activity-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-right: 20px;
+    }
+
+    .activity-content h5 {
+      font-size: 1.1rem;
+      margin-bottom: 5px;
+    }
+
+    .activity-content span {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.9rem;
+    }
+
+    /* ================= SOCIAL SECTION ================= */
+    .social-section {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .social-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+
+    .social-btn {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: white;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .social-btn:hover {
+      transform: translateY(-5px) scale(1.1);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .social-btn .tooltip {
+      position: absolute;
+      bottom: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .social-btn:hover .tooltip {
+      opacity: 1;
+    }
+
+    .instagram-btn { background: linear-gradient(45deg, #405DE6, #E4405F); }
+    .github-btn { background: #333333; }
+    .email-btn { background: linear-gradient(45deg, #EA4335, #34A853); }
+    .whatsapp-btn { background: linear-gradient(45deg, #25D366, #128C7E); }
+
+    /* ================= FOOTER ================= */
+    footer {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 60px 20px 30px;
+      margin-top: 80px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .footer-container {
       max-width: 1200px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 40px;
-      margin-bottom: 40px;
     }
 
     .footer-brand h3 {
-      color: white;
-      margin-bottom: 10px;
+      font-size: 1.8rem;
+      margin-bottom: 15px;
     }
 
     .footer-links h4 {
-      color: #a5b4fc;
-      margin-bottom: 15px;
+      color: var(--secondary);
+      margin-bottom: 20px;
+      font-size: 1.2rem;
     }
 
     .footer-links a {
       display: block;
-      color: #cbd5e1;
+      color: rgba(255, 255, 255, 0.7);
       text-decoration: none;
-      margin-bottom: 10px;
-      transition: color 0.3s;
+      margin-bottom: 12px;
+      transition: all 0.3s ease;
     }
 
     .footer-links a:hover {
-      color: white;
-    }
-
-    .social-icons {
-      display: flex;
-      gap: 15px;
-      margin-top: 15px;
-    }
-
-    .social-icons a {
-      color: white;
-      background: #4f46e5;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      transition: background 0.3s;
-    }
-
-    .social-icons a:hover {
-      background: #6366f1;
+      color: var(--secondary);
+      transform: translateX(5px);
     }
 
     .footer-bottom {
       text-align: center;
-      padding-top: 20px;
-      border-top: 1px solid #334155;
-      color: #94a3b8;
-      font-size: 0.9rem;
+      padding-top: 40px;
+      margin-top: 60px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.5);
     }
 
-    /* Responsive Design */
+    /* ================= MODAL & NOTIFICATIONS ================= */
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.95);
+      color: #333;
+      padding: 15px 25px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      backdrop-filter: blur(10px);
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .notification.success {
+      border-left: 5px solid var(--success);
+    }
+
+    .notification.error {
+      border-left: 5px solid var(--danger);
+    }
+
+    /* ================= RESPONSIVE ================= */
     @media (max-width: 768px) {
-      .navbar {
-        flex-direction: column;
-        gap: 20px;
-        padding: 15px;
+      .hero-title {
+        font-size: 2.5rem;
       }
       
-      .main-nav {
-        justify-content: center;
-      }
-      
-      .hero-header h2 {
-        font-size: 2rem;
-      }
-      
-      .features-grid {
+      .subjects-grid {
         grid-template-columns: 1fr;
+      }
+      
+      .search-box {
+        flex-direction: column;
+        gap: 10px;
+        padding: 20px;
+      }
+      
+      .search-btn, .voice-search-btn {
+        width: 100%;
+        margin: 5px 0;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
       }
     }
 
     @media (max-width: 480px) {
-      .main-nav {
-        flex-direction: column;
-        align-items: center;
+      .hero-title {
+        font-size: 2rem;
       }
       
-      .main-nav a {
-        width: 100%;
-        text-align: center;
-        justify-content: center;
+      .section-title {
+        font-size: 2rem;
       }
       
-      .card {
-        margin: 0 10px;
+      .stat-card {
+        padding: 20px;
+      }
+      
+      .feature-card {
+        padding: 25px 20px;
       }
     }
   </style>
@@ -385,222 +766,742 @@
 
 <body>
 
-  <!-- NAVIGATION BAR -->
-  <nav class="navbar">
-    <div class="logo-container">
-      <img src="bobo.png" alt="Smart Classroom Logo">
-      <h1>📚 Smart Classroom</h1>
+<!-- Animated Background -->
+<div class="grid-bg"></div>
+<div class="floating-orbs">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+</div>
+
+<!-- Notification System -->
+<div id="notification" class="notification"></div>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-custom">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <div class="logo-circle">
+        <i class="fas fa-graduation-cap"></i>
+      </div>
+      <span>Smart Classroom</span>
+    </a>
+    
+    <div class="navbar-nav ms-auto">
+      <a class="nav-link nav-link-custom active" href="#">
+        <i class="fas fa-home"></i> Home
+      </a>
+      <a class="nav-link nav-link-custom" href="library.html">
+        <i class="fas fa-book"></i> Library
+      </a>
+      <a class="nav-link nav-link-custom" href="contact.html">
+        <i class="fas fa-envelope"></i> Contact
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- Search Bar -->
+<div class="search-container">
+  <div class="search-box">
+    <input type="text" class="search-input" id="searchInput" 
+           placeholder="Search for subjects, notes, or videos...">
+    
+    <button class="voice-search-btn" id="voiceSearchBtn" title="Voice Search">
+      <i class="fas fa-microphone"></i>
+    </button>
+    
+    <button class="search-btn" id="searchBtn">
+      <i class="fas fa-search"></i> Search
+    </button>
+  </div>
+  
+  <div id="searchResults" style="display: none; margin-top: 20px;"></div>
+</div>
+
+<!-- Hero Section -->
+<section class="hero-section">
+  <h1 class="hero-title">Interactive Learning Hub</h1>
+  <p class="hero-subtitle">Access notes, video lectures, and study materials for all engineering subjects</p>
+  
+  <div class="stats-container">
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-book"></i></div>
+      <div class="stat-number">250+</div>
+      <p>Study Materials</p>
     </div>
     
-    <ul class="main-nav">
-      <li><a href="index.html" class="active"><i class="fas fa-home"></i> Home</a></li>
-      <li><a href="library.html"><i class="fas fa-book"></i> Library</a></li>
-      <li><a href="lectures.html"><i class="fas fa-video"></i> Lectures</a></li>
-      <li><a href="downloads.html"><i class="fas fa-download"></i> Downloads</a></li>
-      <li><a href="upload.html"><i class="fas fa-upload"></i> Upload</a></li>
-      
-      <!-- Dropdown for Additional Pages -->
-      <li class="dropdown">
-        <a href="#"><i class="fas fa-ellipsis-h"></i> More</a>
-        <div class="dropdown-content">
-          <a href="skill.html"><i class="fas fa-paint-brush"></i> Skills</a>
-          <a href="experience.html"><i class="fas fa-briefcase"></i> Experience</a>
-          <a href="service.html"><i class="fas fa-concierge-bell"></i> Services</a>
-          <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
-          <a href="logout.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
-        </div>
-      </li>
-      
-      <li><a href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a></li>
-      <li><a href="signup.html"><i class="fas fa-user-plus"></i> Sign Up</a></li>
-    </ul>
-  </nav>
-
-  <!-- HERO SECTION -->
-  <div class="hero-header">
-    <h2>Welcome to Smart Classroom</h2>
-    <p>Your comprehensive digital learning platform designed for engineering students. Access notes, lectures, and resources all in one place.</p>
-    <p style="margin-top: 10px;"><strong>Branch: CSE | Semester: 4</strong></p>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-video"></i></div>
+      <div class="stat-number">120+</div>
+      <p>Video Lectures</p>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-users"></i></div>
+      <div class="stat-number">1.5K+</div>
+      <p>Active Students</p>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-download"></i></div>
+      <div class="stat-number">4.5K+</div>
+      <p>Downloads</p>
+    </div>
   </div>
+</section>
 
-  <!-- CLASSROOM CONTENT -->
-  <section class="classroom">
-    <div class="card">
-      <div class="card-header" style="background:linear-gradient(120deg,#d6d62c,#739c20);">
-        <h3>C Programming</h3>
-        <span>Unit 1 – Unit 4</span>
-      </div>
-      <div class="card-body">
-        <p>Fundamentals of C programming, data types, control structures, functions, and pointers.</p>
-        <div class="actions">
-          <a href="#" class="notes"><i class="fas fa-file-pdf"></i> Notes</a>
-          <a href="#" class="video"><i class="fas fa-play"></i> Lecture</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header" style="background:linear-gradient(120deg,#3dce29,#24cc37);">
-        <h3>C++ Programming</h3>
-        <span>Unit 1 – Unit 4</span>
-      </div>
-      <div class="card-body">
-        <p>Object-oriented programming concepts, classes, inheritance, polymorphism, and templates.</p>
-        <div class="actions">
-          <a href="#" class="notes"><i class="fas fa-file-pdf"></i> Notes</a>
-          <a href="#" class="video"><i class="fas fa-play"></i> Lecture</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header" style="background:linear-gradient(120deg,#1c2cc2,#1870af);">
-        <h3>Computer Fundamentals</h3>
-        <span>Unit 1 – Unit 4</span>
-      </div>
-      <div class="card-body">
-        <p>Basic computer organization, number systems, Boolean algebra, and digital logic.</p>
-        <div class="actions">
-          <a href="#" class="notes"><i class="fas fa-file-pdf"></i> Notes</a>
-          <a href="#" class="video"><i class="fas fa-play"></i> Lecture</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header" style="background:linear-gradient(120deg,#f59e0b,#f97316);">
-        <h3>Operating Systems</h3>
-        <span>Unit 1 – Unit 6</span>
-      </div>
-      <div class="card-body">
-        <p>Processes, memory management, scheduling algorithms, file systems, and security.</p>
-        <div class="actions">
-          <a href="#" class="notes"><i class="fas fa-file-pdf"></i> Notes</a>
-          <a href="#" class="video"><i class="fas fa-play"></i> Lecture</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header" style="background:linear-gradient(120deg,#ec4899,#db2777);">
-        <h3>Python Programming</h3>
-        <span>Unit 1 – Unit 4</span>
-      </div>
-      <div class="card-body">
-        <p>Python syntax, data structures, OOP concepts, file handling, and libraries.</p>
-        <div class="actions">
-          <a href="#" class="notes"><i class="fas fa-file-pdf"></i> Notes</a>
-          <a href="#" class="video"><i class="fas fa-play"></i> Lecture</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header" style="background:linear-gradient(120deg,#8b5cf6,#7c3aed);">
-        <h3>Database Management</h3>
-        <span>Unit 1 – Unit 5</span>
-      </div>
-      <div class="card-body">
-        <p>ER diagrams, normalization, SQL queries, transactions, and database security.</p>
-        <div class="actions">
-          <a href="#" class="notes"><i class="fas fa-file-pdf"></i> Notes</a>
-          <a href="#" class="video"><i class="fas fa-play"></i> Lecture</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURES SECTION -->
-  <section class="features">
-    <div class="container">
-      <h3>Platform Features</h3>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">
-            <i class="fas fa-book-open"></i>
-          </div>
-          <h4>Digital Library</h4>
-          <p>Access thousands of textbooks, notes, and reference materials for all engineering branches.</p>
-        </div>
-        
-        <div class="feature-card">
-          <div class="feature-icon">
-            <i class="fas fa-video"></i>
-          </div>
-          <h4>Video Lectures</h4>
-          <p>Watch recorded lectures from top educators anytime, anywhere at your own pace.</p>
-        </div>
-        
-        <div class="feature-card">
-          <div class="feature-icon">
-            <i class="fas fa-download"></i>
-          </div>
-          <h4>Download Manager</h4>
-          <p>Track and manage all your downloaded materials in one convenient location.</p>
-        </div>
-        
-        <div class="feature-card">
-          <div class="feature-icon">
-            <i class="fas fa-share-square"></i>
-          </div>
-          <h4>Content Upload</h4>
-          <p>Share your own notes and materials with the community to help fellow students.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="footer-container">
-      <!-- Brand -->
-      <div class="footer-brand">
-        <h3>📚 Smart Classroom</h3>
-        <p>Learn smarter. Grow faster.</p>
-      </div>
-
-      <!-- Links -->
-      <div class="footer-links">
-        <h4>Quick Links</h4>
-        <a href="index.html">Home</a>
-        <a href="library.html">Library</a>
-        <a href="lectures.html">Lectures</a>
-        <a href="downloads.html">My Downloads</a>
-      </div>
-
-      <!-- Support -->
-      <div class="footer-links">
-        <h4>Support</h4>
-        <a href="help.html">Help</a>
-        <a href="contact.html">Contact</a>
-        <a href="query.html">Submit Query</a>
-      </div>
-
-      <!-- Social -->
-      <div class="footer-links">
-        <h4>Connect</h4>
-        <div class="social-icons">
-          <a href="#"><i class="fab fa-github"></i></a>
-          <a href="#"><i class="fab fa-linkedin"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      © 2025 Smart Classroom | Made for Engineering Students
-    </div>
-  </footer>
-
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Subjects Section -->
+<section class="subjects-section">
+  <h2 class="section-title">Featured Subjects</h2>
   
-  <!-- Your Custom JS -->
-  <script src="script.js"></script>
+  <div class="subjects-grid">
+    <!-- C Programming -->
+    <div class="subject-card">
+      <div class="subject-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <h3>C Programming</h3>
+        <span>Unit 1 – Unit 4 | Semester 1</span>
+      </div>
+      <div class="subject-body">
+        <p>Master the fundamentals of C programming including data types, control structures, functions, and pointers.</p>
+        <div class="action-buttons">
+          <button class="btn-primary-action notes-btn" data-subject="c-programming">
+            <i class="fas fa-file-pdf"></i> View Notes
+          </button>
+          <button class="btn-danger-action video-btn" data-subject="c-programming">
+            <i class="fas fa-play-circle"></i> Watch Lectures
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- C++ Programming -->
+    <div class="subject-card">
+      <div class="subject-header" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+        <h3>C++ Programming</h3>
+        <span>Object-Oriented Programming</span>
+      </div>
+      <div class="subject-body">
+        <p>Learn Object-Oriented Programming concepts, classes, inheritance, polymorphism, and templates.</p>
+        <div class="action-buttons">
+          <button class="btn-primary-action notes-btn" data-subject="cpp-programming">
+            <i class="fas fa-file-pdf"></i> View Notes
+          </button>
+          <button class="btn-danger-action video-btn" data-subject="cpp-programming">
+            <i class="fas fa-play-circle"></i> Watch Lectures
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Operating Systems -->
+    <div class="subject-card">
+      <div class="subject-header" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+        <h3>Operating Systems</h3>
+        <span>Unit 1 – Unit 6 | Semester 3</span>
+      </div>
+      <div class="subject-body">
+        <p>Explore processes, memory management, CPU scheduling algorithms, and file systems.</p>
+        <div class="action-buttons">
+          <button class="btn-primary-action notes-btn" data-subject="os">
+            <i class="fas fa-file-pdf"></i> View Notes
+          </button>
+          <button class="btn-danger-action video-btn" data-subject="os">
+            <i class="fas fa-play-circle"></i> Watch Lectures
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Database Management -->
+    <div class="subject-card">
+      <div class="subject-header" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+        <h3>Database Management</h3>
+        <span>SQL & NoSQL Systems</span>
+      </div>
+      <div class="subject-body">
+        <p>Master database design, ER modeling, normalization, SQL queries, and transactions.</p>
+        <div class="action-buttons">
+          <button class="btn-primary-action notes-btn" data-subject="dbms">
+            <i class="fas fa-file-pdf"></i> View Notes
+          </button>
+          <button class="btn-danger-action video-btn" data-subject="dbms">
+            <i class="fas fa-play-circle"></i> Watch Lectures
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+  <h2 class="section-title">Platform Features</h2>
+  
+  <div class="features-grid">
+    <!-- Digital Library -->
+    <div class="feature-card" id="digitalLibraryBtn">
+      <div class="feature-icon">
+        <i class="fas fa-book-open"></i>
+      </div>
+      <h4>Digital Library</h4>
+      <p>Access thousands of textbooks, notes, and reference materials with advanced search capabilities.</p>
+      <button class="feature-btn library-btn">
+        <i class="fas fa-arrow-right"></i> Explore Library
+      </button>
+    </div>
+    
+    <!-- Smart Download -->
+    <div class="feature-card" id="smartDownloadBtn">
+      <div class="feature-icon">
+        <i class="fas fa-download"></i>
+      </div>
+      <h4>Smart Download</h4>
+      <p>Intelligent download manager with progress tracking and organized storage for all materials.</p>
+      <button class="feature-btn download-btn">
+        <i class="fas fa-arrow-right"></i> View Downloads
+      </button>
+    </div>
+    
+    <!-- Community Share -->
+    <div class="feature-card" id="communityShareBtn">
+      <div class="feature-icon">
+        <i class="fas fa-share-alt"></i>
+      </div>
+      <h4>Community Share</h4>
+      <p>Collaborate with peers, share notes, ask questions, and contribute to the learning community.</p>
+      <button class="feature-btn community-btn">
+        <i class="fas fa-arrow-right"></i> Join Community
+      </button>
+    </div>
+    
+    <!-- Video Lectures -->
+    <div class="feature-card" id="videoLecturesBtn">
+      <div class="feature-icon">
+        <i class="fas fa-video"></i>
+      </div>
+      <h4>Video Lectures</h4>
+      <p>Watch high-quality recorded lectures with playback controls and notes synchronization.</p>
+      <button class="feature-btn video-btn">
+        <i class="fas fa-arrow-right"></i> Browse Lectures
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Recent Activity -->
+<section class="activity-section">
+  <h2 class="section-title">Recent Activity</h2>
+  
+  <div class="activity-list">
+    <div class="activity-item">
+      <div class="activity-icon">
+        <i class="fas fa-download"></i>
+      </div>
+      <div class="activity-content">
+        <h5>Downloaded C Programming Notes</h5>
+        <span>2 hours ago</span>
+      </div>
+    </div>
+    
+    <div class="activity-item">
+      <div class="activity-icon">
+        <i class="fas fa-video"></i>
+      </div>
+      <div class="activity-content">
+        <h5>Watched OS Lecture - Process Scheduling</h5>
+        <span>5 hours ago</span>
+      </div>
+    </div>
+    
+    <div class="activity-item">
+      <div class="activity-icon">
+        <i class="fas fa-upload"></i>
+      </div>
+      <div class="activity-content">
+        <h5>Uploaded DBMS Assignment Solution</h5>
+        <span>Yesterday</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Social Section -->
+<section class="social-section">
+  <h2 class="section-title">Connect With Us</h2>
+  
+  <div class="social-buttons">
+    <a href="https://instagram.com/Ramesh__6162" target="_blank" class="social-btn instagram-btn">
+      <i class="fab fa-instagram"></i>
+      <span class="tooltip">@Ramesh__6162</span>
+    </a>
+    
+    <a href="mailto:rameshprasadrp901@gmail.com" class="social-btn email-btn">
+      <i class="fas fa-envelope"></i>
+      <span class="tooltip">Email Support</span>
+    </a>
+    
+    <a href="https://github.com" target="_blank" class="social-btn github-btn">
+      <i class="fab fa-github"></i>
+      <span class="tooltip">GitHub</span>
+    </a>
+    
+    <a href="https://wa.me/917498147593" target="_blank" class="social-btn whatsapp-btn">
+      <i class="fab fa-whatsapp"></i>
+      <span class="tooltip">WhatsApp</span>
+    </a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-container">
+    <div class="footer-brand">
+      <h3>Smart Classroom</h3>
+      <p>Transforming engineering education through technology.</p>
+    </div>
+    
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <a href="#" class="footer-link">Home</a>
+      <a href="#" class="footer-link">Digital Library</a>
+      <a href="#" class="footer-link">Video Lectures</a>
+      <a href="#" class="footer-link">Downloads</a>
+    </div>
+    
+    <div class="footer-links">
+      <h4>Resources</h4>
+      <a href="#" class="footer-link">Study Materials</a>
+      <a href="#" class="footer-link">Previous Papers</a>
+      <a href="#" class="footer-link">Lab Manuals</a>
+      <a href="#" class="footer-link">Tutorials</a>
+    </div>
+  </div>
+  
+  <div class="footer-bottom">
+    <p>© 2025 Smart Classroom | Empowering Engineering Education</p>
+    <p style="margin-top:10px;font-size:0.9rem;">
+      <i class="fas fa-envelope"></i> rameshprasadrp123@gmail.com | 
+      <i class="fas fa-phone"></i> +91 7498147593
+    </p>
+  </div>
+</footer>
+
+<script>
+// ================= NOTIFICATION SYSTEM =================
+function showNotification(message, type = 'success') {
+  const notification = document.getElementById('notification');
+  notification.innerHTML = `
+    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+    <span>${message}</span>
+  `;
+  notification.className = `notification ${type}`;
+  notification.style.display = 'flex';
+  
+  setTimeout(() => {
+    notification.style.display = 'none';
+  }, 3000);
+}
+
+// ================= SEARCH FUNCTIONALITY =================
+const searchInput = document.getElementById('searchInput');
+const searchBtn = document.getElementById('searchBtn');
+const searchResults = document.getElementById('searchResults');
+
+// Sample data for search
+const searchData = [
+  { title: 'C Programming Notes', type: 'notes', subject: 'c-programming', category: 'Notes' },
+  { title: 'C++ OOP Concepts', type: 'video', subject: 'cpp-programming', category: 'Video' },
+  { title: 'OS Process Scheduling', type: 'notes', subject: 'os', category: 'Notes' },
+  { title: 'DBMS SQL Queries', type: 'video', subject: 'dbms', category: 'Video' },
+  { title: 'Python Basics', type: 'notes', subject: 'python', category: 'Notes' },
+  { title: 'Data Structures Algorithms', type: 'video', subject: 'dsa', category: 'Video' },
+];
+
+function performSearch(query) {
+  if (!query.trim()) {
+    searchResults.style.display = 'none';
+    return;
+  }
+  
+  const results = searchData.filter(item =>
+    item.title.toLowerCase().includes(query.toLowerCase()) ||
+    item.subject.toLowerCase().includes(query.toLowerCase())
+  );
+  
+  if (results.length > 0) {
+    searchResults.innerHTML = `
+      <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); border-radius: 15px; padding: 20px;">
+        <h5 style="margin-bottom: 15px;">Search Results (${results.length})</h5>
+        ${results.map(item => `
+          <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 10px; cursor: pointer;"
+               onclick="openResource('${item.subject}', '${item.type}')">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <strong>${item.title}</strong>
+                <div style="font-size: 0.85rem; opacity: 0.7;">${item.category} • ${item.subject.toUpperCase()}</div>
+              </div>
+              <i class="fas fa-arrow-right"></i>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    searchResults.style.display = 'block';
+  } else {
+    searchResults.innerHTML = `
+      <div style="text-align: center; padding: 30px; color: rgba(255,255,255,0.7);">
+        <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 10px;"></i>
+        <p>No results found for "${query}"</p>
+      </div>
+    `;
+    searchResults.style.display = 'block';
+  }
+}
+
+searchBtn.addEventListener('click', () => {
+  performSearch(searchInput.value);
+});
+
+searchInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    performSearch(searchInput.value);
+  }
+});
+
+// ================= VOICE SEARCH =================
+const voiceSearchBtn = document.getElementById('voiceSearchBtn');
+let isListening = false;
+let recognition;
+
+if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SpeechRecognition();
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  
+  recognition.onstart = () => {
+    isListening = true;
+    voiceSearchBtn.classList.add('listening');
+    voiceSearchBtn.innerHTML = '<i class="fas fa-stop"></i>';
+    showNotification('Listening... Speak now!', 'success');
+  };
+  
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    searchInput.value = transcript;
+    performSearch(transcript);
+  };
+  
+  recognition.onend = () => {
+    isListening = false;
+    voiceSearchBtn.classList.remove('listening');
+    voiceSearchBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+  };
+  
+  recognition.onerror = (event) => {
+    showNotification('Voice recognition error. Please try again.', 'error');
+    voiceSearchBtn.classList.remove('listening');
+    voiceSearchBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+  };
+} else {
+  voiceSearchBtn.style.display = 'none';
+}
+
+voiceSearchBtn.addEventListener('click', () => {
+  if (!recognition) {
+    showNotification('Voice search not supported in your browser', 'error');
+    return;
+  }
+  
+  if (isListening) {
+    recognition.stop();
+  } else {
+    recognition.start();
+  }
+});
+
+// ================= SUBJECT BUTTONS FUNCTIONALITY =================
+document.querySelectorAll('.notes-btn').forEach(button => {
+  button.addEventListener('click', (e) => {
+    const subject = e.target.closest('.notes-btn').getAttribute('data-subject');
+    openResource(subject, 'notes');
+  });
+});
+
+document.querySelectorAll('.video-btn').forEach(button => {
+  button.addEventListener('click', (e) => {
+    const subject = e.target.closest('.video-btn').getAttribute('data-subject');
+    openResource(subject, 'video');
+  });
+});
+
+function openResource(subject, type) {
+  const subjectNames = {
+    'c-programming': 'C Programming',
+    'cpp-programming': 'C++ Programming',
+    'os': 'Operating Systems',
+    'dbms': 'Database Management'
+  };
+  
+  const resourceType = type === 'notes' ? 'Notes' : 'Video Lectures';
+  const icon = type === 'notes' ? '📚' : '🎥';
+  
+  showNotification(`${icon} Opening ${subjectNames[subject]} ${resourceType}...`, 'success');
+  
+  // Simulate loading
+  setTimeout(() => {
+    const modalContent = `
+      <div style="text-align: center; padding: 40px;">
+        <div style="font-size: 3rem; margin-bottom: 20px;">${icon}</div>
+        <h3>${subjectNames[subject]} ${resourceType}</h3>
+        <p style="margin: 20px 0; opacity: 0.8;">Loading ${type === 'notes' ? 'study materials' : 'video lectures'}...</p>
+        <div style="display: flex; gap: 10px; justify-content: center; margin-top: 30px;">
+          <button onclick="downloadResource('${subject}', '${type}')" 
+                  style="padding: 12px 25px; background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+                         border: none; border-radius: 10px; color: white; cursor: pointer;">
+            <i class="fas fa-download"></i> Download All
+          </button>
+          <button onclick="viewOnline('${subject}', '${type}')"
+                  style="padding: 12px 25px; background: rgba(255,255,255,0.1); 
+                         border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; 
+                         color: white; cursor: pointer;">
+            <i class="fas fa-eye"></i> View Online
+          </button>
+        </div>
+      </div>
+    `;
+    
+    // Create modal
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+    `;
+    
+    const modalInner = document.createElement('div');
+    modalInner.style.cssText = `
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 25px;
+      padding: 40px;
+      max-width: 500px;
+      width: 90%;
+      position: relative;
+    `;
+    
+    modalInner.innerHTML = modalContent;
+    modal.appendChild(modalInner);
+    
+    // Close button
+    const closeBtn = document.createElement('button');
+    closeBtn.innerHTML = '<i class="fas fa-times"></i>';
+    closeBtn.style.cssText = `
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+    `;
+    closeBtn.onclick = () => document.body.removeChild(modal);
+    modalInner.appendChild(closeBtn);
+    
+    document.body.appendChild(modal);
+  }, 500);
+}
+
+function downloadResource(subject, type) {
+  showNotification(`Downloading ${type === 'notes' ? 'notes' : 'lectures'}...`, 'success');
+  setTimeout(() => {
+    showNotification(`Download completed! Check your downloads folder.`, 'success');
+  }, 1500);
+}
+
+function viewOnline(subject, type) {
+  const urls = {
+    'c-programming': type === 'notes' ? 'notes/c-programming.pdf' : 'videos/c-programming',
+    'cpp-programming': type === 'notes' ? 'notes/cpp-programming.pdf' : 'videos/cpp-programming',
+    'os': type === 'notes' ? 'notes/os.pdf' : 'videos/os',
+    'dbms': type === 'notes' ? 'notes/dbms.pdf' : 'videos/dbms'
+  };
+  
+  window.open(urls[subject], '_blank');
+}
+
+// ================= FEATURE BUTTONS FUNCTIONALITY =================
+document.getElementById('digitalLibraryBtn').addEventListener('click', () => {
+  showNotification('Opening Digital Library...', 'success');
+  setTimeout(() => {
+    window.location.href = 'library.html';
+  }, 1000);
+});
+
+document.getElementById('smartDownloadBtn').addEventListener('click', () => {
+  showNotification('Opening Download Manager...', 'success');
+  setTimeout(() => {
+    window.open('downloads.html', '_blank');
+  }, 1000);
+});
+
+document.getElementById('communityShareBtn').addEventListener('click', () => {
+  const modalContent = `
+    <div style="text-align: center; padding: 30px;">
+      <div style="font-size: 3rem; margin-bottom: 20px;">👥</div>
+      <h3>Join Our Community</h3>
+      <p style="margin: 20px 0; opacity: 0.8;">Connect with fellow students and share knowledge!</p>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px;">
+        <button onclick="window.open('https://discord.com', '_blank')"
+                style="padding: 15px; background: #5865F2; border: none; border-radius: 10px; color: white; cursor: pointer;">
+          <i class="fab fa-discord"></i> Discord
+        </button>
+        <button onclick="window.open('https://telegram.org', '_blank')"
+                style="padding: 15px; background: #26A5E4; border: none; border-radius: 10px; color: white; cursor: pointer;">
+          <i class="fab fa-telegram"></i> Telegram
+        </button>
+        <button onclick="window.open('https://whatsapp.com', '_blank')"
+                style="padding: 15px; background: #25D366; border: none; border-radius: 10px; color: white; cursor: pointer;">
+          <i class="fab fa-whatsapp"></i> WhatsApp
+        </button>
+        <button onclick="window.open('https://github.com', '_blank')"
+                style="padding: 15px; background: #333; border: none; border-radius: 10px; color: white; cursor: pointer;">
+          <i class="fab fa-github"></i> GitHub
+        </button>
+      </div>
+    </div>
+  `;
+  
+  showModal('Community Share', modalContent);
+});
+
+document.getElementById('videoLecturesBtn').addEventListener('click', () => {
+  showNotification('Opening Video Lectures...', 'success');
+  setTimeout(() => {
+    window.location.href = 'lectures.html';
+  }, 1000);
+});
+
+// ================= UTILITY FUNCTIONS =================
+function showModal(title, content) {
+  const modal = document.createElement('div');
+  modal.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+  `;
+  
+  const modalInner = document.createElement('div');
+  modalInner.style.cssText = `
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 25px;
+    padding: 40px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+  `;
+  
+  modalInner.innerHTML = content;
+  modal.appendChild(modalInner);
+  
+  // Close button
+  const closeBtn = document.createElement('button');
+  closeBtn.innerHTML = '<i class="fas fa-times"></i>';
+  closeBtn.style.cssText = `
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+  `;
+  closeBtn.onclick = () => document.body.removeChild(modal);
+  modalInner.appendChild(closeBtn);
+  
+  // Close on outside click
+  modal.onclick = (e) => {
+    if (e.target === modal) {
+      document.body.removeChild(modal);
+    }
+  };
+  
+  document.body.appendChild(modal);
+}
+
+// ================= ANIMATIONS ON SCROLL =================
+document.addEventListener('DOMContentLoaded', () => {
+  // Animate stats counter
+  const statNumbers = document.querySelectorAll('.stat-number');
+  statNumbers.forEach(stat => {
+    const target = parseInt(stat.textContent);
+    let current = 0;
+    const increment = target / 100;
+    
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= target) {
+        stat.textContent = target + '+';
+        clearInterval(timer);
+      } else {
+        stat.textContent = Math.floor(current) + '+';
+      }
+    }, 20);
+  });
+  
+  // Add hover effects to all cards
+  const cards = document.querySelectorAll('.subject-card, .feature-card, .stat-card');
+  cards.forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      card.style.transform = card.classList.contains('subject-card') 
+        ? 'translateY(-10px) scale(1.02)' 
+        : 'translateY(-5px)';
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'translateY(0) scale(1)';
+    });
+  });
+  
+  // Initialize tooltips
+  const tooltips = document.querySelectorAll('.tooltip');
+  tooltips.forEach(tooltip => {
+    const parent = tooltip.parentElement;
+    parent.addEventListener('mouseenter', () => {
+      tooltip.style.opacity = '1';
+    });
+    parent.addEventListener('mouseleave', () => {
+      tooltip.style.opacity = '0';
+    });
+  });
+});
+</script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-[file content end]
-
-
-
