@@ -2,843 +2,1664 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>📥 My Downloads - Smart Classroom</title>
+  <title>📥 Smart Downloads - Download Manager</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Font Awesome -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <style>
+    :root {
+      --primary: #6366f1;
+      --secondary: #22d3ee;
+      --accent: #f472b6;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --dark: #020617;
+      --light: #f8fafc;
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
     }
 
+    /* ================= ANIMATED BACKGROUND ================= */
     body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
-      color: #333;
-      overflow-x: hidden;
       min-height: 100vh;
+      background: linear-gradient(135deg, #0a0a2a 0%, #020617 100%);
+      color: white;
+      overflow-x: hidden;
       position: relative;
     }
 
-    /* Optimized Animated Background - Less Heavy */
-    .animated-bg {
+    /* Floating Gradient Orbs */
+    .floating-orbs {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      width: 200vw;
+      height: 200vh;
+      top: -50vh;
+      left: -50vw;
       z-index: -1;
-      overflow: hidden;
-      pointer-events: none;
+      opacity: 0.3;
     }
 
-    .bg-circle {
+    .orb {
       position: absolute;
       border-radius: 50%;
-      background: rgba(79, 70, 229, 0.08);
-      animation: float 25s infinite linear;
-      will-change: transform;
+      filter: blur(70px);
+      animation: floatOrb 25s infinite linear;
     }
 
-    /* Reduced number of circles for better performance */
-    .bg-circle:nth-child(1) {
-      width: 150px;
-      height: 150px;
+    .orb-1 {
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
       top: 10%;
       left: 10%;
-      background: rgba(99, 102, 241, 0.05);
-      animation-duration: 40s;
+      animation-duration: 30s;
     }
 
-    .bg-circle:nth-child(2) {
-      width: 200px;
-      height: 200px;
+    .orb-2 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
       top: 60%;
-      left: 80%;
-      background: rgba(67, 97, 238, 0.04);
+      right: 10%;
       animation-duration: 35s;
       animation-delay: 5s;
     }
 
-    .bg-circle:nth-child(3) {
-      width: 100px;
-      height: 100px;
-      top: 20%;
-      left: 85%;
-      background: rgba(129, 140, 248, 0.06);
-      animation-duration: 30s;
-      animation-delay: 10s;
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(100px, 50px) rotate(90deg); }
+      50% { transform: translate(50px, 100px) rotate(180deg); }
+      75% { transform: translate(-50px, 50px) rotate(270deg); }
+      100% { transform: translate(0, 0) rotate(360deg); }
     }
 
-    @keyframes float {
+    /* Animated Grid Background */
+    .grid-bg {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      z-index: -2;
+      animation: gridMove 20s linear infinite;
+    }
+
+    @keyframes gridMove {
+      0% { transform: translate(0,0); }
+      100% { transform: translate(40px,40px); }
+    }
+
+    /* Download Progress Bars Animation */
+    .download-particles {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .download-particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: var(--secondary);
+      border-radius: 50%;
+      animation: particleFall linear infinite;
+    }
+
+    @keyframes particleFall {
       0% {
-        transform: translate(0, 0) rotate(0deg);
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 0;
       }
-      33% {
-        transform: translate(30px, -50px) rotate(120deg);
-      }
-      66% {
-        transform: translate(-20px, 20px) rotate(240deg);
-      }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
       100% {
-        transform: translate(0, 0) rotate(360deg);
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
       }
     }
 
-    /* Navbar - Optimized for performance */
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 30px;
-      background: rgba(79, 70, 229, 0.95);
-      color: white;
-      border-bottom-left-radius: 20px;
-      border-bottom-right-radius: 20px;
-      position: relative;
-      z-index: 100;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-      transition: background-color 0.3s ease;
-      backdrop-filter: blur(5px);
-      will-change: transform;
+    /* ================= NAVBAR ================= */
+    .navbar-custom {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(25px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
 
-    .navbar.scrolled {
-      background: rgba(79, 70, 229, 0.98);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-    }
-
-    .navbar .logo {
+    .navbar-brand {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: white !important;
       display: flex;
       align-items: center;
-      font-size: 1.6rem;
-      font-weight: 600;
-      cursor: pointer;
+      gap: 12px;
     }
 
-    .navbar .logo img {
-      height: 40px;
-      width: 40px;
-      margin-right: 10px;
-      border-radius: 8px;
-      object-fit: contain;
-      transition: transform 0.2s ease;
-    }
-
-    .navbar .logo:hover img {
-      transform: scale(1.05);
-    }
-
-    .nav-links {
-      list-style: none;
+    .logo-circle {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
       display: flex;
-      gap: 20px;
-    }
-
-    .nav-links li {
-      position: relative;
-    }
-
-    .nav-links li a {
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
       color: white;
-      text-decoration: none;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .nav-link-custom {
+      color: rgba(255,255,255,0.9) !important;
       font-weight: 500;
-      padding: 10px 18px;
-      border-radius: 10px;
-      transition: all 0.2s ease;
-      display: block;
-      white-space: nowrap;
-      will-change: transform, background-color;
+      padding: 10px 20px !important;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      margin: 0 5px;
     }
 
-    .nav-links li a:hover {
-      background: rgba(255, 255, 255, 0.15);
+    .nav-link-custom:hover {
+      color: white !important;
+      background: rgba(255,255,255,0.1);
       transform: translateY(-2px);
     }
 
-    .nav-links li a.active {
-      background: rgba(255, 255, 255, 0.25);
-      color: #ffed4b;
-      font-weight: 600;
+    .nav-link-custom.active {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white !important;
     }
 
-    /* Header - Simplified */
-    header {
+    /* ================= HEADER ================= */
+    .hero-header {
       text-align: center;
-      margin: 40px auto;
-      padding: 0 20px;
-      max-width: 800px;
-      animation: fadeIn 0.8s ease-out;
+      padding: 100px 20px 60px;
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .hero-title {
+      font-size: 3.8rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      line-height: 1.2;
     }
 
-    header h1 {
-      font-size: 2.8rem;
-      color: white;
-      margin-bottom: 15px;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    }
-
-    header p {
-      color: #c7d2fe;
-      font-size: 1.2rem;
+    .hero-subtitle {
+      font-size: 1.3rem;
+      opacity: 0.9;
+      max-width: 700px;
+      margin: 0 auto 40px;
       line-height: 1.6;
     }
 
-    /* Downloads Card */
-    .download-card {
-      max-width: 1100px;
-      margin: 0 auto 40px;
-      background: rgba(255, 255, 255, 0.97);
-      padding: 35px;
+    /* Stats Counter */
+    .stats-container {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      flex-wrap: wrap;
+      margin-top: 40px;
+    }
+
+    .stat-card {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-      animation: slideUp 0.6s ease-out;
+      padding: 25px;
+      min-width: 160px;
+      text-align: center;
+      transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
     }
 
-    .download-card::before {
+    .stat-card::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
-      height: 5px;
-      background: linear-gradient(to right, #4f46e5, #6366f1, #4f46e5);
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 20px 20px 0 0;
     }
 
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .stat-card:hover {
+      background: rgba(255,255,255,0.12);
+      transform: translateY(-5px);
+      border-color: var(--secondary);
     }
 
-    .download-card h2 {
-      text-align: center;
+    .stat-icon {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      color: var(--secondary);
+    }
+
+    .stat-number {
       font-size: 2.2rem;
-      color: #4f46e5;
-      margin-bottom: 30px;
-      position: relative;
-      padding-bottom: 15px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      line-height: 1;
     }
 
-    .download-card h2::after {
+    /* ================= DOWNLOADS DASHBOARD ================= */
+    .downloads-dashboard {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* Quick Actions */
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+
+    .action-card {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 25px;
+      padding: 30px;
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .action-card::before {
       content: '';
       position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100px;
-      height: 4px;
-      background: linear-gradient(to right, #4f46e5, #6366f1);
-      border-radius: 2px;
-    }
-
-    /* Table - Optimized */
-    .table-container {
-      overflow-x: auto;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 1rem;
-      min-width: 700px;
-    }
-
-    th, td {
-      padding: 16px 20px;
-      text-align: center;
-      border-bottom: 1px solid #e0e0e0;
-      transition: background-color 0.2s ease;
-    }
-
-    th {
-      background: linear-gradient(135deg, #4f46e5, #6366f1);
-      color: white;
-      font-weight: 600;
-      font-size: 1.05rem;
-      position: sticky;
       top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 25px 25px 0 0;
     }
 
-    tbody tr {
-      transition: all 0.2s ease;
+    .action-card:hover {
+      background: rgba(255,255,255,0.12);
+      transform: translateY(-5px);
+      border-color: var(--secondary);
     }
 
-    tbody tr:hover {
-      background-color: rgba(79, 70, 229, 0.05);
-    }
-
-    /* Buttons - Optimized */
-    .btn {
-      display: inline-flex;
+    .action-icon {
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 20px;
+      display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-weight: 500;
-      text-decoration: none;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      border: none;
-      will-change: transform, box-shadow;
-      min-width: 120px;
-    }
-
-    .btn:active {
-      transform: translateY(1px);
-    }
-
-    .view-btn {
-      background: linear-gradient(135deg, #0288d1, #26c6da);
+      font-size: 1.8rem;
+      margin: 0 auto 20px;
       color: white;
-      box-shadow: 0 4px 12px rgba(2, 136, 209, 0.2);
+      transition: all 0.3s ease;
     }
 
-    .view-btn:hover {
-      background: linear-gradient(135deg, #0277bd, #00bcd4);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(2, 136, 209, 0.3);
+    .action-card:hover .action-icon {
+      transform: rotateY(180deg) scale(1.1);
     }
 
-    .download-btn {
-      background: linear-gradient(135deg, #43a047, #66bb6a);
+    .action-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 15px;
       color: white;
-      box-shadow: 0 4px 12px rgba(67, 160, 71, 0.2);
     }
 
-    .download-btn:hover {
-      background: linear-gradient(135deg, #388e3c, #4caf50);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(67, 160, 71, 0.3);
-    }
-
-    /* Action Buttons */
-    .action-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
+    /* ================= DOWNLOADS TABLE ================= */
+    .downloads-container {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(20px);
+      border-radius: 25px;
+      padding: 40px;
       margin-top: 40px;
+      border: 1px solid rgba(255,255,255,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .downloads-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+      border-radius: 25px 25px 0 0;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 30px;
+      text-align: center;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* Search and Filter Bar */
+    .search-filter-bar {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 30px;
       flex-wrap: wrap;
     }
 
-    .action-btn {
-      padding: 14px 28px;
-      border-radius: 12px;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
+    .search-box {
+      flex: 1;
+      min-width: 300px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 15px;
+      padding: 0 15px;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-box input {
+      flex: 1;
+      background: transparent;
       border: none;
+      padding: 15px;
       color: white;
-      display: inline-flex;
+      font-size: 1rem;
+    }
+
+    .search-box input:focus {
+      outline: none;
+    }
+
+    .search-box i {
+      color: rgba(255,255,255,0.5);
+    }
+
+    .filter-btn {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 15px;
+      padding: 15px 25px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
       align-items: center;
       gap: 10px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      will-change: transform;
     }
 
-    .action-btn:active {
-      transform: translateY(2px);
+    .filter-btn:hover {
+      background: rgba(255,255,255,0.1);
+      transform: translateY(-2px);
     }
 
-    .clear-btn {
-      background: linear-gradient(135deg, #f44336, #ef5350);
+    /* Downloads Table */
+    .table-container {
+      overflow-x: auto;
+      border-radius: 15px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
     }
 
-    .clear-btn:hover {
-      background: linear-gradient(135deg, #d32f2f, #e53935);
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(244, 67, 54, 0.3);
+    .downloads-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      min-width: 1000px;
     }
 
-    .refresh-btn {
-      background: linear-gradient(135deg, #ff9800, #ffb74d);
+    .downloads-table thead {
+      background: linear-gradient(135deg, rgba(99,102,241,0.3), rgba(34,211,238,0.3));
     }
 
-    .refresh-btn:hover {
-      background: linear-gradient(135deg, #f57c00, #ffa726);
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(255, 152, 0, 0.3);
+    .downloads-table th {
+      padding: 20px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 1.1rem;
+      border-bottom: 2px solid rgba(255,255,255,0.1);
+    }
+
+    .downloads-table td {
+      padding: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: background 0.3s ease;
+    }
+
+    .downloads-table tbody tr:hover {
+      background: rgba(255,255,255,0.08);
+    }
+
+    .downloads-table tbody tr:last-child td {
+      border-bottom: none;
     }
 
     /* File Type Badge */
-    .file-type {
-      display: inline-block;
-      padding: 6px 14px;
+    .file-type-badge {
+      padding: 6px 15px;
       border-radius: 20px;
       font-size: 0.85rem;
-      font-weight: 600;
+      font-weight: 500;
+      display: inline-block;
+    }
+
+    .badge-pdf { background: rgba(239, 68, 68, 0.2); color: #fecaca; }
+    .badge-video { background: rgba(59, 130, 246, 0.2); color: #bfdbfe; }
+    .badge-doc { background: rgba(34, 197, 94, 0.2); color: #bbf7d0; }
+    .badge-zip { background: rgba(249, 115, 22, 0.2); color: #fed7aa; }
+    .badge-other { background: rgba(168, 85, 247, 0.2); color: #e9d5ff; }
+
+    /* Action Buttons */
+    .table-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .action-btn {
+      padding: 8px 15px;
+      border-radius: 10px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.9rem;
+      border: none;
       color: white;
     }
 
-    .file-type.pdf {
-      background: linear-gradient(135deg, #f44336, #e53935);
+    .view-btn {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
     }
 
-    .file-type.video {
-      background: linear-gradient(135deg, #2196f3, #1976d2);
+    .download-btn {
+      background: linear-gradient(135deg, #10b981, #047857);
     }
 
-    .file-type.document {
-      background: linear-gradient(135deg, #4caf50, #388e3c);
+    .delete-btn {
+      background: linear-gradient(135deg, #ef4444, #b91c1c);
     }
 
-    .file-type.presentation {
-      background: linear-gradient(135deg, #9c27b0, #7b1fa2);
+    .action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
     }
 
-    .file-type.other {
-      background: linear-gradient(135deg, #607d8b, #455a64);
+    /* Progress Bar Animation */
+    .progress-container {
+      width: 150px;
+      height: 8px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+      overflow: hidden;
     }
 
-    /* Empty State */
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+
+    /* ================= BULK ACTIONS ================= */
+    .bulk-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .bulk-buttons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .bulk-btn {
+      padding: 12px 25px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: none;
+      color: white;
+    }
+
+    .select-all {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .delete-selected {
+      background: linear-gradient(135deg, var(--danger), #b91c1c);
+    }
+
+    .download-selected {
+      background: linear-gradient(135deg, var(--success), #047857);
+    }
+
+    /* ================= EMPTY STATE ================= */
     .empty-state {
       text-align: center;
       padding: 60px 20px;
-      color: #666;
     }
 
     .empty-state i {
-      font-size: 4rem;
-      color: #c5c5c5;
+      font-size: 5rem;
+      color: rgba(255,255,255,0.1);
       margin-bottom: 20px;
       display: block;
     }
 
-    .empty-state p {
-      font-size: 1.2rem;
+    .empty-state h3 {
+      font-size: 1.8rem;
       margin-bottom: 15px;
-      color: #777;
+      color: white;
     }
 
-    /* Footer */
+    .empty-state p {
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 30px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ================= NOTIFICATION ================= */
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(255,255,255,0.95);
+      color: #333;
+      padding: 15px 25px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      backdrop-filter: blur(10px);
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    /* ================= FOOTER ================= */
     footer {
       text-align: center;
-      padding: 25px;
-      color: rgba(255, 255, 255, 0.7);
-      font-size: 14px;
-      margin-top: 60px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(15, 12, 41, 0.5);
-      backdrop-filter: blur(5px);
+      padding: 60px 20px 30px;
+      color: rgba(255,255,255,0.6);
+      margin-top: 80px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      background: rgba(0,0,0,0.2);
     }
 
-    /* Responsive Design */
-    @media (max-width: 992px) {
-      .navbar {
-        padding: 15px 20px;
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--secondary);
+    }
+
+    /* ================= RESPONSIVE ================= */
+    @media (max-width: 1200px) {
+      .hero-title {
+        font-size: 3rem;
       }
       
-      .nav-links {
-        gap: 10px;
-      }
-      
-      .nav-links li a {
-        padding: 8px 14px;
-        font-size: 0.95rem;
+      .downloads-table {
+        min-width: 800px;
       }
     }
 
     @media (max-width: 768px) {
-      .navbar {
+      .hero-title {
+        font-size: 2.5rem;
+      }
+      
+      .hero-subtitle {
+        font-size: 1.1rem;
+      }
+      
+      .quick-actions {
+        grid-template-columns: 1fr;
+      }
+      
+      .search-filter-bar {
+        flex-direction: column;
+      }
+      
+      .search-box {
+        min-width: 100%;
+      }
+      
+      .bulk-actions {
         flex-direction: column;
         gap: 15px;
-        padding: 15px;
+        align-items: stretch;
       }
       
-      .nav-links {
-        width: 100%;
+      .bulk-buttons {
         justify-content: center;
-        flex-wrap: wrap;
       }
       
-      .download-card {
+      .downloads-container {
         padding: 25px 15px;
-        margin: 0 15px 30px;
-      }
-      
-      header h1 {
-        font-size: 2.2rem;
-      }
-      
-      .action-buttons {
-        flex-direction: column;
-        align-items: center;
-      }
-      
-      .action-btn {
-        width: 100%;
-        max-width: 300px;
-        justify-content: center;
-      }
-      
-      .btn {
-        min-width: 100px;
-        padding: 8px 16px;
-        font-size: 0.9rem;
-      }
-      
-      th, td {
-        padding: 12px 15px;
       }
     }
 
     @media (max-width: 480px) {
-      header h1 {
+      .hero-title {
+        font-size: 2rem;
+      }
+      
+      .section-title {
         font-size: 1.8rem;
       }
       
-      header p {
-        font-size: 1rem;
-      }
-      
-      .download-card h2 {
-        font-size: 1.8rem;
-      }
-      
-      .nav-links {
+      .table-actions {
+        flex-direction: column;
         gap: 5px;
       }
       
-      .nav-links li a {
-        padding: 6px 10px;
-        font-size: 0.9rem;
+      .action-btn {
+        width: 100%;
+        justify-content: center;
       }
-    }
-
-    /* Loading Animation */
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .fa-spin {
-      animation: spin 1s linear infinite;
+      
+      .stat-card {
+        min-width: 130px;
+        padding: 20px;
+      }
     }
   </style>
 </head>
 <body>
 
-<!-- Optimized Animated Background -->
-<div class="animated-bg">
-  <div class="bg-circle"></div>
-  <div class="bg-circle"></div>
-  <div class="bg-circle"></div>
+<!-- Animated Background -->
+<div class="grid-bg"></div>
+<div class="floating-orbs">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
 </div>
+<div class="download-particles" id="particles"></div>
 
-<!-- Navbar -->
-<nav class="navbar" id="navbar">
-  <div class="logo" onclick="window.location.href='index.html'">
-    <img src="https://cdn-icons-png.flaticon.com/512/2232/2232688.png" alt="Logo">
-    <span>Smart Classroom</span>
+<!-- Notification System -->
+<div id="notification" class="notification"></div>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-custom">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">
+      <div class="logo-circle">
+        <i class="fas fa-download"></i>
+      </div>
+      <span>Smart Downloads</span>
+    </a>
+    
+    <div class="navbar-nav ms-auto">
+      <a class="nav-link nav-link-custom" href="index.html">
+        <i class="fas fa-home"></i> Home
+      </a>
+      <a class="nav-link nav-link-custom active" href="downloads.html">
+        <i class="fas fa-download"></i> Downloads
+      </a>
+      <a class="nav-link nav-link-custom" href="library.html">
+        <i class="fas fa-book"></i> Library
+      </a>
+    </div>
   </div>
-  <ul class="nav-links">
-    <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-    <li><a href="library.html"><i class="fas fa-book"></i> Library</a></li>
-    <li><a href="lectures.html"><i class="fas fa-chalkboard-teacher"></i> Lectures</a></li>
-    <li><a href="downloads.html" class="active"><i class="fas fa-download"></i> Downloads</a></li>
-  </ul>
 </nav>
 
-<header>
-  <h1><i class="fas fa-cloud-download-alt"></i> My Downloads</h1>
-  <p>Access all your downloaded study materials in one place. View or download them again anytime.</p>
-</header>
+<!-- Hero Section -->
+<section class="hero-header">
+  <h1 class="hero-title">📥 Smart Download Manager</h1>
+  <p class="hero-subtitle">Manage all your downloaded study materials, track progress, and access files instantly</p>
+  
+  <div class="stats-container">
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
+      <div class="stat-number" id="totalFiles">0</div>
+      <p>Total Files</p>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-hdd"></i></div>
+      <div class="stat-number" id="totalSize">0 MB</div>
+      <p>Total Size</p>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-calendar-alt"></i></div>
+      <div class="stat-number" id="recentFiles">0</div>
+      <p>Last 7 Days</p>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-bolt"></i></div>
+      <div class="stat-number" id="availableSpace">2.5 GB</div>
+      <p>Free Space</p>
+    </div>
+  </div>
+</section>
 
-<!-- Downloads Card -->
-<div class="download-card">
-  <h2>Downloaded Materials</h2>
-  
-  <div class="table-container">
-    <table id="downloadsTable">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>File Name</th>
-          <th>Type</th>
-          <th>Size</th>
-          <th>View</th>
-          <th>Download</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Downloads will be populated via JS -->
-      </tbody>
-    </table>
+<!-- Downloads Dashboard -->
+<section class="downloads-dashboard">
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <div class="action-card" id="organizeDownloads">
+      <div class="action-icon">
+        <i class="fas fa-folder-plus"></i>
+      </div>
+      <h3>Organize Files</h3>
+      <p>Create folders and organize your downloads</p>
+    </div>
+    
+    <div class="action-card" id="cloudBackup">
+      <div class="action-icon">
+        <i class="fas fa-cloud-upload-alt"></i>
+      </div>
+      <h3>Cloud Backup</h3>
+      <p>Backup important files to cloud storage</p>
+    </div>
+    
+    <div class="action-card" id="bulkDownload">
+      <div class="action-icon">
+        <i class="fas fa-layer-group"></i>
+      </div>
+      <h3>Bulk Download</h3>
+      <p>Download multiple files at once</p>
+    </div>
+    
+    <div class="action-card" id="speedTest">
+      <div class="action-icon">
+        <i class="fas fa-tachometer-alt"></i>
+      </div>
+      <h3>Speed Test</h3>
+      <p>Test your download speed</p>
+    </div>
   </div>
-  
-  <!-- Action Buttons -->
-  <div class="action-buttons">
-    <button class="action-btn clear-btn" id="clearDownloads">
-      <i class="fas fa-trash-alt"></i> Clear All Downloads
-    </button>
-    <button class="action-btn refresh-btn" id="refreshDownloads">
-      <i class="fas fa-sync-alt"></i> Refresh List
-    </button>
-    <button class="action-btn" id="addMockData" style="background: linear-gradient(135deg, #9c27b0, #673ab7);">
-      <i class="fas fa-plus-circle"></i> Add Sample Files
-    </button>
+
+  <!-- Downloads Table -->
+  <div class="downloads-container">
+    <h2 class="section-title">Your Downloads</h2>
+    
+    <!-- Search and Filter -->
+    <div class="search-filter-bar">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Search files by name, type, or date...">
+      </div>
+      
+      <button class="filter-btn" id="filterBtn">
+        <i class="fas fa-filter"></i> Filter
+      </button>
+      
+      <button class="filter-btn" id="sortBtn">
+        <i class="fas fa-sort-amount-down"></i> Sort
+      </button>
+    </div>
+    
+    <!-- Downloads Table -->
+    <div class="table-container">
+      <table class="downloads-table" id="downloadsTable">
+        <thead>
+          <tr>
+            <th style="width: 50px;">
+              <input type="checkbox" id="selectAll">
+            </th>
+            <th>File Name</th>
+            <th>Type</th>
+            <th>Size</th>
+            <th>Date Downloaded</th>
+            <th>Progress</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <!-- Downloads will be populated here -->
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Bulk Actions -->
+    <div class="bulk-actions">
+      <div>
+        <span id="selectedCount">0 files selected</span>
+      </div>
+      
+      <div class="bulk-buttons">
+        <button class="bulk-btn select-all" id="selectAllBtn">
+          <i class="fas fa-check-square"></i> Select All
+        </button>
+        
+        <button class="bulk-btn download-selected" id="downloadSelectedBtn">
+          <i class="fas fa-download"></i> Download Selected
+        </button>
+        
+        <button class="bulk-btn delete-selected" id="deleteSelectedBtn">
+          <i class="fas fa-trash-alt"></i> Delete Selected
+        </button>
+      </div>
+    </div>
   </div>
-</div>
+</section>
 
 <!-- Footer -->
 <footer>
-  <p>© 2025 Smart Classroom | Learn Better Everyday</p>
-  <p style="margin-top: 8px; font-size: 0.9rem; color: rgba(255, 255, 255, 0.5);">
-    Made with <i class="fas fa-heart" style="color: #ff4757;"></i> for Education
+  <p>© 2025 Smart Classroom | Professional Download Manager</p>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="library.html">Library</a>
+    <a href="lectures.html">Lectures</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <p style="margin-top:20px;font-size:0.9rem;">
+    <i class="fas fa-envelope"></i> rameshprasadrp123@gmail.com | 
+    <i class="fas fa-phone"></i> +91 7498147593 |
+    <i class="fab fa-instagram"></i> @Ramesh__6162
   </p>
 </footer>
 
 <script>
-  // Optimized DOM ready handler
-  document.addEventListener('DOMContentLoaded', function() {
-    console.log('Page loaded - initializing downloads manager');
+// ================= NOTIFICATION SYSTEM =================
+function showNotification(message, type = 'success') {
+  const notification = document.getElementById('notification');
+  notification.innerHTML = `
+    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}" 
+       style="color: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'}"></i>
+    <span>${message}</span>
+  `;
+  notification.style.display = 'flex';
+  
+  setTimeout(() => {
+    notification.style.display = 'none';
+  }, 3000);
+}
+
+// ================= CREATE PARTICLE EFFECT =================
+function createParticles() {
+  const container = document.getElementById('particles');
+  const colors = ['#22d3ee', '#6366f1', '#f472b6', '#10b981', '#f59e0b'];
+  
+  for(let i = 0; i < 30; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'download-particle';
     
-    // Sample download data
-    const sampleDownloads = [
-      { name: "Mathematics_Chapter_5.pdf", type: "pdf", size: "2.4 MB", date: "2025-01-15" },
-      { name: "Physics_Wave_Theory.mp4", type: "video", size: "45.2 MB", date: "2025-01-14" },
-      { name: "Chemistry_Notes_Organic.docx", type: "document", size: "1.8 MB", date: "2025-01-13" },
-      { name: "Biology_Quiz_Answers.pdf", type: "pdf", size: "850 KB", date: "2025-01-12" },
-      { name: "Computer_Science_Presentation.pptx", type: "presentation", size: "5.7 MB", date: "2025-01-11" },
-      { name: "English_Literature_Summary.pdf", type: "pdf", size: "1.2 MB", date: "2025-01-10" }
-    ];
+    const size = Math.random() * 8 + 2;
+    const left = Math.random() * 100;
+    const duration = 3 + Math.random() * 7;
+    const delay = Math.random() * 5;
+    const color = colors[Math.floor(Math.random() * colors.length)];
     
-    // Initialize downloads in localStorage
-    function initializeDownloads() {
-      if (!localStorage.getItem('classroomDownloads')) {
-        localStorage.setItem('classroomDownloads', JSON.stringify(sampleDownloads));
-      }
-    }
+    particle.style.width = `${size}px`;
+    particle.style.height = `${size}px`;
+    particle.style.left = `${left}%`;
+    particle.style.animationDuration = `${duration}s`;
+    particle.style.animationDelay = `${delay}s`;
+    particle.style.background = color;
     
-    // Get file type class
-    function getFileTypeClass(type) {
-      const typeMap = {
-        'pdf': 'pdf',
-        'video': 'video',
-        'document': 'document',
-        'presentation': 'presentation'
-      };
-      return typeMap[type] || 'other';
-    }
-    
-    // Format file size
-    function formatFileSize(bytes) {
-      if (!bytes) return "N/A";
-      if (typeof bytes === 'string') return bytes;
-      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-      if (bytes === 0) return '0 Byte';
-      const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
-      return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
-    }
-    
-    // Render downloads table
-    function renderDownloads() {
-      const downloads = JSON.parse(localStorage.getItem('classroomDownloads')) || [];
-      const tbody = document.querySelector('#downloadsTable tbody');
+    container.appendChild(particle);
+  }
+}
+
+// ================= SAMPLE DOWNLOAD DATA =================
+const downloadData = [
+  {
+    id: 1,
+    name: "Complete C Programming Notes.pdf",
+    type: "pdf",
+    size: "2.4 MB",
+    date: "2025-01-15",
+    progress: 100,
+    category: "Programming"
+  },
+  {
+    id: 2,
+    name: "Data Structures Lecture 3.mp4",
+    type: "video",
+    size: "45.2 MB",
+    date: "2025-01-14",
+    progress: 100,
+    category: "Lectures"
+  },
+  {
+    id: 3,
+    name: "Database Systems Assignment.docx",
+    type: "doc",
+    size: "1.8 MB",
+    date: "2025-01-13",
+    progress: 100,
+    category: "Assignments"
+  },
+  {
+    id: 4,
+    name: "Web Development Project.zip",
+    type: "zip",
+    size: "15.7 MB",
+    date: "2025-01-12",
+    progress: 85,
+    category: "Projects"
+  },
+  {
+    id: 5,
+    name: "Operating Systems Slides.pptx",
+    type: "ppt",
+    size: "3.2 MB",
+    date: "2025-01-11",
+    progress: 100,
+    category: "Presentations"
+  },
+  {
+    id: 6,
+    name: "Python Crash Course.pdf",
+    type: "pdf",
+    size: "5.1 MB",
+    date: "2025-01-10",
+    progress: 100,
+    category: "Programming"
+  },
+  {
+    id: 7,
+    name: "AI Fundamentals Lecture.mp4",
+    type: "video",
+    size: "68.3 MB",
+    date: "2025-01-09",
+    progress: 60,
+    category: "Lectures"
+  },
+  {
+    id: 8,
+    name: "Network Security Notes.pdf",
+    type: "pdf",
+    size: "1.2 MB",
+    date: "2025-01-08",
+    progress: 100,
+    category: "Networking"
+  }
+];
+
+// ================= RENDER DOWNLOADS TABLE =================
+function renderDownloads(filteredData = downloadData) {
+  const tableBody = document.getElementById('tableBody');
+  const totalFiles = document.getElementById('totalFiles');
+  const totalSize = document.getElementById('totalSize');
+  const recentFiles = document.getElementById('recentFiles');
+  
+  tableBody.innerHTML = '';
+  
+  if (filteredData.length === 0) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="7">
+          <div class="empty-state">
+            <i class="fas fa-download"></i>
+            <h3>No Downloads Found</h3>
+            <p>Your downloaded files will appear here. Try searching with different keywords.</p>
+            <button onclick="addSampleFiles()" 
+                    style="padding: 12px 25px; background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+                           border: none; border-radius: 10px; color: white; cursor: pointer; margin-top: 20px;">
+              <i class="fas fa-plus"></i> Add Sample Files
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  } else {
+    filteredData.forEach(file => {
+      const badgeClass = `badge-${file.type}`;
+      const row = document.createElement('tr');
+      row.setAttribute('data-id', file.id);
       
-      tbody.innerHTML = '';
+      row.innerHTML = `
+        <td>
+          <input type="checkbox" class="file-checkbox" data-id="${file.id}">
+        </td>
+        <td>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <i class="fas fa-${getFileIcon(file.type)}" 
+               style="font-size: 1.2rem; color: ${getFileColor(file.type)}"></i>
+            <div>
+              <div style="font-weight: 500;">${file.name}</div>
+              <div style="font-size: 0.85rem; opacity: 0.7;">${file.category}</div>
+            </div>
+          </div>
+        </td>
+        <td><span class="file-type-badge ${badgeClass}">${file.type.toUpperCase()}</span></td>
+        <td>${file.size}</td>
+        <td>${formatDate(file.date)}</td>
+        <td>
+          <div class="progress-container">
+            <div class="progress-bar" style="width: ${file.progress}%"></div>
+          </div>
+          <div style="font-size: 0.85rem; margin-top: 5px;">${file.progress}%</div>
+        </td>
+        <td>
+          <div class="table-actions">
+            <button class="action-btn view-btn" onclick="viewFile(${file.id})">
+              <i class="fas fa-eye"></i> View
+            </button>
+            <button class="action-btn download-btn" onclick="downloadFile(${file.id})">
+              <i class="fas fa-download"></i> Get
+            </button>
+            <button class="action-btn delete-btn" onclick="deleteFile(${file.id})">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </td>
+      `;
       
-      if (downloads.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="6">
-              <div class="empty-state">
-                <i class="fas fa-cloud-download-alt"></i>
-                <p>No downloads yet</p>
-                <p>Your downloaded files will appear here</p>
-              </div>
-            </td>
-          </tr>
-        `;
-        return;
-      }
-      
-      downloads.forEach((file, index) => {
-        const row = document.createElement('tr');
-        const fileTypeClass = getFileTypeClass(file.type);
-        
-        row.innerHTML = `
-          <td>${index + 1}</td>
-          <td style="text-align: left; font-weight: 500;">${file.name}</td>
-          <td><span class="file-type ${fileTypeClass}">${file.type.toUpperCase()}</span></td>
-          <td>${file.size}</td>
-          <td><a class="btn view-btn" data-file="${file.name}" data-action="view"><i class="fas fa-eye"></i> View</a></td>
-          <td><a class="btn download-btn" data-file="${file.name}" data-action="download"><i class="fas fa-download"></i> Download</a></td>
-        `;
-        
-        tbody.appendChild(row);
-      });
-      
-      // Add event listeners to buttons (event delegation)
-      tbody.addEventListener('click', function(e) {
-        const target = e.target.closest('.btn');
-        if (!target) return;
-        
-        e.preventDefault();
-        const fileName = target.getAttribute('data-file');
-        const action = target.getAttribute('data-action');
-        
-        if (action === 'view') {
-          handleViewFile(target, fileName);
-        } else if (action === 'download') {
-          handleDownloadFile(target, fileName);
-        }
-      });
-    }
-    
-    // Handle view file
-    function handleViewFile(button, fileName) {
-      const originalHTML = button.innerHTML;
-      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Opening...';
-      button.disabled = true;
-      
-      setTimeout(() => {
-        alert(`Opening: ${fileName}\n\nIn a real application, this would open the file in a viewer or new tab.`);
-        button.innerHTML = originalHTML;
-        button.disabled = false;
-      }, 800);
-    }
-    
-    // Handle download file
-    function handleDownloadFile(button, fileName) {
-      const originalHTML = button.innerHTML;
-      const originalBg = button.style.background;
-      
-      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading...';
-      button.style.background = 'linear-gradient(135deg, #8bc34a, #cddc39)';
-      button.disabled = true;
-      
-      // Simulate download delay
-      setTimeout(() => {
-        // Create a temporary link to trigger download
-        const link = document.createElement('a');
-        link.href = '#';
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        
-        // Show success state
-        button.innerHTML = '<i class="fas fa-check"></i> Downloaded!';
-        button.style.background = 'linear-gradient(135deg, #4caf50, #8bc34a)';
-        
-        // Revert after 2 seconds
-        setTimeout(() => {
-          button.innerHTML = originalHTML;
-          button.style.background = originalBg;
-          button.disabled = false;
-        }, 2000);
-      }, 1500);
-    }
-    
-    // Handle clear downloads
-    document.getElementById('clearDownloads').addEventListener('click', function() {
-      if (confirm('Are you sure you want to clear all downloads? This action cannot be undone.')) {
-        const button = this;
-        const originalHTML = button.innerHTML;
-        
-        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Clearing...';
-        button.disabled = true;
-        
-        setTimeout(() => {
-          localStorage.setItem('classroomDownloads', JSON.stringify([]));
-          renderDownloads();
-          
-          button.innerHTML = '<i class="fas fa-check"></i> Cleared!';
-          
-          setTimeout(() => {
-            button.innerHTML = originalHTML;
-            button.disabled = false;
-          }, 1500);
-        }, 800);
-      }
+      tableBody.appendChild(row);
     });
-    
-    // Handle refresh
-    document.getElementById('refreshDownloads').addEventListener('click', function() {
-      const button = this;
-      const originalHTML = button.innerHTML;
-      
-      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
-      button.disabled = true;
-      
-      setTimeout(() => {
-        renderDownloads();
-        button.innerHTML = '<i class="fas fa-check"></i> Refreshed!';
-        
-        setTimeout(() => {
-          button.innerHTML = originalHTML;
-          button.disabled = false;
-        }, 1000);
-      }, 600);
-    });
-    
-    // Handle add mock data
-    document.getElementById('addMockData').addEventListener('click', function() {
-      const button = this;
-      const originalHTML = button.innerHTML;
-      
-      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
-      button.disabled = true;
-      
-      setTimeout(() => {
-        localStorage.setItem('classroomDownloads', JSON.stringify(sampleDownloads));
-        renderDownloads();
-        
-        button.innerHTML = '<i class="fas fa-check"></i> Added!';
-        
-        setTimeout(() => {
-          button.innerHTML = originalHTML;
-          button.disabled = false;
-        }, 1500);
-      }, 800);
-    });
-    
-    // Navbar scroll effect
-    window.addEventListener('scroll', function() {
-      const navbar = document.getElementById('navbar');
-      if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
-      }
-    });
-    
-    // Initialize and render
-    initializeDownloads();
-    renderDownloads();
-    
-    console.log('Downloads manager initialized successfully');
+  }
+  
+  // Update stats
+  updateStats(filteredData);
+}
+
+// ================= UTILITY FUNCTIONS =================
+function getFileIcon(type) {
+  const icons = {
+    'pdf': 'file-pdf',
+    'video': 'file-video',
+    'doc': 'file-word',
+    'zip': 'file-archive',
+    'ppt': 'file-powerpoint',
+    'other': 'file'
+  };
+  return icons[type] || 'file';
+}
+
+function getFileColor(type) {
+  const colors = {
+    'pdf': '#ef4444',
+    'video': '#3b82f6',
+    'doc': '#10b981',
+    'zip': '#f59e0b',
+    'ppt': '#f472b6',
+    'other': '#94a3b8'
+  };
+  return colors[type] || '#94a3b8';
+}
+
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', { 
+    year: 'numeric', 
+    month: 'short', 
+    day: 'numeric' 
   });
+}
+
+function updateStats(data) {
+  const totalFiles = document.getElementById('totalFiles');
+  const totalSize = document.getElementById('totalSize');
+  const recentFiles = document.getElementById('recentFiles');
+  
+  totalFiles.textContent = data.length;
+  
+  // Calculate total size
+  let totalSizeMB = 0;
+  data.forEach(file => {
+    const size = parseFloat(file.size);
+    totalSizeMB += size;
+  });
+  totalSize.textContent = `${totalSizeMB.toFixed(1)} MB`;
+  
+  // Calculate recent files (last 7 days)
+  const oneWeekAgo = new Date();
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+  
+  const recentCount = data.filter(file => {
+    const fileDate = new Date(file.date);
+    return fileDate >= oneWeekAgo;
+  }).length;
+  
+  recentFiles.textContent = recentCount;
+}
+
+// ================= FILE ACTIONS =================
+function viewFile(fileId) {
+  const file = downloadData.find(f => f.id === fileId);
+  if (!file) return;
+  
+  showNotification(`Opening ${file.name}...`, 'success');
+  
+  // Simulate opening file
+  setTimeout(() => {
+    showNotification(`${file.name} opened successfully!`, 'success');
+    
+    // Create preview modal
+    const modalContent = `
+      <div style="text-align: center; padding: 40px;">
+        <div style="font-size: 4rem; color: ${getFileColor(file.type)}; margin-bottom: 20px;">
+          <i class="fas fa-${getFileIcon(file.type)}"></i>
+        </div>
+        <h3>${file.name}</h3>
+        <div style="margin: 20px 0; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 15px;">
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; text-align: left;">
+            <div><strong>Type:</strong> ${file.type.toUpperCase()}</div>
+            <div><strong>Size:</strong> ${file.size}</div>
+            <div><strong>Category:</strong> ${file.category}</div>
+            <div><strong>Downloaded:</strong> ${formatDate(file.date)}</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 10px; justify-content: center; margin-top: 30px;">
+          <button onclick="downloadFile(${fileId})" 
+                  style="padding: 12px 25px; background: linear-gradient(135deg, var(--success), #047857); 
+                         border: none; border-radius: 10px; color: white; cursor: pointer;">
+            <i class="fas fa-download"></i> Download
+          </button>
+          <button onclick="closeModal()"
+                  style="padding: 12px 25px; background: rgba(255,255,255,0.1); 
+                         border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; 
+                         color: white; cursor: pointer;">
+            <i class="fas fa-times"></i> Close
+          </button>
+        </div>
+      </div>
+    `;
+    
+    showModal('File Preview', modalContent);
+  }, 800);
+}
+
+function downloadFile(fileId) {
+  const file = downloadData.find(f => f.id === fileId);
+  if (!file) return;
+  
+  const btn = document.querySelector(`button[onclick="downloadFile(${fileId})"]`);
+  const originalHTML = btn.innerHTML;
+  
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading...';
+  btn.disabled = true;
+  
+  // Simulate download
+  setTimeout(() => {
+    btn.innerHTML = '<i class="fas fa-check"></i> Downloaded!';
+    btn.style.background = 'linear-gradient(135deg, #10b981, #047857)';
+    
+    showNotification(`Downloaded: ${file.name}`, 'success');
+    
+    // Simulate file download
+    const link = document.createElement('a');
+    link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent('This is a simulated file download');
+    link.download = file.name;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    setTimeout(() => {
+      btn.innerHTML = originalHTML;
+      btn.style.background = '';
+      btn.disabled = false;
+    }, 1500);
+  }, 1500);
+}
+
+function deleteFile(fileId) {
+  if (confirm('Are you sure you want to delete this file?')) {
+    const index = downloadData.findIndex(f => f.id === fileId);
+    if (index !== -1) {
+      const deletedFile = downloadData[index];
+      downloadData.splice(index, 1);
+      renderDownloads();
+      showNotification(`Deleted: ${deletedFile.name}`, 'success');
+    }
+  }
+}
+
+// ================= BULK ACTIONS =================
+document.getElementById('selectAll').addEventListener('change', function(e) {
+  const checkboxes = document.querySelectorAll('.file-checkbox');
+  checkboxes.forEach(checkbox => {
+    checkbox.checked = e.target.checked;
+  });
+  updateSelectedCount();
+});
+
+document.getElementById('selectAllBtn').addEventListener('click', function() {
+  const selectAllCheckbox = document.getElementById('selectAll');
+  selectAllCheckbox.checked = !selectAllCheckbox.checked;
+  selectAllCheckbox.dispatchEvent(new Event('change'));
+});
+
+document.getElementById('downloadSelectedBtn').addEventListener('click', function() {
+  const selectedFiles = getSelectedFiles();
+  if (selectedFiles.length === 0) {
+    showNotification('Please select files to download', 'error');
+    return;
+  }
+  
+  this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading...';
+  this.disabled = true;
+  
+  setTimeout(() => {
+    showNotification(`Downloading ${selectedFiles.length} files...`, 'success');
+    
+    // Simulate bulk download
+    selectedFiles.forEach((file, index) => {
+      setTimeout(() => {
+        downloadFile(file.id);
+      }, index * 500);
+    });
+    
+    setTimeout(() => {
+      this.innerHTML = '<i class="fas fa-download"></i> Download Selected';
+      this.disabled = false;
+    }, selectedFiles.length * 600);
+  }, 500);
+});
+
+document.getElementById('deleteSelectedBtn').addEventListener('click', function() {
+  const selectedFiles = getSelectedFiles();
+  if (selectedFiles.length === 0) {
+    showNotification('Please select files to delete', 'error');
+    return;
+  }
+  
+  if (confirm(`Are you sure you want to delete ${selectedFiles.length} files?`)) {
+    selectedFiles.forEach(file => {
+      const index = downloadData.findIndex(f => f.id === file.id);
+      if (index !== -1) {
+        downloadData.splice(index, 1);
+      }
+    });
+    
+    renderDownloads();
+    showNotification(`Deleted ${selectedFiles.length} files`, 'success');
+  }
+});
+
+function getSelectedFiles() {
+  const checkboxes = document.querySelectorAll('.file-checkbox:checked');
+  const selectedIds = Array.from(checkboxes).map(cb => parseInt(cb.getAttribute('data-id')));
+  return downloadData.filter(file => selectedIds.includes(file.id));
+}
+
+function updateSelectedCount() {
+  const count = document.querySelectorAll('.file-checkbox:checked').length;
+  document.getElementById('selectedCount').textContent = `${count} files selected`;
+}
+
+// ================= SEARCH AND FILTER =================
+document.getElementById('searchInput').addEventListener('input', function(e) {
+  const searchTerm = e.target.value.toLowerCase();
+  
+  if (!searchTerm.trim()) {
+    renderDownloads();
+    return;
+  }
+  
+  const filtered = downloadData.filter(file => 
+    file.name.toLowerCase().includes(searchTerm) ||
+    file.category.toLowerCase().includes(searchTerm) ||
+    file.type.toLowerCase().includes(searchTerm)
+  );
+  
+  renderDownloads(filtered);
+});
+
+document.getElementById('filterBtn').addEventListener('click', function() {
+  const filterContent = `
+    <div style="text-align: left; padding: 20px;">
+      <h3 style="margin-bottom: 20px;">Filter Downloads</h3>
+      <div style="display: grid; gap: 15px;">
+        <div>
+          <label style="display: block; margin-bottom: 5px;">File Type</label>
+          <select id="filterType" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white;">
+            <option value="">All Types</option>
+            <option value="pdf">PDF</option>
+            <option value="video">Video</option>
+            <option value="doc">Document</option>
+            <option value="zip">Archive</option>
+          </select>
+        </div>
+        <div>
+          <label style="display: block; margin-bottom: 5px;">Category</label>
+          <select id="filterCategory" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white;">
+            <option value="">All Categories</option>
+            <option value="Programming">Programming</option>
+            <option value="Lectures">Lectures</option>
+            <option value="Assignments">Assignments</option>
+            <option value="Projects">Projects</option>
+          </select>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+          <button onclick="applyFilters()" style="flex: 1; padding: 12px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none; border-radius: 8px; color: white; cursor: pointer;">
+            Apply Filters
+          </button>
+          <button onclick="closeModal()" style="flex: 1; padding: 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; cursor: pointer;">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  showModal('Filter Downloads', filterContent);
+});
+
+document.getElementById('sortBtn').addEventListener('click', function() {
+  const sortContent = `
+    <div style="text-align: left; padding: 20px;">
+      <h3 style="margin-bottom: 20px;">Sort Downloads</h3>
+      <div style="display: grid; gap: 10px;">
+        <label style="display: flex; align-items: center; gap: 10px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px; cursor: pointer;">
+          <input type="radio" name="sort" value="name" checked> Name (A-Z)
+        </label>
+        <label style="display: flex; align-items: center; gap: 10px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px; cursor: pointer;">
+          <input type="radio" name="sort" value="date"> Date (Newest)
+        </label>
+        <label style="display: flex; align-items: center; gap: 10px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px; cursor: pointer;">
+          <input type="radio" name="sort" value="size"> Size (Largest)
+        </label>
+        <label style="display: flex; align-items: center; gap: 10px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px; cursor: pointer;">
+          <input type="radio" name="sort" value="type"> File Type
+        </label>
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+          <button onclick="applySort()" style="flex: 1; padding: 12px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none; border-radius: 8px; color: white; cursor: pointer;">
+            Apply Sort
+          </button>
+          <button onclick="closeModal()" style="flex: 1; padding: 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; cursor: pointer;">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  showModal('Sort Downloads', sortContent);
+});
+
+function applyFilters() {
+  const typeFilter = document.getElementById('filterType')?.value;
+  const categoryFilter = document.getElementById('filterCategory')?.value;
+  
+  const filtered = downloadData.filter(file => {
+    if (typeFilter && file.type !== typeFilter) return false;
+    if (categoryFilter && file.category !== categoryFilter) return false;
+    return true;
+  });
+  
+  renderDownloads(filtered);
+  closeModal();
+  showNotification(`Applied filters: ${typeFilter || 'All'} files, ${categoryFilter || 'All categories'}`, 'success');
+}
+
+function applySort() {
+  const sortBy = document.querySelector('input[name="sort"]:checked')?.value;
+  
+  let sorted = [...downloadData];
+  
+  switch(sortBy) {
+    case 'name':
+      sorted.sort((a, b) => a.name.localeCompare(b.name));
+      break;
+    case 'date':
+      sorted.sort((a, b) => new Date(b.date) - new Date(a.date));
+      break;
+    case 'size':
+      sorted.sort((a, b) => parseFloat(b.size) - parseFloat(a.size));
+      break;
+    case 'type':
+      sorted.sort((a, b) => a.type.localeCompare(b.type));
+      break;
+  }
+  
+  renderDownloads(sorted);
+  closeModal();
+  showNotification(`Sorted by: ${sortBy}`, 'success');
+}
+
+// ================= QUICK ACTIONS =================
+document.getElementById('organizeDownloads').addEventListener('click', function() {
+  showNotification('Opening file organizer...', 'success');
+  setTimeout(() => {
+    showModal('File Organizer', `
+      <div style="text-align: center; padding: 30px;">
+        <i class="fas fa-folder-plus" style="font-size: 3rem; color: var(--secondary); margin-bottom: 20px;"></i>
+        <h3>Organize Your Downloads</h3>
+        <p style="margin: 20px 0; opacity: 0.8;">Create folders and organize your files</p>
+        <div style="display: grid; gap: 15px; max-width: 300px; margin: 0 auto;">
+          <input type="text" id="folderName" placeholder="Enter folder name" style="padding: 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white;">
+          <button onclick="createFolder()" style="padding: 12px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none; border-radius: 8px; color: white; cursor: pointer;">
+            Create Folder
+          </button>
+        </div>
+      </div>
+    `);
+  }, 500);
+});
+
+document.getElementById('cloudBackup').addEventListener('click', function() {
+  showNotification('Initiating cloud backup...', 'success');
+  setTimeout(() => {
+    showNotification('Backup completed! Files are safe in cloud storage.', 'success');
+  }, 1500);
+});
+
+document.getElementById('bulkDownload').addEventListener('click', function() {
+  showNotification('Preparing bulk download...', 'success');
+});
+
+document.getElementById('speedTest').addEventListener('click', function() {
+  const btn = this;
+  const originalHTML = btn.innerHTML;
+  
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testing...';
+  
+  setTimeout(() => {
+    const speed = Math.random() * 50 + 10; // Random speed between 10-60 Mbps
+    btn.innerHTML = originalHTML;
+    
+    showModal('Speed Test Results', `
+      <div style="text-align: center; padding: 30px;">
+        <i class="fas fa-tachometer-alt" style="font-size: 3rem; color: var(--success); margin-bottom: 20px;"></i>
+        <h3>Download Speed Test</h3>
+        <div style="font-size: 3rem; font-weight: 700; margin: 20px 0; color: var(--secondary);">
+          ${speed.toFixed(1)} Mbps
+        </div>
+        <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-top: 20px;">
+          <div style="text-align: left;">
+            <div><strong>Status:</strong> ${speed > 25 ? 'Excellent' : speed > 10 ? 'Good' : 'Poor'}</div>
+            <div><strong>Latency:</strong> ${(Math.random() * 30 + 10).toFixed(0)}ms</div>
+            <div><strong>Connection:</strong> Stable</div>
+          </div>
+        </div>
+      </div>
+    `);
+  }, 2000);
+});
+
+function createFolder() {
+  const folderName = document.getElementById('folderName').value;
+  if (!folderName.trim()) {
+    showNotification('Please enter a folder name', 'error');
+    return;
+  }
+  
+  showNotification(`Created folder: ${folderName}`, 'success');
+  closeModal();
+}
+
+function addSampleFiles() {
+  const sampleFiles = [
+    {
+      id: downloadData.length + 1,
+      name: "Mathematics Formulas.pdf",
+      type: "pdf",
+      size: "1.8 MB",
+      date: new Date().toISOString().split('T')[0],
+      progress: 100,
+      category: "Mathematics"
+    },
+    {
+      id: downloadData.length + 2,
+      name: "Chemistry Lab Manual.zip",
+      type: "zip",
+      size: "12.3 MB",
+      date: new Date().toISOString().split('T')[0],
+      progress: 100,
+      category: "Chemistry"
+    }
+  ];
+  
+  downloadData.push(...sampleFiles);
+  renderDownloads();
+  showNotification('Added sample files!', 'success');
+}
+
+// ================= MODAL SYSTEM =================
+let currentModal = null;
+
+function showModal(title, content) {
+  if (currentModal) closeModal();
+  
+  const modal = document.createElement('div');
+  modal.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    animation: fadeIn 0.3s ease;
+  `;
+  
+  const modalInner = document.createElement('div');
+  modalInner.style.cssText = `
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 25px;
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slideUp 0.3s ease;
+  `;
+  
+  modalInner.innerHTML = content;
+  modal.appendChild(modalInner);
+  
+  // Close button
+  const closeBtn = document.createElement('button');
+  closeBtn.innerHTML = '<i class="fas fa-times"></i>';
+  closeBtn.style.cssText = `
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+  `;
+  closeBtn.onclick = closeModal;
+  modalInner.appendChild(closeBtn);
+  
+  // Close on outside click
+  modal.onclick = (e) => {
+    if (e.target === modal) {
+      closeModal();
+    }
+  };
+  
+  document.body.appendChild(modal);
+  currentModal = modal;
+}
+
+function closeModal() {
+  if (currentModal) {
+    document.body.removeChild(currentModal);
+    currentModal = null;
+  }
+}
+
+// ================= INITIALIZATION =================
+document.addEventListener('DOMContentLoaded', function() {
+  createParticles();
+  renderDownloads();
+  
+  // Add event listeners for checkboxes
+  document.addEventListener('change', function(e) {
+    if (e.target.classList.contains('file-checkbox')) {
+      updateSelectedCount();
+    }
+  });
+  
+  console.log('Smart Downloads Manager initialized!');
+});
 </script>
 </body>
 </html>
