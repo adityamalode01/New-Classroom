@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Smart Classroom | Interactive Learning Hub</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+  <!-- Database System -->
+  <script src="database.js"></script>
+
   <!-- Favicon -->
   <link rel="shortcut icon" type="website icon" href="Smart classroom logo.png">
-  
+
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  
+
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  
+
   <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
   <style>
     :root {
       --primary: #6366f1;
@@ -36,7 +40,6 @@
       font-family: 'Poppins', sans-serif;
     }
 
-    /* ================= ANIMATED BACKGROUND ================= */
     body {
       min-height: 100vh;
       background: linear-gradient(135deg, #0a0a2a 0%, #020617 100%);
@@ -45,67 +48,43 @@
       position: relative;
     }
 
-    .floating-orbs {
+    /* ================= ANIMATED BACKGROUND ================= */
+    .particles-container {
       position: fixed;
-      width: 200vw;
-      height: 200vh;
-      top: -50vh;
-      left: -50vw;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       z-index: -1;
-      opacity: 0.3;
+      pointer-events: none;
     }
 
-    .orb {
+    .particle {
       position: absolute;
       border-radius: 50%;
-      filter: blur(80px);
-      animation: floatOrb 25s infinite linear;
+      background: var(--primary);
+      opacity: 0.3;
+      animation: floatParticle 20s infinite linear;
     }
 
-    .orb-1 {
-      width: 700px;
-      height: 700px;
-      background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
-      top: 10%;
-      left: 10%;
-      animation-duration: 30s;
-    }
+    @keyframes floatParticle {
 
-    .orb-2 {
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
-      top: 60%;
-      right: 10%;
-      animation-duration: 35s;
-      animation-delay: 5s;
-    }
+      0%,
+      100% {
+        transform: translate(0, 0) rotate(0deg);
+      }
 
-    @keyframes floatOrb {
-      0% { transform: translate(0, 0) rotate(0deg); }
-      25% { transform: translate(100px, 50px) rotate(90deg); }
-      50% { transform: translate(50px, 100px) rotate(180deg); }
-      75% { transform: translate(-50px, 50px) rotate(270deg); }
-      100% { transform: translate(0, 0) rotate(360deg); }
-    }
+      25% {
+        transform: translate(100px, -150px) rotate(90deg);
+      }
 
-    .grid-bg {
-      position: fixed;
-      width: 200%;
-      height: 200%;
-      top: -50%;
-      left: -50%;
-      background-image: 
-        linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
-      background-size: 60px 60px;
-      z-index: -2;
-      animation: gridMove 40s linear infinite;
-    }
+      50% {
+        transform: translate(-80px, 100px) rotate(180deg);
+      }
 
-    @keyframes gridMove {
-      0% { transform: translate(0, 0); }
-      100% { transform: translate(60px, 60px); }
+      75% {
+        transform: translate(120px, 50px) rotate(270deg);
+      }
     }
 
     /* ================= NAVBAR ================= */
@@ -126,6 +105,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      text-decoration: none;
     }
 
     .logo-circle {
@@ -146,6 +126,7 @@
       padding: 10px 20px !important;
       border-radius: 12px;
       transition: all 0.3s ease;
+      text-decoration: none;
     }
 
     .nav-link-custom:hover {
@@ -158,90 +139,88 @@
       color: white !important;
     }
 
-    /* ================= SEARCH BAR ================= */
-    .search-container {
-      max-width: 800px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-
-    .search-box {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(20px);
-      border-radius: 20px;
-      padding: 5px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      display: flex;
-      align-items: center;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    }
-
-    .search-input {
-      flex: 1;
-      background: transparent;
-      border: none;
-      padding: 15px 20px;
-      color: white;
-      font-size: 1rem;
-    }
-
-    .search-input:focus {
-      outline: none;
-    }
-
-    .search-input::placeholder {
-      color: rgba(255, 255, 255, 0.6);
-    }
-
-    .search-btn {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      border: none;
-      color: white;
-      padding: 12px 25px;
-      border-radius: 15px;
-      margin-right: 5px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .search-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
-    }
-
-    .voice-search-btn {
-      background: rgba(255, 255, 255, 0.1);
-      border: none;
-      color: white;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      margin-right: 10px;
-      cursor: pointer;
-      transition: all 0.3s ease;
+    /* Profile Dropdown */
+    .profile-dropdown {
       position: relative;
     }
 
-    .voice-search-btn:hover {
+    .profile-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 8px 15px;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .profile-btn:hover {
       background: rgba(255, 255, 255, 0.2);
-      transform: scale(1.1);
     }
 
-    .voice-search-btn.listening {
-      background: var(--danger);
-      animation: pulse 1s infinite;
+    .profile-img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--secondary);
     }
 
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-      70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    .profile-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      padding: 10px;
+      min-width: 200px;
+      display: none;
+      margin-top: 10px;
+      z-index: 1000;
+    }
+
+    .profile-menu.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .profile-menu a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 15px;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .profile-menu a:hover {
+      background: rgba(255, 255, 255, 0.1);
     }
 
     /* ================= HERO SECTION ================= */
     .hero-section {
       text-align: center;
-      padding: 60px 20px;
+      padding: 80px 20px;
       max-width: 1200px;
       margin: 0 auto;
     }
@@ -263,50 +242,77 @@
       margin: 0 auto 40px;
     }
 
-    /* ================= QUICK STATS ================= */
-    .stats-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      max-width: 1000px;
+    /* ================= FEATURE CARDS ================= */
+    .features-section {
+      max-width: 1200px;
       margin: 40px auto;
       padding: 0 20px;
     }
 
-    .stat-card {
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    .feature-card {
       background: rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      padding: 25px;
+      border-radius: 25px;
+      padding: 35px 30px;
       text-align: center;
       transition: all 0.3s ease;
+      cursor: pointer;
       position: relative;
       overflow: hidden;
+      text-decoration: none;
+      color: white;
+      display: block;
     }
 
-    .stat-card:hover {
+    .feature-card:hover {
       background: rgba(255, 255, 255, 0.12);
-      transform: translateY(-5px);
+      transform: translateY(-10px);
       border-color: var(--secondary);
+      text-decoration: none;
+      color: white;
     }
 
-    .stat-icon {
-      font-size: 2.5rem;
-      margin-bottom: 15px;
-      color: var(--secondary);
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
     }
 
-    .stat-number {
-      font-size: 2.2rem;
-      font-weight: 700;
+    .feature-icon {
+      width: 70px;
+      height: 70px;
       background: linear-gradient(135deg, var(--primary), var(--secondary));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin: 0 auto 25px;
+      color: white;
     }
 
-    /* ================= SUBJECT CARDS ================= */
+    .feature-card h4 {
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+    }
+
+    .feature-card p {
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.6;
+    }
+
+    /* ================= SUBJECTS SECTION ================= */
     .subjects-section {
       max-width: 1300px;
       margin: 60px auto;
@@ -361,21 +367,6 @@
       overflow: hidden;
     }
 
-    .subject-header h3 {
-      font-size: 1.6rem;
-      font-weight: 600;
-      margin-bottom: 10px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .subject-header span {
-      font-size: 0.9rem;
-      opacity: 0.9;
-      position: relative;
-      z-index: 1;
-    }
-
     .subject-body {
       padding: 25px;
     }
@@ -406,20 +397,23 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
+      text-decoration: none;
     }
 
     .btn-primary-action:hover {
       transform: translateY(-3px);
       box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
       background: linear-gradient(135deg, #4f46e5, var(--primary));
+      color: white;
+      text-decoration: none;
     }
 
-    .btn-danger-action {
+    .btn-secondary-action {
       flex: 1;
       padding: 12px 20px;
-      background: linear-gradient(135deg, var(--danger), #dc2626);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       color: white;
-      border: none;
       border-radius: 12px;
       font-weight: 500;
       cursor: pointer;
@@ -428,210 +422,144 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
+      text-decoration: none;
     }
 
-    .btn-danger-action:hover {
+    .btn-secondary-action:hover {
+      background: rgba(255, 255, 255, 0.2);
       transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
-      background: linear-gradient(135deg, #dc2626, var(--danger));
+      color: white;
+      text-decoration: none;
     }
 
-    /* ================= FEATURE CARDS ================= */
-    .features-section {
-      max-width: 1200px;
-      margin: 80px auto;
+    /* ================= STATS ================= */
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: 40px auto;
       padding: 0 20px;
     }
 
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 30px;
-    }
-
-    .feature-card {
+    .stat-card {
       background: rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 25px;
-      padding: 35px 30px;
+      border-radius: 20px;
+      padding: 25px;
       text-align: center;
       transition: all 0.3s ease;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
     }
 
-    .feature-card:hover {
+    .stat-card:hover {
       background: rgba(255, 255, 255, 0.12);
-      transform: translateY(-10px);
+      transform: translateY(-5px);
       border-color: var(--secondary);
     }
 
-    .feature-card::before {
-      content: '';
-      position: absolute;
+    .stat-icon {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      color: var(--secondary);
+    }
+
+    .stat-number {
+      font-size: 2.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* ================= MODAL ================= */
+    .modal-overlay {
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      height: 4px;
-      background: linear-gradient(90deg, var(--primary), var(--accent));
-    }
-
-    .feature-icon {
-      width: 70px;
-      height: 70px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      border-radius: 20px;
-      display: flex;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      z-index: 9999;
+      display: none;
       align-items: center;
       justify-content: center;
-      font-size: 1.8rem;
-      margin: 0 auto 25px;
-      color: white;
     }
 
-    .feature-card h4 {
-      font-size: 1.4rem;
-      margin-bottom: 15px;
-    }
-
-    .feature-card p {
-      color: rgba(255, 255, 255, 0.7);
-      line-height: 1.6;
-    }
-
-    /* Feature-specific button styles */
-    .feature-btn {
-      margin-top: 20px;
-      padding: 10px 25px;
+    .modal-content {
       background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: white;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .feature-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: translateX(5px);
-    }
-
-    /* ================= RECENT ACTIVITY ================= */
-    .activity-section {
-      max-width: 1200px;
-      margin: 80px auto;
-      padding: 0 20px;
-    }
-
-    .activity-list {
-      background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 25px;
-      padding: 30px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .activity-item {
-      display: flex;
-      align-items: center;
-      padding: 20px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      transition: background 0.3s ease;
-    }
-
-    .activity-item:hover {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 15px;
-    }
-
-    .activity-item:last-child {
-      border-bottom: none;
-    }
-
-    .activity-icon {
-      width: 50px;
-      height: 50px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-      margin-right: 20px;
-    }
-
-    .activity-content h5 {
-      font-size: 1.1rem;
-      margin-bottom: 5px;
-    }
-
-    .activity-content span {
-      color: rgba(255, 255, 255, 0.6);
-      font-size: 0.9rem;
-    }
-
-    /* ================= SOCIAL SECTION ================= */
-    .social-section {
-      text-align: center;
-      padding: 60px 20px;
-    }
-
-    .social-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin-top: 30px;
-    }
-
-    .social-btn {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      color: white;
-      text-decoration: none;
-      transition: all 0.3s ease;
+      padding: 40px;
+      max-width: 500px;
+      width: 90%;
       position: relative;
     }
 
-    .social-btn:hover {
-      transform: translateY(-5px) scale(1.1);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
     }
 
-    .social-btn .tooltip {
-      position: absolute;
-      bottom: -40px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.8);
+    .modal-header h3 {
+      font-size: 1.8rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
       color: white;
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 0.8rem;
-      white-space: nowrap;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 5px;
     }
 
-    .social-btn:hover .tooltip {
-      opacity: 1;
+    /* ================= NOTIFICATION ================= */
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.95);
+      color: #333;
+      padding: 15px 25px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      backdrop-filter: blur(10px);
+      animation: slideIn 0.3s ease;
     }
 
-    .instagram-btn { background: linear-gradient(45deg, #405DE6, #E4405F); }
-    .github-btn { background: #333333; }
-    .email-btn { background: linear-gradient(45deg, #EA4335, #34A853); }
-    .whatsapp-btn { background: linear-gradient(45deg, #25D366, #128C7E); }
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .notification.success {
+      border-left: 5px solid var(--success);
+    }
+
+    .notification.error {
+      border-left: 5px solid var(--danger);
+    }
 
     /* ================= FOOTER ================= */
     footer {
@@ -681,66 +609,22 @@
       color: rgba(255, 255, 255, 0.5);
     }
 
-    /* ================= MODAL & NOTIFICATIONS ================= */
-    .notification {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: rgba(255, 255, 255, 0.95);
-      color: #333;
-      padding: 15px 25px;
-      border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      z-index: 10000;
-      display: none;
-      align-items: center;
-      gap: 10px;
-      backdrop-filter: blur(10px);
-      animation: slideIn 0.3s ease;
-    }
-
-    @keyframes slideIn {
-      from {
-        transform: translateX(100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-
-    .notification.success {
-      border-left: 5px solid var(--success);
-    }
-
-    .notification.error {
-      border-left: 5px solid var(--danger);
-    }
-
     /* ================= RESPONSIVE ================= */
     @media (max-width: 768px) {
       .hero-title {
         font-size: 2.5rem;
       }
-      
+
       .subjects-grid {
         grid-template-columns: 1fr;
       }
-      
-      .search-box {
-        flex-direction: column;
-        gap: 10px;
-        padding: 20px;
-      }
-      
-      .search-btn, .voice-search-btn {
-        width: 100%;
-        margin: 5px 0;
-      }
-      
+
       .action-buttons {
         flex-direction: column;
+      }
+
+      .feature-card {
+        padding: 25px 20px;
       }
     }
 
@@ -748,17 +632,9 @@
       .hero-title {
         font-size: 2rem;
       }
-      
+
       .section-title {
         font-size: 2rem;
-      }
-      
-      .stat-card {
-        padding: 20px;
-      }
-      
-      .feature-card {
-        padding: 25px 20px;
       }
     }
   </style>
@@ -766,1034 +642,1115 @@
 
 <body>
 
-<!-- Animated Background -->
-<div class="grid-bg"></div>
-<div class="floating-orbs">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-</div>
+  <!-- Particles Background -->
+  <div class="particles-container" id="particlesContainer"></div>
 
-<!-- Notification System -->
-<div id="notification" class="notification"></div>
+  <!-- Notification -->
+  <div id="notification" class="notification"></div>
 
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-custom">
-  <div class="container">
-    <a class="navbar-brand" href="#">
-      <div class="logo-circle">
-        <i class="fas fa-graduation-cap"></i>
-      </div>
-      <span>Smart Classroom</span>
-    </a>
-    
-    <div class="navbar-nav ms-auto">
-      <a class="nav-link nav-link-custom active" href="#">
-        <i class="fas fa-home"></i> Home
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <div class="logo-circle">
+          <i class="fas fa-graduation-cap"></i>
+        </div>
+        <span>Smart Classroom</span>
       </a>
-      <a class="nav-link nav-link-custom" href="library.html">
-        <i class="fas fa-book"></i> Library
+
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link nav-link-custom active" href="#">
+          <i class="fas fa-home"></i> Home
+        </a>
+        <a class="nav-link nav-link-custom" href="profile.html">
+          <i class="fas fa-user"></i> Profile
+        </a>
+        <a class="nav-link nav-link-custom" href="experience.html">
+          <i class="fas fa-briefcase"></i> Experience
+        </a>
+        <a class="nav-link nav-link-custom" href="library.html">
+          <i class="fas fa-book"></i> Library
+        </a>
+        <a class="nav-link nav-link-custom" href="downloads.html">
+          <i class="fas fa-download"></i> Downloads
+        </a>
+        <a class="nav-link nav-link-custom" href="contact.html">
+          <i class="fas fa-envelope"></i> Contact
+        </a>
+      </div>
+
+      <!-- Profile Dropdown -->
+      <div class="profile-dropdown">
+        <div class="profile-btn" id="profileToggle">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Ramesh" alt="Profile" class="profile-img">
+          <span id="userName">Guest</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="profile-menu" id="profileMenu">
+          <a href="profile.html">
+            <i class="fas fa-user"></i> My Profile
+          </a>
+          <a href="downloads.html">
+            <i class="fas fa-download"></i> My Downloads
+          </a>
+          <a href="library.html">
+            <i class="fas fa-book"></i> Library
+          </a>
+          <a href="experience.html">
+            <i class="fas fa-chart-line"></i> Progress
+          </a>
+          <hr style="border-color: rgba(255,255,255,0.1); margin: 10px 0;">
+          <a href="login.html" id="loginLink">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </a>
+          <a href="signup.html" id="signupLink">
+            <i class="fas fa-user-plus"></i> Sign Up
+          </a>
+          <a href="#" id="logoutLink" style="display: none;">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <h1 class="hero-title">Interactive Learning Hub</h1>
+    <p class="hero-subtitle">Access notes, video lectures, and study materials for all engineering subjects</p>
+
+    <div class="stats-container">
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-book"></i></div>
+        <div class="stat-number">250+</div>
+        <p>Study Materials</p>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-video"></i></div>
+        <div class="stat-number">120+</div>
+        <p>Video Lectures</p>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-users"></i></div>
+        <div class="stat-number">1.5K+</div>
+        <p>Active Students</p>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-download"></i></div>
+        <div class="stat-number">4.5K+</div>
+        <p>Downloads</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <h2 class="section-title">Platform Features</h2>
+
+    <div class="features-grid">
+      <!-- Digital Library -->
+      <a href="library.html" class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-book-open"></i>
+        </div>
+        <h4>Digital Library</h4>
+        <p>Access thousands of textbooks, notes, and reference materials</p>
       </a>
-      <a class="nav-link nav-link-custom" href="contact.html">
-        <i class="fas fa-envelope"></i> Contact
+
+
+      <!-- Smart Download -->
+      <a href="downloads.html" class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-download"></i>
+        </div>
+        <h4>Smart Download</h4>
+        <p>Intelligent download manager with progress tracking</p>
+      </a>
+
+      <!-- Experience -->
+      <a href="experience.html" class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <h4>Progress Tracking</h4>
+        <p>Track your learning progress and achievements</p>
+      </a>
+
+      <!-- Video Lectures -->
+      <a href="videos.html" class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-video"></i>
+        </div>
+        <h4>Video Lectures</h4>
+        <p>Watch high-quality recorded lectures</p>
       </a>
     </div>
-  </div>
-</nav>
+  </section>
 
-<!-- Search Bar -->
-<div class="search-container">
-  <div class="search-box">
-    <input type="text" class="search-input" id="searchInput" 
-           placeholder="Search for subjects, notes, or videos...">
-    
-    <button class="voice-search-btn" id="voiceSearchBtn" title="Voice Search">
-      <i class="fas fa-microphone"></i>
-    </button>
-    
-    <button class="search-btn" id="searchBtn">
-      <i class="fas fa-search"></i> Search
-    </button>
-  </div>
-  
-  <div id="searchResults" style="display: none; margin-top: 20px;"></div>
-</div>
+  <!-- Subjects Section -->
+  <section class="subjects-section">
+    <h2 class="section-title">Featured Subjects</h2>
 
-<!-- Hero Section -->
-<section class="hero-section">
-  <h1 class="hero-title">Interactive Learning Hub</h1>
-  <p class="hero-subtitle">Access notes, video lectures, and study materials for all engineering subjects</p>
-  
-  <div class="stats-container">
-    <div class="stat-card">
-      <div class="stat-icon"><i class="fas fa-book"></i></div>
-      <div class="stat-number">250+</div>
-      <p>Study Materials</p>
-    </div>
-    
-    <div class="stat-card">
-      <div class="stat-icon"><i class="fas fa-video"></i></div>
-      <div class="stat-number">120+</div>
-      <p>Video Lectures</p>
-    </div>
-    
-    <div class="stat-card">
-      <div class="stat-icon"><i class="fas fa-users"></i></div>
-      <div class="stat-number">1.5K+</div>
-      <p>Active Students</p>
-    </div>
-    
-    <div class="stat-card">
-      <div class="stat-icon"><i class="fas fa-download"></i></div>
-      <div class="stat-number">4.5K+</div>
-      <p>Downloads</p>
-    </div>
-  </div>
-</section>
-
-<!-- Subjects Section -->
-<section class="subjects-section">
-  <h2 class="section-title">Featured Subjects</h2>
-  
-  <div class="subjects-grid">
-    <!-- C Programming -->
-    <div class="subject-card">
-      <div class="subject-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-        <h3>C Programming</h3>
-        <span>Unit 1 – Unit 4 | Semester 1</span>
-      </div>
-      <div class="subject-body">
-        <p>Master the fundamentals of C programming including data types, control structures, functions, and pointers.</p>
-        <div class="action-buttons">
-          <button class="btn-primary-action notes-btn" data-subject="c-programming">
-            <i class="fas fa-file-pdf"></i> View Notes
-          </button>
-          <button class="btn-danger-action video-btn" data-subject="c-programming">
-            <i class="fas fa-play-circle"></i> Watch Lectures
-          </button>
+    <div class="subjects-grid">
+      <!-- C Programming -->
+      <div class="subject-card">
+        <div class="subject-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+          <h3>C Programming</h3>
+          <span style="opacity: 0.9;">Unit 1 – Unit 4 | Semester 1</span>
         </div>
-      </div>
-    </div>
-
-    <!-- C++ Programming -->
-    <div class="subject-card">
-      <div class="subject-header" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-        <h3>C++ Programming</h3>
-        <span>Object-Oriented Programming</span>
-      </div>
-      <div class="subject-body">
-        <p>Learn Object-Oriented Programming concepts, classes, inheritance, polymorphism, and templates.</p>
-        <div class="action-buttons">
-          <button class="btn-primary-action notes-btn" data-subject="cpp-programming">
-            <i class="fas fa-file-pdf"></i> View Notes
-          </button>
-          <button class="btn-danger-action video-btn" data-subject="cpp-programming">
-            <i class="fas fa-play-circle"></i> Watch Lectures
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Operating Systems -->
-    <div class="subject-card">
-      <div class="subject-header" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-        <h3>Operating Systems</h3>
-        <span>Unit 1 – Unit 6 | Semester 3</span>
-      </div>
-      <div class="subject-body">
-        <p>Explore processes, memory management, CPU scheduling algorithms, and file systems.</p>
-        <div class="action-buttons">
-          <button class="btn-primary-action notes-btn" data-subject="os">
-            <i class="fas fa-file-pdf"></i> View Notes
-          </button>
-          <button class="btn-danger-action video-btn" data-subject="os">
-            <i class="fas fa-play-circle"></i> Watch Lectures
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Database Management -->
-    <div class="subject-card">
-      <div class="subject-header" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
-        <h3>Database Management</h3>
-        <span>SQL & NoSQL Systems</span>
-      </div>
-      <div class="subject-body">
-        <p>Master database design, ER modeling, normalization, SQL queries, and transactions.</p>
-        <div class="action-buttons">
-          <button class="btn-primary-action notes-btn" data-subject="dbms">
-            <i class="fas fa-file-pdf"></i> View Notes
-          </button>
-          <button class="btn-danger-action video-btn" data-subject="dbms">
-            <i class="fas fa-play-circle"></i> Watch Lectures
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Features Section -->
-<section class="features-section">
-  <h2 class="section-title">Platform Features</h2>
-  
-  <div class="features-grid">
-    <!-- Digital Library -->
-    <div class="feature-card" id="digitalLibraryBtn">
-      <div class="feature-icon">
-        <i class="fas fa-book-open"></i>
-      </div>
-      <h4>Digital Library</h4>
-      <p>Access thousands of textbooks, notes, and reference materials with advanced search capabilities.</p>
-      <button class="feature-btn library-btn">
-        <i class="fas fa-arrow-right"></i> Explore Library
-      </button>
-    </div>
-    
-    <!-- Smart Download -->
-    <div class="feature-card" id="smartDownloadBtn">
-      <div class="feature-icon">
-        <i class="fas fa-download"></i>
-      </div>
-      <h4>Smart Download</h4>
-      <p>Intelligent download manager with progress tracking and organized storage for all materials.</p>
-      <button class="feature-btn download-btn">
-        <i class="fas fa-arrow-right"></i> View Downloads
-      </button>
-    </div>
-    
-    <!-- Community Share -->
-    <div class="feature-card" id="communityShareBtn">
-      <div class="feature-icon">
-        <i class="fas fa-share-alt"></i>
-      </div>
-      <h4>Community Share</h4>
-      <p>Collaborate with peers, share notes, ask questions, and contribute to the learning community.</p>
-      <button class="feature-btn community-btn">
-        <i class="fas fa-arrow-right"></i> Join Community
-      </button>
-    </div>
-    
-    <!-- Video Lectures -->
-    <div class="feature-card" id="videoLecturesBtn">
-      <div class="feature-icon">
-        <i class="fas fa-video"></i>
-      </div>
-      <h4>Video Lectures</h4>
-      <p>Watch high-quality recorded lectures with playback controls and notes synchronization.</p>
-      <button class="feature-btn video-btn">
-        <i class="fas fa-arrow-right"></i> Browse Lectures
-      </button>
-    </div>
-  </div>
-</section>
-
-<!-- Recent Activity -->
-<section class="activity-section">
-  <h2 class="section-title">Recent Activity</h2>
-  
-  <div class="activity-list">
-    <div class="activity-item">
-      <div class="activity-icon">
-        <i class="fas fa-download"></i>
-      </div>
-      <div class="activity-content">
-        <h5>Downloaded C Programming Notes</h5>
-        <span>2 hours ago</span>
-      </div>
-    </div>
-    
-    <div class="activity-item">
-      <div class="activity-icon">
-        <i class="fas fa-video"></i>
-      </div>
-      <div class="activity-content">
-        <h5>Watched OS Lecture - Process Scheduling</h5>
-        <span>5 hours ago</span>
-      </div>
-    </div>
-    
-    <div class="activity-item">
-      <div class="activity-icon">
-        <i class="fas fa-upload"></i>
-      </div>
-      <div class="activity-content">
-        <h5>Uploaded DBMS Assignment Solution</h5>
-        <span>Yesterday</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Social Section -->
-<section class="social-section">
-  <h2 class="section-title">Connect With Us</h2>
-  
-  <div class="social-buttons">
-    <a href="https://instagram.com/Ramesh__6162" target="_blank" class="social-btn instagram-btn">
-      <i class="fab fa-instagram"></i>
-      <span class="tooltip">@Ramesh__6162</span>
-    </a>
-    
-    <a href="mailto:rameshprasadrp901@gmail.com" class="social-btn email-btn">
-      <i class="fas fa-envelope"></i>
-      <span class="tooltip">Email Support</span>
-    </a>
-    
-    <a href="https://github.com" target="_blank" class="social-btn github-btn">
-      <i class="fab fa-github"></i>
-      <span class="tooltip">GitHub</span>
-    </a>
-    
-    <a href="https://wa.me/917498147593" target="_blank" class="social-btn whatsapp-btn">
-      <i class="fab fa-whatsapp"></i>
-      <span class="tooltip">WhatsApp</span>
-    </a>
-  </div>
-</section>
-
-<!-- Footer -->
-<footer>
-  <div class="footer-container">
-    <div class="footer-brand">
-      <h3>Smart Classroom</h3>
-      <p>Transforming engineering education through technology.</p>
-    </div>
-    
-    <div class="footer-links">
-      <h4>Quick Links</h4>
-      <a href="#" class="footer-link">Home</a>
-      <a href="#" class="footer-link">Digital Library</a>
-      <a href="#" class="footer-link">Video Lectures</a>
-      <a href="#" class="footer-link">Downloads</a>
-    </div>
-    
-    <div class="footer-links">
-      <h4>Resources</h4>
-      <a href="#" class="footer-link">Study Materials</a>
-      <a href="#" class="footer-link">Previous Papers</a>
-      <a href="#" class="footer-link">Lab Manuals</a>
-      <a href="#" class="footer-link">Tutorials</a>
-    </div>
-  </div>
-  
-  <div class="footer-bottom">
-    <p>© 2025 Smart Classroom | Empowering Engineering Education</p>
-    <p style="margin-top:10px;font-size:0.9rem;">
-      <i class="fas fa-envelope"></i> rameshprasadrp123@gmail.com | 
-      <i class="fas fa-phone"></i> +91 7498147593
-    </p>
-  </div>
-</footer>
-
-<script>
-// ================= NOTIFICATION SYSTEM =================
-function showNotification(message, type = 'success') {
-  const notification = document.getElementById('notification');
-  notification.innerHTML = `
-    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
-    <span>${message}</span>
-  `;
-  notification.className = `notification ${type}`;
-  notification.style.display = 'flex';
-  
-  setTimeout(() => {
-    notification.style.display = 'none';
-  }, 3000);
-}
-
-// ================= SEARCH FUNCTIONALITY =================
-const searchInput = document.getElementById('searchInput');
-const searchBtn = document.getElementById('searchBtn');
-const searchResults = document.getElementById('searchResults');
-
-// Sample data for search
-const searchData = [
-  { title: 'C Programming Notes', type: 'notes', subject: 'c-programming', category: 'Notes' },
-  { title: 'C++ OOP Concepts', type: 'video', subject: 'cpp-programming', category: 'Video' },
-  { title: 'OS Process Scheduling', type: 'notes', subject: 'os', category: 'Notes' },
-  { title: 'DBMS SQL Queries', type: 'video', subject: 'dbms', category: 'Video' },
-  { title: 'Python Basics', type: 'notes', subject: 'python', category: 'Notes' },
-  { title: 'Data Structures Algorithms', type: 'video', subject: 'dsa', category: 'Video' },
-];
-
-function performSearch(query) {
-  if (!query.trim()) {
-    searchResults.style.display = 'none';
-    return;
-  }
-  
-  const results = searchData.filter(item =>
-    item.title.toLowerCase().includes(query.toLowerCase()) ||
-    item.subject.toLowerCase().includes(query.toLowerCase())
-  );
-  
-  if (results.length > 0) {
-    searchResults.innerHTML = `
-      <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); border-radius: 15px; padding: 20px;">
-        <h5 style="margin-bottom: 15px;">Search Results (${results.length})</h5>
-        ${results.map(item => `
-          <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 10px; cursor: pointer;"
-               onclick="openResource('${item.subject}', '${item.type}')">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <div>
-                <strong>${item.title}</strong>
-                <div style="font-size: 0.85rem; opacity: 0.7;">${item.category} • ${item.subject.toUpperCase()}</div>
-              </div>
-              <i class="fas fa-arrow-right"></i>
-            </div>
+        <div class="subject-body">
+          <p>Master the fundamentals of C programming including data types, control structures, functions, and pointers.
+          </p>
+          <div class="action-buttons">
+            <a href="#" class="btn-primary-action" onclick="showNotesModal('c-programming')">
+              <i class="fas fa-file-pdf"></i> View Notes
+            </a>
+            <a href="#" class="btn-secondary-action" onclick="showVideosModal('c-programming')">
+              <i class="fas fa-play-circle"></i> Watch Lectures
+            </a>
           </div>
-        `).join('')}
-      </div>
-    `;
-    searchResults.style.display = 'block';
-  } else {
-    searchResults.innerHTML = `
-      <div style="text-align: center; padding: 30px; color: rgba(255,255,255,0.7);">
-        <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 10px;"></i>
-        <p>No results found for "${query}"</p>
-      </div>
-    `;
-    searchResults.style.display = 'block';
-  }
-}
-
-searchBtn.addEventListener('click', () => {
-  performSearch(searchInput.value);
-});
-
-searchInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') {
-    performSearch(searchInput.value);
-  }
-});
-
-// ================= VOICE SEARCH =================
-const voiceSearchBtn = document.getElementById('voiceSearchBtn');
-let isListening = false;
-let recognition;
-
-if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  recognition = new SpeechRecognition();
-  recognition.continuous = false;
-  recognition.interimResults = false;
-  
-  recognition.onstart = () => {
-    isListening = true;
-    voiceSearchBtn.classList.add('listening');
-    voiceSearchBtn.innerHTML = '<i class="fas fa-stop"></i>';
-    showNotification('Listening... Speak now!', 'success');
-  };
-  
-  recognition.onresult = (event) => {
-    const transcript = event.results[0][0].transcript;
-    searchInput.value = transcript;
-    performSearch(transcript);
-  };
-  
-  recognition.onend = () => {
-    isListening = false;
-    voiceSearchBtn.classList.remove('listening');
-    voiceSearchBtn.innerHTML = '<i class="fas fa-microphone"></i>';
-  };
-  
-  recognition.onerror = (event) => {
-    showNotification('Voice recognition error. Please try again.', 'error');
-    voiceSearchBtn.classList.remove('listening');
-    voiceSearchBtn.innerHTML = '<i class="fas fa-microphone"></i>';
-  };
-} else {
-  voiceSearchBtn.style.display = 'none';
-}
-
-voiceSearchBtn.addEventListener('click', () => {
-  if (!recognition) {
-    showNotification('Voice search not supported in your browser', 'error');
-    return;
-  }
-  
-  if (isListening) {
-    recognition.stop();
-  } else {
-    recognition.start();
-  }
-});
-
-// ================= SUBJECT BUTTONS FUNCTIONALITY =================
-document.querySelectorAll('.notes-btn').forEach(button => {
-  button.addEventListener('click', (e) => {
-    const subject = e.target.closest('.notes-btn').getAttribute('data-subject');
-    openResource(subject, 'notes');
-  });
-});
-
-document.querySelectorAll('.video-btn').forEach(button => {
-  button.addEventListener('click', (e) => {
-    const subject = e.target.closest('.video-btn').getAttribute('data-subject');
-    openResource(subject, 'video');
-  });
-});
-
-function openResource(subject, type) {
-  const subjectNames = {
-    'c-programming': 'C Programming',
-    'cpp-programming': 'C++ Programming',
-    'os': 'Operating Systems',
-    'dbms': 'Database Management'
-  };
-  
-  const resourceType = type === 'notes' ? 'Notes' : 'Video Lectures';
-  const icon = type === 'notes' ? '📚' : '🎥';
-  
-  showNotification(`${icon} Opening ${subjectNames[subject]} ${resourceType}...`, 'success');
-  
-  // Simulate loading
-  setTimeout(() => {
-    const modalContent = `
-      <div style="text-align: center; padding: 40px;">
-        <div style="font-size: 3rem; margin-bottom: 20px;">${icon}</div>
-        <h3>${subjectNames[subject]} ${resourceType}</h3>
-        <p style="margin: 20px 0; opacity: 0.8;">Loading ${type === 'notes' ? 'study materials' : 'video lectures'}...</p>
-        <div style="display: flex; gap: 10px; justify-content: center; margin-top: 30px;">
-          <button onclick="downloadResource('${subject}', '${type}')" 
-                  style="padding: 12px 25px; background: linear-gradient(135deg, var(--primary), var(--secondary)); 
-                         border: none; border-radius: 10px; color: white; cursor: pointer;">
-            <i class="fas fa-download"></i> Download All
-          </button>
-          <button onclick="viewOnline('${subject}', '${type}')"
-                  style="padding: 12px 25px; background: rgba(255,255,255,0.1); 
-                         border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; 
-                         color: white; cursor: pointer;">
-            <i class="fas fa-eye"></i> View Online
-          </button>
         </div>
       </div>
-    `;
-    
-    // Create modal
-    const modal = document.createElement('div');
-    modal.style.cssText = `
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.8);
-      backdrop-filter: blur(10px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10000;
-    `;
-    
-    const modalInner = document.createElement('div');
-    modalInner.style.cssText = `
-      background: rgba(255,255,255,0.1);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 25px;
-      padding: 40px;
-      max-width: 500px;
-      width: 90%;
-      position: relative;
-    `;
-    
-    modalInner.innerHTML = modalContent;
-    modal.appendChild(modalInner);
-    
-    // Close button
-    const closeBtn = document.createElement('button');
-    closeBtn.innerHTML = '<i class="fas fa-times"></i>';
-    closeBtn.style.cssText = `
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: none;
-      border: none;
-      color: white;
-      font-size: 1.5rem;
-      cursor: pointer;
-    `;
-    closeBtn.onclick = () => document.body.removeChild(modal);
-    modalInner.appendChild(closeBtn);
-    
-    document.body.appendChild(modal);
-  }, 500);
-}
 
-function downloadResource(subject, type) {
-  showNotification(`Downloading ${type === 'notes' ? 'notes' : 'lectures'}...`, 'success');
-  setTimeout(() => {
-    showNotification(`Download completed! Check your downloads folder.`, 'success');
-  }, 1500);
-}
+      <!-- C++ Programming -->
+      <div class="subject-card">
+        <div class="subject-header" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+          <h3>C++ Programming</h3>
+          <span style="opacity: 0.9;">Object-Oriented Programming</span>
+        </div>
+        <div class="subject-body">
+          <p>Learn Object-Oriented Programming concepts, classes, inheritance, polymorphism, and templates.</p>
+          <div class="action-buttons">
+            <a href="#" class="btn-primary-action" onclick="showNotesModal('cpp-programming')">
+              <i class="fas fa-file-pdf"></i> View Notes
+            </a>
+            <a href="#" class="btn-secondary-action" onclick="showVideosModal('cpp-programming')">
+              <i class="fas fa-play-circle"></i> Watch Lectures
+            </a>
+          </div>
+        </div>
+      </div>
 
-function viewOnline(subject, type) {
-  const urls = {
-    'c-programming': type === 'notes' ? 'notes/c-programming.pdf' : 'videos/c-programming',
-    'cpp-programming': type === 'notes' ? 'notes/cpp-programming.pdf' : 'videos/cpp-programming',
-    'os': type === 'notes' ? 'notes/os.pdf' : 'videos/os',
-    'dbms': type === 'notes' ? 'notes/dbms.pdf' : 'videos/dbms'
-  };
-  
-  window.open(urls[subject], '_blank');
-}
-
-// ================= FEATURE BUTTONS FUNCTIONALITY =================
-document.getElementById('digitalLibraryBtn').addEventListener('click', () => {
-  showNotification('Opening Digital Library...', 'success');
-  setTimeout(() => {
-    window.location.href = 'library.html';
-  }, 1000);
-});
-
-document.getElementById('smartDownloadBtn').addEventListener('click', () => {
-  showNotification('Opening Download Manager...', 'success');
-  setTimeout(() => {
-    window.open('downloads.html', '_blank');
-  }, 1000);
-});
-
-document.getElementById('communityShareBtn').addEventListener('click', () => {
-  const modalContent = `
-    <div style="text-align: center; padding: 30px;">
-      <div style="font-size: 3rem; margin-bottom: 20px;">👥</div>
-      <h3>Join Our Community</h3>
-      <p style="margin: 20px 0; opacity: 0.8;">Connect with fellow students and share knowledge!</p>
-      
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px;">
-        <button onclick="window.open('https://discord.com', '_blank')"
-                style="padding: 15px; background: #5865F2; border: none; border-radius: 10px; color: white; cursor: pointer;">
-          <i class="fab fa-discord"></i> Discord
-        </button>
-        <button onclick="window.open('https://telegram.org', '_blank')"
-                style="padding: 15px; background: #26A5E4; border: none; border-radius: 10px; color: white; cursor: pointer;">
-          <i class="fab fa-telegram"></i> Telegram
-        </button>
-        <button onclick="window.open('https://whatsapp.com', '_blank')"
-                style="padding: 15px; background: #25D366; border: none; border-radius: 10px; color: white; cursor: pointer;">
-          <i class="fab fa-whatsapp"></i> WhatsApp
-        </button>
-        <button onclick="window.open('https://github.com', '_blank')"
-                style="padding: 15px; background: #333; border: none; border-radius: 10px; color: white; cursor: pointer;">
-          <i class="fab fa-github"></i> GitHub
-        </button>
+      <!-- Operating Systems -->
+      <div class="subject-card">
+        <div class="subject-header" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+          <h3>Operating Systems</h3>
+          <span style="opacity: 0.9;">Unit 1 – Unit 6 | Semester 3</span>
+        </div>
+        <div class="subject-body">
+          <p>Explore processes, memory management, CPU scheduling algorithms, and file systems.</p>
+          <div class="action-buttons">
+            <a href="#" class="btn-primary-action" onclick="showNotesModal('os')">
+              <i class="fas fa-file-pdf"></i> View Notes
+            </a>
+            <a href="#" class="btn-secondary-action" onclick="showVideosModal('os')">
+              <i class="fas fa-play-circle"></i> Watch Lectures
+            </a>
+          </div>
+        </div>
       </div>
     </div>
-  `;
-  
-  showModal('Community Share', modalContent);
-});
+  </section>
 
-document.getElementById('videoLecturesBtn').addEventListener('click', () => {
-  showNotification('Opening Video Lectures...', 'success');
-  setTimeout(() => {
-    window.location.href = 'lectures.html';
-  }, 1000);
-});
+  <!-- Quick Links -->
+  <section class="features-section">
+    <h2 class="section-title">Quick Links</h2>
 
-// ================= UTILITY FUNCTIONS =================
-function showModal(title, content) {
-  const modal = document.createElement('div');
-  modal.style.cssText = `
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.8);
-    backdrop-filter: blur(10px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10000;
-  `;
-  
-  const modalInner = document.createElement('div');
-  modalInner.style.cssText = `
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 25px;
-    padding: 40px;
-    max-width: 600px;
-    width: 90%;
-    max-height: 80vh;
-    overflow-y: auto;
-    position: relative;
-  `;
-  
-  modalInner.innerHTML = content;
-  modal.appendChild(modalInner);
-  
-  // Close button
-  const closeBtn = document.createElement('button');
-  closeBtn.innerHTML = '<i class="fas fa-times"></i>';
-  closeBtn.style.cssText = `
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
-  `;
-  closeBtn.onclick = () => document.body.removeChild(modal);
-  modalInner.appendChild(closeBtn);
-  
-  // Close on outside click
-  modal.onclick = (e) => {
-    if (e.target === modal) {
-      document.body.removeChild(modal);
-    }
-  };
-  
-  document.body.appendChild(modal);
-}
+    <div class="features-grid">
+      <!-- Contact -->
+      <a href="contact.html" class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-envelope"></i>
+        </div>
+        <h4>Contact Support</h4>
+        <p>Get help and support for any queries</p>
+      </a>
 
-// ================= ANIMATIONS ON SCROLL =================
-document.addEventListener('DOMContentLoaded', () => {
-  // Animate stats counter
-  const statNumbers = document.querySelectorAll('.stat-number');
-  statNumbers.forEach(stat => {
-    const target = parseInt(stat.textContent);
-    let current = 0;
-    const increment = target / 100;
-    
-    const timer = setInterval(() => {
-      current += increment;
-      if (current >= target) {
-        stat.textContent = target + '+';
-        clearInterval(timer);
-      } else {
-        stat.textContent = Math.floor(current) + '+';
-      }
-    }, 20);
-  });
-  
-  // Add hover effects to all cards
-  const cards = document.querySelectorAll('.subject-card, .feature-card, .stat-card');
-  cards.forEach(card => {
-    card.addEventListener('mouseenter', () => {
-      card.style.transform = card.classList.contains('subject-card') 
-        ? 'translateY(-10px) scale(1.02)' 
-        : 'translateY(-5px)';
-    });
-    
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = 'translateY(0) scale(1)';
-    });
-  });
-  
-  // Initialize tooltips
-  const tooltips = document.querySelectorAll('.tooltip');
-  tooltips.forEach(tooltip => {
-    const parent = tooltip.parentElement;
-    parent.addEventListener('mouseenter', () => {
-      tooltip.style.opacity = '1';
-    });
-    parent.addEventListener('mouseleave', () => {
-      tooltip.style.opacity = '0';
-    });
-  });
-});
-</script>
+      <!-- Login -->
+      <a href="login.html" class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-sign-in-alt"></i>
+        </div>
+        <h4>Login</h4>
+        <p>Access your account and continue learning</p>
+      </a>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Database System -->
-<script src="database.js"></script>
+      <!-- Signup -->
+      <a href="signup.html" class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-user-plus"></i>
+        </div>
+        <h4>Sign Up</h4>
+        <p>Create new account and join the community</p>
+      </a>
 
-<script>
-// ================= USING THE DATABASE IN YOUR APP =================
+      <!-- Profile -->
+      <a href="profile.html" class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-user-cog"></i>
+        </div>
+        <h4>Profile Settings</h4>
+        <p>Manage your profile and preferences</p>
+      </a>
+    </div>
+  </section>
 
-// Example: Get current user
-function getCurrentUser() {
-    const userData = localStorage.getItem('currentUser');
-    if (userData) {
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-brand">
+        <h3>Smart Classroom</h3>
+        <p>Transforming engineering education through technology.</p>
+      </div>
+
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <a href="#" class="footer-link">Home</a>
+        <a href="profile.html" class="footer-link">Profile</a>
+        <a href="experience.html" class="footer-link">Experience</a>
+        <a href="library.html" class="footer-link">Library</a>
+        <a href="downloads.html" class="footer-link">Downloads</a>
+      </div>
+
+      <div class="footer-links">
+        <h4>Account</h4>
+        <a href="login.html" class="footer-link">Login</a>
+        <a href="signup.html" class="footer-link">Sign Up</a>
+        <a href="profile.html" class="footer-link">Settings</a>
+        <a href="contact.html" class="footer-link">Help Center</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 Smart Classroom | Empowering Engineering Education</p>
+      <p style="margin-top:10px;font-size:0.9rem;">
+        <i class="fas fa-envelope"></i> rameshprasadrp123@gmail.com |
+        <i class="fas fa-phone"></i> +91 7498147593
+      </p>
+    </div>
+  </footer>
+
+  <!-- Notes Modal -->
+  <div class="modal-overlay" id="notesModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="notesModalTitle">Notes</h3>
+        <button class="close-modal" onclick="closeModal('notesModal')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div id="notesModalContent">
+        <!-- Content will be loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Videos Modal -->
+  <div class="modal-overlay" id="videosModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="videosModalTitle">Video Lectures</h3>
+        <button class="close-modal" onclick="closeModal('videosModal')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div id="videosModalContent">
+        <!-- Content will be loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ================= USING THE DATABASE IN YOUR APP =================
+
+    // Example: Get current user
+    function getCurrentUser() {
+      const userData = localStorage.getItem('currentUser');
+      if (userData) {
         return JSON.parse(userData);
+      }
+      return null;
     }
-    return null;
-}
 
-// Example: User login
-function loginUser(email, password) {
-    const user = Database.getUserByEmail(email);
-    if (user && user.password === password) {
+    // Example: User login
+    function loginUser(email, password) {
+      const user = Database.getUserByEmail(email);
+      if (user && user.password === password) {
         // Store current user in localStorage (without password)
         const { password, ...userWithoutPassword } = user;
         localStorage.setItem('currentUser', JSON.stringify(userWithoutPassword));
-        
+
         // Update last login
         user.lastLogin = new Date().toISOString();
         Database.updateUser(user.id, user);
-        
+
         return userWithoutPassword;
+      }
+      return null;
     }
-    return null;
-}
 
-// Example: Get featured courses
-function getFeaturedCourses() {
-    const courses = Database.getCourses();
-    return courses.slice(0, 4); // Get first 4 courses
-}
+    // Example: Get featured courses
+    function getFeaturedCourses() {
+      const courses = Database.getCourses();
+      return courses.slice(0, 4); // Get first 4 courses
+    }
 
-// Example: Get user downloads
-function getUserDownloads(userId) {
-    return Database.getDownloads(userId);
-}
+    // Example: Get user downloads
+    function getUserDownloads(userId) {
+      return Database.getDownloads(userId);
+    }
 
-// Example: Search functionality
-function searchContent(query) {
-    return Database.search(query);
-}
+    // Example: Search functionality
+    function searchContent(query) {
+      return Database.search(query);
+    }
 
-// Example: Get platform statistics
-function getPlatformStats() {
-    return Database.getStats();
-}
+    // Example: Get platform statistics
+    function getPlatformStats() {
+      return Database.getStats();
+    }
 
-// Example: Download material
-function downloadMaterial(userId, materialId) {
-    const material = Database.getMaterialById(materialId);
-    if (!material) return null;
-    
-    // Record the download
-    const download = Database.addDownload({
+    // Example: Download material
+    function downloadMaterial(userId, materialId) {
+      const material = Database.getMaterialById(materialId);
+      if (!material) return null;
+
+      // Record the download
+      const download = Database.addDownload({
         userId: userId,
         itemId: materialId,
         itemType: 'material',
         itemName: material.name,
         fileSize: material.size
-    });
-    
-    // Update user progress
-    const course = Database.getCourseById(material.courseId);
-    if (course) {
+      });
+
+      // Update user progress
+      const course = Database.getCourseById(material.courseId);
+      if (course) {
         const progress = Database.getProgress(userId, material.courseId)[0];
         if (progress) {
-            if (!progress.materialCompleted.includes(materialId)) {
-                progress.materialCompleted.push(materialId);
-                progress.overallProgress = Math.min(100, progress.materialCompleted.length / 5 * 100);
-                Database.updateProgress(userId, material.courseId, progress);
-            }
+          if (!progress.materialCompleted.includes(materialId)) {
+            progress.materialCompleted.push(materialId);
+            progress.overallProgress = Math.min(100, progress.materialCompleted.length / 5 * 100);
+            Database.updateProgress(userId, material.courseId, progress);
+          }
         }
-    }
-    
-    return download;
-}
+      }
 
-// Example: Update user settings
-function updateUserSettings(settings) {
-    const currentUser = getCurrentUser();
-    if (currentUser) {
+      return download;
+    }
+
+    // Example: Update user settings
+    function updateUserSettings(settings) {
+      const currentUser = getCurrentUser();
+      if (currentUser) {
         return Database.updateUser(currentUser.id, { settings });
+      }
+      return Database.updateSettings(settings);
     }
-    return Database.updateSettings(settings);
-}
 
-// ================= INITIALIZE ON PAGE LOAD =================
-document.addEventListener('DOMContentLoaded', function() {
-    // Check if user is logged in
-    const currentUser = getCurrentUser();
-    if (currentUser) {
+    // ================= INITIALIZE ON PAGE LOAD =================
+    document.addEventListener('DOMContentLoaded', function () {
+      // Check if user is logged in
+      const currentUser = getCurrentUser();
+      if (currentUser) {
         // Update UI for logged in user
         document.getElementById('userName').textContent = currentUser.name;
         document.getElementById('navbarName').textContent = currentUser.name;
-        
+
         // Load user-specific data
         const downloads = getUserDownloads(currentUser.id);
         const progress = Database.getProgress(currentUser.id);
-        
+
         // Update download count
         document.getElementById('downloadsCount').textContent = downloads.length;
-        
+
         // Calculate overall progress
         if (progress.length > 0) {
-            const avgProgress = progress.reduce((sum, p) => sum + p.overallProgress, 0) / progress.length;
-            document.getElementById('progressCount').textContent = Math.round(avgProgress) + '%';
+          const avgProgress = progress.reduce((sum, p) => sum + p.overallProgress, 0) / progress.length;
+          document.getElementById('progressCount').textContent = Math.round(avgProgress) + '%';
         }
-    }
-    
-    // Load platform statistics
-    const stats = getPlatformStats();
-    document.getElementById('totalMaterials').textContent = stats.totalMaterials + '+';
-    document.getElementById('totalVideos').textContent = stats.totalVideos + '+';
-    document.getElementById('totalUsers').textContent = stats.totalUsers + '+';
-    document.getElementById('totalDownloads').textContent = stats.totalDownloads + '+';
-    
-    // Load featured courses
-    const courses = getFeaturedCourses();
-    // Update course cards dynamically
-    courses.forEach((course, index) => {
+      }
+
+      // Load platform statistics
+      const stats = getPlatformStats();
+      document.getElementById('totalMaterials').textContent = stats.totalMaterials + '+';
+      document.getElementById('totalVideos').textContent = stats.totalVideos + '+';
+      document.getElementById('totalUsers').textContent = stats.totalUsers + '+';
+      document.getElementById('totalDownloads').textContent = stats.totalDownloads + '+';
+
+      // Load featured courses
+      const courses = getFeaturedCourses();
+      // Update course cards dynamically
+      courses.forEach((course, index) => {
         const card = document.querySelectorAll('.subject-card')[index];
         if (card) {
-            card.querySelector('h3').textContent = course.name;
-            card.querySelector('span').textContent = `Unit 1 – Unit ${course.units} | Semester ${course.semester}`;
-            card.querySelector('p').textContent = course.description;
+          card.querySelector('h3').textContent = course.name;
+          card.querySelector('span').textContent = `Unit 1 – Unit ${course.units} | Semester ${course.semester}`;
+          card.querySelector('p').textContent = course.description;
         }
+      });
     });
-});
 
-// ================= EVENT LISTENERS FOR DATABASE OPERATIONS =================
-// Search functionality
-document.getElementById('searchInput')?.addEventListener('input', function(e) {
-    const query = e.target.value;
-    if (query.length > 2) {
+    // ================= EVENT LISTENERS FOR DATABASE OPERATIONS =================
+    // Search functionality
+    document.getElementById('searchInput')?.addEventListener('input', function (e) {
+      const query = e.target.value;
+      if (query.length > 2) {
         const results = searchContent(query);
         // Display search results
         displaySearchResults(results);
-    }
-});
+      }
+    });
 
-// Download button handler
-document.querySelectorAll('.btn-primary-action').forEach(button => {
-    button.addEventListener('click', function(e) {
+    // Download button handler
+    document.querySelectorAll('.btn-primary-action').forEach(button => {
+      button.addEventListener('click', function (e) {
         const currentUser = getCurrentUser();
         if (!currentUser) {
-            showNotification('Please login to download materials', 'error');
-            return;
+          showNotification('Please login to download materials', 'error');
+          return;
         }
-        
+
         const materialId = this.getAttribute('data-material-id');
         if (materialId) {
-            const download = downloadMaterial(currentUser.id, materialId);
-            if (download) {
-                showNotification('Download started successfully!', 'success');
-            }
+          const download = downloadMaterial(currentUser.id, materialId);
+          if (download) {
+            showNotification('Download started successfully!', 'success');
+          }
         }
+      });
     });
-});
 
-// Function to display search results
-function displaySearchResults(results) {
-    const resultsContainer = document.getElementById('searchResults');
-    if (!resultsContainer) return;
-    
-    if (results.courses.length === 0 && results.materials.length === 0 && results.videos.length === 0) {
+    // Function to display search results
+    function displaySearchResults(results) {
+      const resultsContainer = document.getElementById('searchResults');
+      if (!resultsContainer) return;
+
+      if (results.courses.length === 0 && results.materials.length === 0 && results.videos.length === 0) {
         resultsContainer.innerHTML = '<p>No results found</p>';
         return;
-    }
-    
-    let html = '<div class="search-results">';
-    
-    if (results.courses.length > 0) {
+      }
+
+      let html = '<div class="search-results">';
+
+      if (results.courses.length > 0) {
         html += '<h4>Courses</h4>';
         results.courses.forEach(course => {
-            html += `
+          html += `
                 <div class="search-result-item">
                     <h5>${course.name}</h5>
                     <p>${course.description.substring(0, 100)}...</p>
                 </div>
             `;
         });
-    }
-    
-    if (results.materials.length > 0) {
+      }
+
+      if (results.materials.length > 0) {
         html += '<h4>Study Materials</h4>';
         results.materials.forEach(material => {
-            html += `
+          html += `
                 <div class="search-result-item">
                     <h5>${material.name}</h5>
                     <p>${material.size} • ${material.pages} pages</p>
                 </div>
             `;
         });
-    }
-    
-    if (results.videos.length > 0) {
+      }
+
+      if (results.videos.length > 0) {
         html += '<h4>Video Lectures</h4>';
         results.videos.forEach(video => {
-            html += `
+          html += `
                 <div class="search-result-item">
                     <h5>${video.title}</h5>
                     <p>${video.duration} • ${video.instructor}</p>
                 </div>
             `;
         });
-    }
-    
-    html += '</div>';
-    resultsContainer.innerHTML = html;
-    resultsContainer.style.display = 'block';
-}
+      }
 
-// ================= BACKUP & RESTORE FUNCTIONS =================
-function createBackup() {
-    try {
+      html += '</div>';
+      resultsContainer.innerHTML = html;
+      resultsContainer.style.display = 'block';
+    }
+
+    // ================= BACKUP & RESTORE FUNCTIONS =================
+    function createBackup() {
+      try {
         const backup = Database.backupData();
         showNotification('Backup created successfully!', 'success');
         return backup;
-    } catch (error) {
+      } catch (error) {
         showNotification('Backup failed: ' + error.message, 'error');
         return null;
+      }
     }
-}
 
-function restoreBackup() {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.json';
-    
-    input.onchange = function(e) {
+    function restoreBackup() {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.json';
+
+      input.onchange = function (e) {
         const file = e.target.files[0];
         if (!file) return;
-        
+
         const reader = new FileReader();
-        reader.onload = function(event) {
-            try {
-                const backupData = JSON.parse(event.target.result);
-                Database.restoreData(backupData);
-                showNotification('Data restored successfully!', 'success');
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1500);
-            } catch (error) {
-                showNotification('Restore failed: ' + error.message, 'error');
-            }
+        reader.onload = function (event) {
+          try {
+            const backupData = JSON.parse(event.target.result);
+            Database.restoreData(backupData);
+            showNotification('Data restored successfully!', 'success');
+            setTimeout(() => {
+              window.location.reload();
+            }, 1500);
+          } catch (error) {
+            showNotification('Restore failed: ' + error.message, 'error');
+          }
         };
         reader.readAsText(file);
-    };
-    
-    input.click();
-}
+      };
 
-// ================= ADMIN FUNCTIONS =================
-function exportData(type) {
-    try {
+      input.click();
+    }
+
+    // ================= ADMIN FUNCTIONS =================
+    function exportData(type) {
+      try {
         Database.exportToCSV(type);
         showNotification(`Exported ${type} data successfully!`, 'success');
-    } catch (error) {
+      } catch (error) {
         showNotification('Export failed: ' + error.message, 'error');
+      }
     }
-}
 
-function clearDatabaseCache() {
-    if (Database.clearCache()) {
+    function clearDatabaseCache() {
+      if (Database.clearCache()) {
         showNotification('Cache cleared successfully!', 'success');
         setTimeout(() => {
-            window.location.reload();
+          window.location.reload();
         }, 1000);
+      }
     }
-}
 
-// ================= NOTIFICATION FUNCTION =================
-function showNotification(message, type = 'info') {
-    // Your existing notification function
-    const notification = document.getElementById('notification');
-    if (notification) {
+    // ================= NOTIFICATION FUNCTION =================
+    function showNotification(message, type = 'info') {
+      // Your existing notification function
+      const notification = document.getElementById('notification');
+      if (notification) {
         notification.textContent = message;
         notification.className = `notification ${type}`;
         notification.style.display = 'block';
         setTimeout(() => {
-            notification.style.display = 'none';
+          notification.style.display = 'none';
         }, 3000);
+      }
     }
-}
-</script>
-</body>
-</html>
+  </script>
+  <script>
+    // ================= PARTICLES BACKGROUND =================
+    function createParticles() {
+      const container = document.getElementById('particlesContainer');
+      const colors = ['#6366f1', '#22d3ee', '#f472b6', '#10b981'];
 
+      for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+
+        const size = Math.random() * 20 + 5;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const posX = Math.random() * 100;
+        const posY = Math.random() * 100;
+        const duration = Math.random() * 20 + 10;
+        const delay = Math.random() * 5;
+
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.background = color;
+        particle.style.left = `${posX}%`;
+        particle.style.top = `${posY}%`;
+        particle.style.animationDuration = `${duration}s`;
+        particle.style.animationDelay = `${delay}s`;
+
+        container.appendChild(particle);
+      }
+    }
+
+    // ================= NOTIFICATION SYSTEM =================
+    function showNotification(message, type = 'success') {
+      const notification = document.getElementById('notification');
+      notification.innerHTML = `
+    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+    <span>${message}</span>
+  `;
+      notification.className = `notification ${type}`;
+      notification.style.display = 'flex';
+
+      setTimeout(() => {
+        notification.style.display = 'none';
+      }, 3000);
+    }
+
+    // ================= USER AUTHENTICATION =================
+    function checkAuth() {
+      const user = localStorage.getItem('user');
+      const profileToggle = document.getElementById('profileToggle');
+      const userName = document.getElementById('userName');
+      const loginLink = document.getElementById('loginLink');
+      const signupLink = document.getElementById('signupLink');
+      const logoutLink = document.getElementById('logoutLink');
+
+      if (user) {
+        const userData = JSON.parse(user);
+        userName.textContent = userData.name || 'User';
+
+        if (profileToggle) {
+          profileToggle.querySelector('img').src = userData.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + userData.name;
+        }
+
+        if (loginLink) loginLink.style.display = 'none';
+        if (signupLink) signupLink.style.display = 'none';
+        if (logoutLink) logoutLink.style.display = 'block';
+      } else {
+        userName.textContent = 'Guest';
+        if (loginLink) loginLink.style.display = 'block';
+        if (signupLink) signupLink.style.display = 'block';
+        if (logoutLink) logoutLink.style.display = 'none';
+      }
+    }
+
+    // ================= PROFILE DROPDOWN =================
+    document.getElementById('profileToggle')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const menu = document.getElementById('profileMenu');
+      menu.classList.toggle('active');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', () => {
+      const menu = document.getElementById('profileMenu');
+      if (menu) menu.classList.remove('active');
+    });
+
+    // Logout functionality
+    document.getElementById('logoutLink')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.removeItem('user');
+      showNotification('Logged out successfully!', 'success');
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    });
+
+    // ================= MODAL SYSTEM =================
+    function showModal(modalId) {
+      document.getElementById(modalId).style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    // Close modal when clicking outside
+    document.querySelectorAll('.modal-overlay').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.style.display = 'none';
+          document.body.style.overflow = 'auto';
+        }
+      });
+    });
+
+    // ================= SUBJECT NOTES MODAL =================
+    function showNotesModal(subject) {
+      const subjectNames = {
+        'c-programming': 'C Programming',
+        'cpp-programming': 'C++ Programming',
+        'os': 'Operating Systems'
+      };
+
+      const notesData = {
+        'c-programming': [
+          { name: 'Unit 1 - Introduction to C', size: '2.4 MB', pages: 45 },
+          { name: 'Unit 2 - Control Structures', size: '3.1 MB', pages: 52 },
+          { name: 'Unit 3 - Functions and Arrays', size: '4.2 MB', pages: 68 },
+          { name: 'Unit 4 - Pointers and Structures', size: '3.8 MB', pages: 61 }
+        ],
+        'cpp-programming': [
+          { name: 'Unit 1 - OOP Concepts', size: '2.8 MB', pages: 48 },
+          { name: 'Unit 2 - Classes and Objects', size: '3.5 MB', pages: 55 },
+          { name: 'Unit 3 - Inheritance and Polymorphism', size: '4.0 MB', pages: 63 },
+          { name: 'Unit 4 - Templates and STL', size: '3.2 MB', pages: 51 }
+        ],
+        'os': [
+          { name: 'Unit 1 - Introduction to OS', size: '2.6 MB', pages: 42 },
+          { name: 'Unit 2 - Process Management', size: '3.9 MB', pages: 65 },
+          { name: 'Unit 3 - Memory Management', size: '4.5 MB', pages: 72 },
+          { name: 'Unit 4 - File Systems', size: '3.1 MB', pages: 49 }
+        ]
+      };
+
+      document.getElementById('notesModalTitle').textContent = `${subjectNames[subject]} Notes`;
+
+      const notesList = notesData[subject].map(note => `
+    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <strong>${note.name}</strong>
+          <div style="font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 5px;">
+            ${note.size} • ${note.pages} pages
+          </div>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button onclick="downloadNote('${subject}', '${note.name}')" 
+                  style="padding: 8px 15px; background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+                         border: none; border-radius: 8px; color: white; cursor: pointer; font-size: 0.9rem;">
+            <i class="fas fa-download"></i> Download
+          </button>
+          <button onclick="viewNote('${subject}', '${note.name}')"
+                  style="padding: 8px 15px; background: rgba(255,255,255,0.1); 
+                         border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; 
+                         color: white; cursor: pointer; font-size: 0.9rem;">
+            <i class="fas fa-eye"></i> View
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+      document.getElementById('notesModalContent').innerHTML = `
+    <p style="margin-bottom: 20px; color: rgba(255,255,255,0.7);">
+      Select a note to download or view online:
+    </p>
+    ${notesList}
+    <div style="text-align: center; margin-top: 30px;">
+      <button onclick="downloadAllNotes('${subject}')" 
+              style="padding: 12px 30px; background: linear-gradient(135deg, var(--warning), var(--accent)); 
+                     border: none; border-radius: 10px; color: white; cursor: pointer; font-size: 1rem;">
+        <i class="fas fa-download"></i> Download All Notes
+      </button>
+    </div>
+  `;
+
+      showModal('notesModal');
+    }
+
+    // ================= VIDEO LECTURES MODAL =================
+    function showVideosModal(subject) {
+      const subjectNames = {
+        'c-programming': 'C Programming',
+        'cpp-programming': 'C++ Programming',
+        'os': 'Operating Systems'
+      };
+
+      const videosData = {
+        'c-programming': [
+          { name: 'Introduction to C Programming', duration: '45:20' },
+          { name: 'Variables and Data Types', duration: '38:15' },
+          { name: 'Control Structures in C', duration: '52:40' },
+          { name: 'Functions and Recursion', duration: '49:35' },
+          { name: 'Arrays and Pointers', duration: '56:10' }
+        ],
+        'cpp-programming': [
+          { name: 'Introduction to OOP', duration: '42:30' },
+          { name: 'Classes and Objects', duration: '47:25' },
+          { name: 'Inheritance in C++', duration: '51:40' },
+          { name: 'Polymorphism Concepts', duration: '44:15' },
+          { name: 'Templates and STL', duration: '53:20' }
+        ],
+        'os': [
+          { name: 'OS Introduction and Types', duration: '48:30' },
+          { name: 'Process Management', duration: '55:45' },
+          { name: 'CPU Scheduling Algorithms', duration: '59:20' },
+          { name: 'Memory Management', duration: '51:10' },
+          { name: 'File Systems', duration: '46:35' }
+        ]
+      };
+
+      document.getElementById('videosModalTitle').textContent = `${subjectNames[subject]} Video Lectures`;
+
+      const videosList = videosData[subject].map((video, index) => `
+    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--danger), var(--warning)); 
+                        border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-play" style="color: white;"></i>
+            </div>
+            <div>
+              <strong>${video.name}</strong>
+              <div style="font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 5px;">
+                Duration: ${video.duration}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button onclick="watchVideo('${subject}', ${index})" 
+                  style="padding: 8px 15px; background: linear-gradient(135deg, var(--danger), var(--warning)); 
+                         border: none; border-radius: 8px; color: white; cursor: pointer; font-size: 0.9rem;">
+            <i class="fas fa-play"></i> Watch
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+      document.getElementById('videosModalContent').innerHTML = `
+    <p style="margin-bottom: 20px; color: rgba(255,255,255,0.7);">
+      Select a video lecture to watch:
+    </p>
+    ${videosList}
+    <div style="text-align: center; margin-top: 30px;">
+      <button onclick="showNotification('Playlist feature coming soon!', 'success')" 
+              style="padding: 12px 30px; background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+                     border: none; border-radius: 10px; color: white; cursor: pointer; font-size: 1rem;">
+        <i class="fas fa-list"></i> Save as Playlist
+      </button>
+    </div>
+  `;
+
+      showModal('videosModal');
+    }
+
+    // ================= DOWNLOAD & VIEW FUNCTIONS =================
+    function downloadNote(subject, noteName) {
+      const user = localStorage.getItem('user');
+      if (!user) {
+        showNotification('Please login to download notes', 'error');
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 1000);
+        return;
+      }
+
+      showNotification(`Downloading ${noteName}...`, 'success');
+
+      // Simulate download
+      setTimeout(() => {
+        // Add to downloads in localStorage
+        const downloads = JSON.parse(localStorage.getItem('downloads') || '[]');
+        downloads.push({
+          name: noteName,
+          subject: subject,
+          date: new Date().toISOString(),
+          type: 'notes'
+        });
+        localStorage.setItem('downloads', JSON.stringify(downloads));
+
+        showNotification(`${noteName} downloaded successfully!`, 'success');
+      }, 1500);
+    }
+
+    function downloadAllNotes(subject) {
+      const user = localStorage.getItem('user');
+      if (!user) {
+        showNotification('Please login to download notes', 'error');
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 1000);
+        return;
+      }
+
+      showNotification(`Preparing all notes for download...`, 'success');
+
+      // Simulate bulk download
+      setTimeout(() => {
+        const subjectNames = {
+          'c-programming': 'C Programming',
+          'cpp-programming': 'C++ Programming',
+          'os': 'Operating Systems'
+        };
+
+        const downloads = JSON.parse(localStorage.getItem('downloads') || '[]');
+        downloads.push({
+          name: `${subjectNames[subject]} - Complete Notes`,
+          subject: subject,
+          date: new Date().toISOString(),
+          type: 'notes-package'
+        });
+        localStorage.setItem('downloads', JSON.stringify(downloads));
+
+        showNotification(`All ${subjectNames[subject]} notes downloaded!`, 'success');
+      }, 2000);
+    }
+
+    function viewNote(subject, noteName) {
+      const user = localStorage.getItem('user');
+      if (!user) {
+        showNotification('Please login to view notes', 'error');
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 1000);
+        return;
+      }
+
+      showNotification(`Opening ${noteName}...`, 'success');
+      setTimeout(() => {
+        // In a real app, this would open the PDF
+        window.open(`notes/${subject}/${noteName.replace(/ /g, '-')}.pdf`, '_blank');
+      }, 1000);
+    }
+
+    function watchVideo(subject, videoIndex) {
+      const user = localStorage.getItem('user');
+      if (!user) {
+        showNotification('Please login to watch videos', 'error');
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 1000);
+        return;
+      }
+
+      showNotification(`Loading video...`, 'success');
+
+      // Video content based on subject and index
+      const videoContents = {
+        'c-programming': [
+          '<div style="text-align: center; padding: 30px;"><h4>Introduction to C Programming</h4><p style="margin: 20px 0;">This video covers basics of C programming language.</p><div style="background: #000; padding: 20px; border-radius: 10px; margin: 20px 0;"><i class="fas fa-video" style="font-size: 3rem; color: var(--secondary);"></i><p style="margin-top: 10px;">Video Player Simulation</p></div></div>',
+          '<div style="text-align: center; padding: 30px;"><h4>Variables and Data Types</h4><p style="margin: 20px 0;">Learn about variables, data types and constants in C.</p><div style="background: #000; padding: 20px; border-radius: 10px; margin: 20px 0;"><i class="fas fa-video" style="font-size: 3rem; color: var(--secondary);"></i><p style="margin-top: 10px;">Video Player Simulation</p></div></div>'
+        ],
+        'cpp-programming': [
+          '<div style="text-align: center; padding: 30px;"><h4>Introduction to OOP</h4><p style="margin: 20px 0;">Object Oriented Programming concepts explained.</p><div style="background: #000; padding: 20px; border-radius: 10px; margin: 20px 0;"><i class="fas fa-video" style="font-size: 3rem; color: var(--secondary);"></i><p style="margin-top: 10px;">Video Player Simulation</p></div></div>',
+          '<div style="text-align: center; padding: 30px;"><h4>Classes and Objects</h4><p style="margin: 20px 0;">Creating classes and objects in C++.</p><div style="background: #000; padding: 20px; border-radius: 10px; margin: 20px 0;"><i class="fas fa-video" style="font-size: 3rem; color: var(--secondary);"></i><p style="margin-top: 10px;">Video Player Simulation</p></div></div>'
+        ],
+        'os': [
+          '<div style="text-align: center; padding: 30px;"><h4>OS Introduction</h4><p style="margin: 20px 0;">Introduction to Operating Systems.</p><div style="background: #000; padding: 20px; border-radius: 10px; margin: 20px 0;"><i class="fas fa-video" style="font-size: 3rem; color: var(--secondary);"></i><p style="margin-top: 10px;">Video Player Simulation</p></div></div>',
+          '<div style="text-align: center; padding: 30px;"><h4>Process Management</h4><p style="margin: 20px 0;">Understanding process management in OS.</p><div style="background: #000; padding: 20px; border-radius: 10px; margin: 20px 0;"><i class="fas fa-video" style="font-size: 3rem; color: var(--secondary);"></i><p style="margin-top: 10px;">Video Player Simulation</p></div></div>'
+        ]
+      };
+
+      // Show video modal
+      const videoModal = document.createElement('div');
+      videoModal.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  `;
+
+      videoModal.innerHTML = `
+    <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); 
+                border-radius: 20px; padding: 30px; max-width: 800px; width: 90%;
+                max-height: 90vh; overflow-y: auto; position: relative;">
+      <button onclick="this.parentElement.parentElement.remove(); document.body.style.overflow = 'auto';" 
+              style="position: absolute; top: 20px; right: 20px; background: none; 
+                     border: none; color: white; font-size: 1.5rem; cursor: pointer;">
+        <i class="fas fa-times"></i>
+      </button>
+      ${videoContents[subject][videoIndex % 2]}
+      <div style="margin-top: 20px; display: flex; justify-content: center; gap: 15px;">
+        <button onclick="showNotification('Added to favorites!', 'success')" 
+                style="padding: 10px 20px; background: rgba(255,255,255,0.1); 
+                       border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; 
+                       color: white; cursor: pointer;">
+          <i class="fas fa-heart"></i> Favorite
+        </button>
+        <button onclick="showNotification('Download started!', 'success')" 
+                style="padding: 10px 20px; background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+                       border: none; border-radius: 8px; color: white; cursor: pointer;">
+          <i class="fas fa-download"></i> Download
+        </button>
+      </div>
+    </div>
+  `;
+
+      document.body.appendChild(videoModal);
+      document.body.style.overflow = 'hidden';
+    }
+
+    // ================= ANIMATE STATS COUNTERS =================
+    function animateStats() {
+      const stats = document.querySelectorAll('.stat-number');
+      stats.forEach(stat => {
+        const target = parseInt(stat.textContent);
+        let current = 0;
+        const increment = target / 50;
+
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= target) {
+            stat.textContent = target + '+';
+            clearInterval(timer);
+          } else {
+            stat.textContent = Math.floor(current) + '+';
+          }
+        }, 30);
+      });
+    }
+
+    // ================= INITIALIZE ON LOAD =================
+    document.addEventListener('DOMContentLoaded', () => {
+      // Create particles background
+      createParticles();
+
+      // Check authentication status
+      checkAuth();
+
+      // Animate stats
+      setTimeout(animateStats, 500);
+
+      // Welcome notification
+      setTimeout(() => {
+        const user = localStorage.getItem('user');
+        if (!user) {
+          showNotification('Welcome to Smart Classroom! Login to access all features.', 'success');
+        }
+      }, 1000);
+
+      // Add animation to cards on hover
+      const cards = document.querySelectorAll('.feature-card, .subject-card');
+      cards.forEach(card => {
+        card.addEventListener('mouseenter', function () {
+          this.style.transform = 'translateY(-10px)';
+        });
+
+        card.addEventListener('mouseleave', function () {
+          this.style.transform = 'translateY(0)';
+        });
+      });
+
+      // Check for saved downloads count
+      const downloads = JSON.parse(localStorage.getItem('downloads') || '[]');
+      if (downloads.length > 0) {
+        const downloadStat = document.querySelector('.stat-card:nth-child(4) .stat-number');
+        if (downloadStat) {
+          downloadStat.textContent = downloads.length + '+';
+        }
+      }
+    });
+
+    // ================= KEYBOARD SHORTCUTS =================
+    document.addEventListener('keydown', (e) => {
+      // Ctrl + / for search
+      if (e.ctrlKey && e.key === '/') {
+        e.preventDefault();
+        showNotification('Search shortcut: Type in the search bar to find content', 'success');
+      }
+
+      // Escape to close modals
+      if (e.key === 'Escape') {
+        closeModal('notesModal');
+        closeModal('videosModal');
+      }
+    });
+  </script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
