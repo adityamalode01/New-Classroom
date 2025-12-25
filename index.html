@@ -1503,5 +1503,297 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Database System -->
+<script src="database.js"></script>
+
+<script>
+// ================= USING THE DATABASE IN YOUR APP =================
+
+// Example: Get current user
+function getCurrentUser() {
+    const userData = localStorage.getItem('currentUser');
+    if (userData) {
+        return JSON.parse(userData);
+    }
+    return null;
+}
+
+// Example: User login
+function loginUser(email, password) {
+    const user = Database.getUserByEmail(email);
+    if (user && user.password === password) {
+        // Store current user in localStorage (without password)
+        const { password, ...userWithoutPassword } = user;
+        localStorage.setItem('currentUser', JSON.stringify(userWithoutPassword));
+        
+        // Update last login
+        user.lastLogin = new Date().toISOString();
+        Database.updateUser(user.id, user);
+        
+        return userWithoutPassword;
+    }
+    return null;
+}
+
+// Example: Get featured courses
+function getFeaturedCourses() {
+    const courses = Database.getCourses();
+    return courses.slice(0, 4); // Get first 4 courses
+}
+
+// Example: Get user downloads
+function getUserDownloads(userId) {
+    return Database.getDownloads(userId);
+}
+
+// Example: Search functionality
+function searchContent(query) {
+    return Database.search(query);
+}
+
+// Example: Get platform statistics
+function getPlatformStats() {
+    return Database.getStats();
+}
+
+// Example: Download material
+function downloadMaterial(userId, materialId) {
+    const material = Database.getMaterialById(materialId);
+    if (!material) return null;
+    
+    // Record the download
+    const download = Database.addDownload({
+        userId: userId,
+        itemId: materialId,
+        itemType: 'material',
+        itemName: material.name,
+        fileSize: material.size
+    });
+    
+    // Update user progress
+    const course = Database.getCourseById(material.courseId);
+    if (course) {
+        const progress = Database.getProgress(userId, material.courseId)[0];
+        if (progress) {
+            if (!progress.materialCompleted.includes(materialId)) {
+                progress.materialCompleted.push(materialId);
+                progress.overallProgress = Math.min(100, progress.materialCompleted.length / 5 * 100);
+                Database.updateProgress(userId, material.courseId, progress);
+            }
+        }
+    }
+    
+    return download;
+}
+
+// Example: Update user settings
+function updateUserSettings(settings) {
+    const currentUser = getCurrentUser();
+    if (currentUser) {
+        return Database.updateUser(currentUser.id, { settings });
+    }
+    return Database.updateSettings(settings);
+}
+
+// ================= INITIALIZE ON PAGE LOAD =================
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if user is logged in
+    const currentUser = getCurrentUser();
+    if (currentUser) {
+        // Update UI for logged in user
+        document.getElementById('userName').textContent = currentUser.name;
+        document.getElementById('navbarName').textContent = currentUser.name;
+        
+        // Load user-specific data
+        const downloads = getUserDownloads(currentUser.id);
+        const progress = Database.getProgress(currentUser.id);
+        
+        // Update download count
+        document.getElementById('downloadsCount').textContent = downloads.length;
+        
+        // Calculate overall progress
+        if (progress.length > 0) {
+            const avgProgress = progress.reduce((sum, p) => sum + p.overallProgress, 0) / progress.length;
+            document.getElementById('progressCount').textContent = Math.round(avgProgress) + '%';
+        }
+    }
+    
+    // Load platform statistics
+    const stats = getPlatformStats();
+    document.getElementById('totalMaterials').textContent = stats.totalMaterials + '+';
+    document.getElementById('totalVideos').textContent = stats.totalVideos + '+';
+    document.getElementById('totalUsers').textContent = stats.totalUsers + '+';
+    document.getElementById('totalDownloads').textContent = stats.totalDownloads + '+';
+    
+    // Load featured courses
+    const courses = getFeaturedCourses();
+    // Update course cards dynamically
+    courses.forEach((course, index) => {
+        const card = document.querySelectorAll('.subject-card')[index];
+        if (card) {
+            card.querySelector('h3').textContent = course.name;
+            card.querySelector('span').textContent = `Unit 1 – Unit ${course.units} | Semester ${course.semester}`;
+            card.querySelector('p').textContent = course.description;
+        }
+    });
+});
+
+// ================= EVENT LISTENERS FOR DATABASE OPERATIONS =================
+// Search functionality
+document.getElementById('searchInput')?.addEventListener('input', function(e) {
+    const query = e.target.value;
+    if (query.length > 2) {
+        const results = searchContent(query);
+        // Display search results
+        displaySearchResults(results);
+    }
+});
+
+// Download button handler
+document.querySelectorAll('.btn-primary-action').forEach(button => {
+    button.addEventListener('click', function(e) {
+        const currentUser = getCurrentUser();
+        if (!currentUser) {
+            showNotification('Please login to download materials', 'error');
+            return;
+        }
+        
+        const materialId = this.getAttribute('data-material-id');
+        if (materialId) {
+            const download = downloadMaterial(currentUser.id, materialId);
+            if (download) {
+                showNotification('Download started successfully!', 'success');
+            }
+        }
+    });
+});
+
+// Function to display search results
+function displaySearchResults(results) {
+    const resultsContainer = document.getElementById('searchResults');
+    if (!resultsContainer) return;
+    
+    if (results.courses.length === 0 && results.materials.length === 0 && results.videos.length === 0) {
+        resultsContainer.innerHTML = '<p>No results found</p>';
+        return;
+    }
+    
+    let html = '<div class="search-results">';
+    
+    if (results.courses.length > 0) {
+        html += '<h4>Courses</h4>';
+        results.courses.forEach(course => {
+            html += `
+                <div class="search-result-item">
+                    <h5>${course.name}</h5>
+                    <p>${course.description.substring(0, 100)}...</p>
+                </div>
+            `;
+        });
+    }
+    
+    if (results.materials.length > 0) {
+        html += '<h4>Study Materials</h4>';
+        results.materials.forEach(material => {
+            html += `
+                <div class="search-result-item">
+                    <h5>${material.name}</h5>
+                    <p>${material.size} • ${material.pages} pages</p>
+                </div>
+            `;
+        });
+    }
+    
+    if (results.videos.length > 0) {
+        html += '<h4>Video Lectures</h4>';
+        results.videos.forEach(video => {
+            html += `
+                <div class="search-result-item">
+                    <h5>${video.title}</h5>
+                    <p>${video.duration} • ${video.instructor}</p>
+                </div>
+            `;
+        });
+    }
+    
+    html += '</div>';
+    resultsContainer.innerHTML = html;
+    resultsContainer.style.display = 'block';
+}
+
+// ================= BACKUP & RESTORE FUNCTIONS =================
+function createBackup() {
+    try {
+        const backup = Database.backupData();
+        showNotification('Backup created successfully!', 'success');
+        return backup;
+    } catch (error) {
+        showNotification('Backup failed: ' + error.message, 'error');
+        return null;
+    }
+}
+
+function restoreBackup() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    
+    input.onchange = function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            try {
+                const backupData = JSON.parse(event.target.result);
+                Database.restoreData(backupData);
+                showNotification('Data restored successfully!', 'success');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            } catch (error) {
+                showNotification('Restore failed: ' + error.message, 'error');
+            }
+        };
+        reader.readAsText(file);
+    };
+    
+    input.click();
+}
+
+// ================= ADMIN FUNCTIONS =================
+function exportData(type) {
+    try {
+        Database.exportToCSV(type);
+        showNotification(`Exported ${type} data successfully!`, 'success');
+    } catch (error) {
+        showNotification('Export failed: ' + error.message, 'error');
+    }
+}
+
+function clearDatabaseCache() {
+    if (Database.clearCache()) {
+        showNotification('Cache cleared successfully!', 'success');
+        setTimeout(() => {
+            window.location.reload();
+        }, 1000);
+    }
+}
+
+// ================= NOTIFICATION FUNCTION =================
+function showNotification(message, type = 'info') {
+    // Your existing notification function
+    const notification = document.getElementById('notification');
+    if (notification) {
+        notification.textContent = message;
+        notification.className = `notification ${type}`;
+        notification.style.display = 'block';
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 3000);
+    }
+}
+</script>
 </body>
 </html>
+
