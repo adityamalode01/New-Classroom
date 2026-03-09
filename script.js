@@ -3,6 +3,7 @@
    ========================= */
 
 // --------- UTILITIES ----------
+import { db } from "./firebase.js";
 function getUsers() {
     return JSON.parse(localStorage.getItem("users")) || [];
 }
@@ -103,3 +104,4 @@ function logout() {
     alert("Logged out successfully!");
     window.location.href = "index.html";
 }
+
