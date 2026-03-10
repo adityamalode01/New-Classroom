@@ -1830,6 +1830,209 @@
         closeModal('videosModal');
       }
     });
+    // Add to your existing script section
+
+// API Configuration
+const API_BASE_URL = 'http://localhost/smart-classroom/api'; // Change to your server URL
+
+// Enhanced register function
+async function registerUser(userData) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/auth.php?action=register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        });
+
+        const data = await response.json();
+        
+        if (data.success) {
+            showNotification('Registration successful! Please login.', 'success');
+            switchAuthTab('login');
+            
+            // Auto-fill login form
+            document.querySelector('#loginForm input[type="email"]').value = userData.email;
+        } else {
+            showNotification(data.message, 'error');
+        }
+    } catch (error) {
+        console.error('Registration error:', error);
+        showNotification('Network error. Please try again.', 'error');
+    }
+}
+
+// Enhanced login function
+async function loginUser(credentials) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/auth.php?action=login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(credentials)
+        });
+
+        const data = await response.json();
+        
+        if (data.success) {
+            // Store session data
+            localStorage.setItem('session_token', data.session_token);
+            localStorage.setItem('user', JSON.stringify(data.user));
+            
+            isLoggedIn = true;
+            authModal.classList.remove('active');
+            showNotification('Login successful!', 'success');
+            updateAuthUI();
+            
+            // Load user profile
+            loadUserProfile(data.user.id);
+        } else {
+            showNotification(data.message, 'error');
+        }
+    } catch (error) {
+        console.error('Login error:', error);
+        showNotification('Network error. Please try again.', 'error');
+    }
+}
+
+// Load user profile
+async function loadUserProfile(userId) {
+    try {
+        const token = localStorage.getItem('session_token');
+        const response = await fetch(`${API_BASE_URL}/auth.php?user_id=${userId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        const data = await response.json();
+        
+        if (data.success) {
+            updateProfileUI(data.user);
+        }
+    } catch (error) {
+        console.error('Error loading profile:', error);
+    }
+}
+
+// Update profile UI
+function updateProfileUI(userData) {
+    // Update profile information in the UI
+    document.querySelector('.profile-info h3').textContent = userData.full_name;
+    document.querySelector('.profile-info p').textContent = 
+        `${userData.department || 'Student'} • Semester ${userData.semester || 'N/A'}`;
+    
+    // Update stats if available
+    if (userData.stats) {
+        // Update user stats
+    }
+}
+
+// Validate session on page load
+async function validateSession() {
+    const token = localStorage.getItem('session_token');
+    if (!token) return;
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/auth.php?action=validate`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        const data = await response.json();
+        
+        if (data.success && data.valid) {
+            isLoggedIn = true;
+            localStorage.setItem('user', JSON.stringify(data.user));
+            updateAuthUI();
+            updateProfileUI(data.user);
+        } else {
+            // Invalid session, clear storage
+            localStorage.removeItem('session_token');
+            localStorage.removeItem('user');
+            isLoggedIn = false;
+            updateAuthUI();
+        }
+    } catch (error) {
+        console.error('Session validation error:', error);
+    }
+}
+
+// Enhanced logout
+async function logoutUser() {
+    const token = localStorage.getItem('session_token');
+    
+    try {
+        await fetch(`${API_BASE_URL}/auth.php?action=logout`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+    } catch (error) {
+        console.error('Logout error:', error);
+    } finally {
+        localStorage.removeItem('session_token');
+        localStorage.removeItem('user');
+        isLoggedIn = false;
+        showNotification('Logged out successfully!', 'success');
+        updateAuthUI();
+    }
+}
+
+// Update login form handler
+document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const credentials = {
+        email: e.target[0].value,
+        password: e.target[1].value
+    };
+    
+    await loginUser(credentials);
+});
+
+// Update signup form handler
+document.getElementById('signupForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const userData = {
+        username: e.target[0].value.toLowerCase().replace(/\s+/g, '_'),
+        full_name: e.target[0].value,
+        email: e.target[1].value,
+        password: e.target[2].value,
+        role: 'student',
+        department: 'Computer Science',
+        semester: 1
+    };
+    
+    const confirmPassword = e.target[3].value;
+    
+    if (userData.password !== confirmPassword) {
+        showNotification('Passwords do not match!', 'error');
+        return;
+    }
+    
+    await registerUser(userData);
+});
+
+// Update logout handler
+logoutBtn?.addEventListener('click', async (e) => {
+    e.preventDefault();
+    await logoutUser();
+    profileMenu.classList.remove('active');
+});
+
+// Validate session on page load
+document.addEventListener('DOMContentLoaded', () => {
+    validateSession();
+    
+    // Auto-renew token periodically (every 30 minutes)
+    setInterval(validateSession, 30 * 60 * 1000);
+});
   </script>
 
   <!-- Bootstrap JS -->
@@ -1837,6 +2040,7 @@
 </body>
 
 </html>
+
 
 
 
