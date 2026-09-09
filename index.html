@@ -1,18 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <title>Smart Classroom · Interactive Hub</title>
-  <link rel="shortcut icon" href="Smart classroom logo.png" type="image/png">
-  
-  <!-- Google Font & Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+   <link rel="shortcut icon" href="US.png" type="image/png">
+  <title>Smart Classroom | Interactive Learning Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Database System -->
+  <script src="database.js"></script>
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="website icon" href="Smart classroom logo.png">
+
+  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
   <style>
-    /* ---------- ROOT VARIABLES ---------- */
     :root {
       --primary: #6366f1;
       --secondary: #22d3ee;
@@ -22,720 +32,1332 @@
       --danger: #ef4444;
       --dark: #020617;
       --light: #f8fafc;
-      --glass: rgba(255,255,255,0.08);
-      --glass-border: rgba(255,255,255,0.12);
-      --card-radius: 24px;
-      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
     body {
       min-height: 100vh;
-      background: linear-gradient(145deg, #0b0b2a 0%, #020617 100%);
+      background: linear-gradient(135deg, #0a0a2a 0%, #020617 100%);
       color: white;
       overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
+      position: relative;
     }
 
-    /* ---------- PARTICLES (lightweight) ---------- */
+    /* ================= ANIMATED BACKGROUND ================= */
     .particles-container {
-      position: fixed; inset: 0; z-index: -1; pointer-events: none;
-      overflow: hidden;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
     }
+
     .particle {
       position: absolute;
       border-radius: 50%;
       background: var(--primary);
-      opacity: 0.2;
-      animation: floatParticle 22s infinite alternate ease-in-out;
+      opacity: 0.3;
+      animation: floatParticle 20s infinite linear;
     }
+
     @keyframes floatParticle {
-      0% { transform: translate(0,0) scale(1); }
-      100% { transform: translate(60px, -120px) scale(1.2); }
+
+      0%,
+      100% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+
+      25% {
+        transform: translate(100px, -150px) rotate(90deg);
+      }
+
+      50% {
+        transform: translate(-80px, 100px) rotate(180deg);
+      }
+
+      75% {
+        transform: translate(120px, 50px) rotate(270deg);
+      }
     }
 
-    /* ---------- GLASS UTILITY ---------- */
-    .glass {
-      background: var(--glass);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--glass-border);
-    }
-
-    /* ---------- NAVBAR (adaptive) ---------- */
+    /* ================= NAVBAR ================= */
     .navbar-custom {
-      background: rgba(2, 6, 23, 0.7);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      padding: 10px 0;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(25px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 15px 0;
       position: sticky;
       top: 0;
-      z-index: 1050;
+      z-index: 1000;
     }
+
     .navbar-brand {
+      font-size: 1.8rem;
       font-weight: 700;
-      font-size: 1.5rem;
       color: white !important;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
+      text-decoration: none;
     }
+
     .logo-circle {
-      width: 40px; height: 40px;
+      width: 45px;
+      height: 45px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.3rem;
+      font-size: 1.5rem;
       color: white;
-      flex-shrink: 0;
     }
+
     .nav-link-custom {
-      color: rgba(255,255,255,0.75) !important;
+      color: rgba(255, 255, 255, 0.9) !important;
       font-weight: 500;
-      padding: 8px 16px !important;
-      border-radius: 40px;
-      transition: var(--transition);
-      font-size: 0.95rem;
+      padding: 10px 20px !important;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      text-decoration: none;
     }
-    .nav-link-custom:hover, .nav-link-custom.active {
+
+    .nav-link-custom:hover {
       color: white !important;
-      background: rgba(255,255,255,0.08);
+      background: rgba(255, 255, 255, 0.1);
     }
+
     .nav-link-custom.active {
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       color: white !important;
     }
 
-    /* desktop nav links: hidden on mobile */
-    .desktop-nav {
-      display: flex;
-      gap: 4px;
-    }
-    @media (max-width: 991px) {
-      .desktop-nav { display: none; }
+    /* Profile Dropdown */
+    .profile-dropdown {
+      position: relative;
     }
 
-    /* profile dropdown */
-    .profile-dropdown { position: relative; }
     .profile-btn {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       color: white;
-      padding: 6px 14px 6px 10px;
-      border-radius: 40px;
+      padding: 8px 15px;
+      border-radius: 50px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       cursor: pointer;
-      transition: var(--transition);
+      transition: all 0.3s ease;
+      text-decoration: none;
     }
-    .profile-btn:hover { background: rgba(255,255,255,0.12); }
+
+    .profile-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
     .profile-img {
-      width: 32px; height: 32px;
+      width: 35px;
+      height: 35px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid var(--secondary);
     }
+
     .profile-menu {
       position: absolute;
-      top: 110%;
+      top: 100%;
       right: 0;
-      background: rgba(10, 10, 40, 0.9);
-      backdrop-filter: blur(24px);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
       padding: 10px;
       min-width: 200px;
       display: none;
-      z-index: 1060;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      margin-top: 10px;
+      z-index: 1000;
     }
-    .profile-menu.active { display: block; animation: fadeUp 0.25s ease; }
-    @keyframes fadeUp { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform: translateY(0); } }
+
+    .profile-menu.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     .profile-menu a {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 10px 14px;
-      color: rgba(255,255,255,0.85);
+      gap: 10px;
+      padding: 12px 15px;
+      color: white;
       text-decoration: none;
-      border-radius: 12px;
-      transition: var(--transition);
-      font-size: 0.95rem;
-    }
-    .profile-menu a:hover { background: rgba(255,255,255,0.06); color: white; }
-    .profile-menu hr { border-color: rgba(255,255,255,0.06); margin: 8px 0; }
-
-    /* ---------- MOBILE BOTTOM NAV (only on small) ---------- */
-    .mobile-bottom-nav {
-      display: none;
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      background: rgba(2, 6, 23, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-top: 1px solid rgba(255,255,255,0.06);
-      padding: 8px 0 env(safe-area-inset-bottom, 8px);
-      z-index: 1100;
-      justify-content: space-around;
-      align-items: center;
-    }
-    .mobile-bottom-nav a {
-      color: rgba(255,255,255,0.6);
-      text-decoration: none;
-      font-size: 0.7rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-      padding: 4px 12px;
-      border-radius: 40px;
-      transition: var(--transition);
-    }
-    .mobile-bottom-nav a i { font-size: 1.4rem; }
-    .mobile-bottom-nav a.active { color: var(--secondary); }
-    .mobile-bottom-nav a span { font-weight: 500; letter-spacing: 0.3px; }
-
-    @media (max-width: 768px) {
-      .mobile-bottom-nav { display: flex; }
-      body { padding-bottom: 70px; }
+      border-radius: 8px;
+      transition: all 0.3s ease;
     }
 
-    /* ---------- HERO ---------- */
+    .profile-menu a:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* ================= HERO SECTION ================= */
     .hero-section {
       text-align: center;
-      padding: 60px 20px 40px;
+      padding: 80px 20px;
       max-width: 1200px;
       margin: 0 auto;
     }
+
     .hero-title {
-      font-size: clamp(2.2rem, 10vw, 3.8rem);
+      font-size: 3.5rem;
       font-weight: 800;
+      margin-bottom: 20px;
       background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      line-height: 1.1;
-    }
-    .hero-subtitle {
-      font-size: clamp(1rem, 3vw, 1.3rem);
-      opacity: 0.85;
-      max-width: 700px;
-      margin: 16px auto 30px;
-      padding: 0 10px;
     }
 
-    /* stats */
+    .hero-subtitle {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      max-width: 700px;
+      margin: 0 auto 40px;
+    }
+
+    /* ================= FEATURE CARDS ================= */
+    .features-section {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 25px;
+      padding: 35px 30px;
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      color: white;
+      display: block;
+    }
+
+    .feature-card:hover {
+      background: rgba(255, 255, 255, 0.12);
+      transform: translateY(-10px);
+      border-color: var(--secondary);
+      text-decoration: none;
+      color: white;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+
+    .feature-icon {
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin: 0 auto 25px;
+      color: white;
+    }
+
+    .feature-card h4 {
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+    }
+
+    .feature-card p {
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.6;
+    }
+
+    /* ================= SUBJECTS SECTION ================= */
+    .subjects-section {
+      max-width: 1300px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 50px;
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 2px;
+    }
+
+    .subjects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 30px;
+    }
+
+    .subject-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 25px;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+    }
+
+    .subject-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      border-color: var(--secondary);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .subject-header {
+      height: 150px;
+      padding: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .subject-body {
+      padding: 25px;
+    }
+
+    .subject-body p {
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+
+    /* ACTION BUTTONS */
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .btn-primary-action {
+      flex: 1;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, var(--primary), #4f46e5);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .btn-primary-action:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+      background: linear-gradient(135deg, #4f46e5, var(--primary));
+      color: white;
+      text-decoration: none;
+    }
+
+    .btn-secondary-action {
+      flex: 1;
+      padding: 12px 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      border-radius: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .btn-secondary-action:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-3px);
+      color: white;
+      text-decoration: none;
+    }
+
+    /* ================= STATS ================= */
     .stats-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 16px;
-      max-width: 900px;
-      margin: 20px auto;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
     }
+
     .stat-card {
-      background: var(--glass);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 20px;
-      padding: 18px 10px;
+      padding: 25px;
       text-align: center;
-      transition: var(--transition);
+      transition: all 0.3s ease;
     }
-    .stat-card:hover { background: rgba(255,255,255,0.1); transform: translateY(-4px); }
-    .stat-icon { font-size: 2rem; color: var(--secondary); margin-bottom: 4px; }
+
+    .stat-card:hover {
+      background: rgba(255, 255, 255, 0.12);
+      transform: translateY(-5px);
+      border-color: var(--secondary);
+    }
+
+    .stat-icon {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      color: var(--secondary);
+    }
+
     .stat-number {
-      font-size: clamp(1.6rem, 5vw, 2.4rem);
+      font-size: 2.2rem;
       font-weight: 700;
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
-    .stat-card p { margin: 0; font-size: 0.85rem; opacity: 0.7; }
 
-    /* ---------- FEATURES (grid) ---------- */
-    .features-section {
-      max-width: 1200px;
-      margin: 40px auto;
-      padding: 0 16px;
-    }
-    .section-title {
-      font-size: clamp(1.8rem, 5vw, 2.6rem);
-      text-align: center;
-      margin-bottom: 40px;
-      position: relative;
-    }
-    .section-title::after {
-      content: '';
-      position: absolute;
-      bottom: -12px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80px;
-      height: 4px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      border-radius: 4px;
-    }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 24px;
-    }
-    .feature-card {
-      background: var(--glass);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--card-radius);
-      padding: 28px 18px;
-      text-align: center;
-      transition: var(--transition);
-      text-decoration: none;
-      color: white;
-      display: block;
-    }
-    .feature-card:hover {
-      background: rgba(255,255,255,0.1);
-      transform: translateY(-8px);
-      border-color: var(--secondary);
-      color: white;
-    }
-    .feature-icon {
-      width: 60px; height: 60px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      border-radius: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.6rem;
-      margin: 0 auto 18px;
-      color: white;
-    }
-    .feature-card h4 { font-size: 1.2rem; margin-bottom: 8px; }
-    .feature-card p { font-size: 0.9rem; opacity: 0.7; line-height: 1.5; margin: 0; }
-
-    /* ---------- SUBJECTS (responsive grid) ---------- */
-    .subjects-section {
-      max-width: 1300px;
-      margin: 50px auto;
-      padding: 0 16px;
-    }
-    .subjects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 28px;
-    }
-    @media (max-width: 480px) {
-      .subjects-grid { grid-template-columns: 1fr; }
-    }
-
-    .subject-card {
-      background: var(--glass);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--card-radius);
-      overflow: hidden;
-      transition: var(--transition);
-    }
-    .subject-card:hover {
-      transform: translateY(-6px);
-      border-color: var(--secondary);
-      box-shadow: 0 16px 40px rgba(0,0,0,0.4);
-    }
-    .subject-header {
-      padding: 22px 24px;
-      min-height: 100px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .subject-header h3 { font-size: 1.4rem; font-weight: 700; margin-bottom: 4px; }
-    .subject-header span { opacity: 0.8; font-size: 0.85rem; }
-    .subject-body { padding: 22px 24px 24px; }
-    .subject-body p { opacity: 0.75; line-height: 1.6; font-size: 0.95rem; margin-bottom: 20px; }
-
-    .action-buttons {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .action-buttons .btn-primary-action,
-    .action-buttons .btn-secondary-action {
-      flex: 1 1 auto;
-      padding: 12px 16px;
-      border-radius: 14px;
-      font-weight: 500;
-      font-size: 0.9rem;
-      border: none;
-      cursor: pointer;
-      transition: var(--transition);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      text-decoration: none;
-      color: white;
-      min-height: 48px;
-    }
-    .btn-primary-action {
-      background: linear-gradient(135deg, var(--primary), #4f46e5);
-      box-shadow: 0 4px 12px rgba(99,102,241,0.25);
-    }
-    .btn-primary-action:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 24px rgba(99,102,241,0.4);
-      color: white;
-    }
-    .btn-secondary-action {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.15);
-    }
-    .btn-secondary-action:hover {
-      background: rgba(255,255,255,0.12);
-      transform: translateY(-3px);
-      color: white;
-    }
-
-    /* ---------- MODAL ---------- */
+    /* ================= MODAL ================= */
     .modal-overlay {
       position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
       z-index: 9999;
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 20px;
     }
+
     .modal-content {
-      background: rgba(10, 10, 40, 0.92);
-      backdrop-filter: blur(24px);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 28px;
-      padding: 28px 24px;
-      max-width: 540px;
-      width: 100%;
-      max-height: 90vh;
-      overflow-y: auto;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 25px;
+      padding: 40px;
+      max-width: 500px;
+      width: 90%;
       position: relative;
     }
+
     .modal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
     }
+
     .modal-header h3 {
-      font-size: 1.6rem;
+      font-size: 1.8rem;
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
+
     .close-modal {
       background: none;
       border: none;
       color: white;
-      font-size: 1.6rem;
-      padding: 0 8px;
+      font-size: 1.5rem;
       cursor: pointer;
-      opacity: 0.6;
-      transition: var(--transition);
+      padding: 5px;
     }
-    .close-modal:hover { opacity: 1; }
 
-    /* ---------- NOTIFICATION ---------- */
+    /* ================= NOTIFICATION ================= */
     .notification {
       position: fixed;
       top: 20px;
       right: 20px;
-      background: rgba(255,255,255,0.95);
-      color: #1e1e2f;
-      padding: 14px 24px;
-      border-radius: 18px;
-      box-shadow: 0 12px 36px rgba(0,0,0,0.5);
-      z-index: 11000;
+      background: rgba(255, 255, 255, 0.95);
+      color: #333;
+      padding: 15px 25px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      z-index: 10000;
       display: none;
       align-items: center;
-      gap: 12px;
-      backdrop-filter: blur(12px);
+      gap: 10px;
+      backdrop-filter: blur(10px);
       animation: slideIn 0.3s ease;
-      font-weight: 500;
-      max-width: 90%;
-    }
-    .notification i { font-size: 1.3rem; }
-    .notification.success { border-left: 5px solid var(--success); }
-    .notification.error { border-left: 5px solid var(--danger); }
-    @keyframes slideIn {
-      from { transform: translateX(40px); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
     }
 
-    /* ---------- FOOTER ---------- */
-    footer {
-      background: rgba(0,0,0,0.3);
-      padding: 50px 20px 30px;
-      margin-top: 60px;
-      border-top: 1px solid rgba(255,255,255,0.04);
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
     }
+
+    .notification.success {
+      border-left: 5px solid var(--success);
+    }
+
+    .notification.error {
+      border-left: 5px solid var(--danger);
+    }
+
+    /* ================= FOOTER ================= */
+    footer {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 60px 20px 30px;
+      margin-top: 80px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
     .footer-container {
       max-width: 1200px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 32px;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
     }
-    .footer-brand h3 { font-size: 1.6rem; margin-bottom: 10px; }
-    .footer-brand p { opacity: 0.6; font-size: 0.95rem; }
-    .footer-links h4 { color: var(--secondary); font-size: 1.1rem; margin-bottom: 16px; }
+
+    .footer-brand h3 {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+    }
+
+    .footer-links h4 {
+      color: var(--secondary);
+      margin-bottom: 20px;
+      font-size: 1.2rem;
+    }
+
     .footer-links a {
       display: block;
-      color: rgba(255,255,255,0.6);
+      color: rgba(255, 255, 255, 0.7);
       text-decoration: none;
-      margin-bottom: 10px;
-      transition: var(--transition);
-      font-size: 0.9rem;
+      margin-bottom: 12px;
+      transition: all 0.3s ease;
     }
-    .footer-links a:hover { color: var(--secondary); transform: translateX(4px); }
+
+    .footer-links a:hover {
+      color: var(--secondary);
+      transform: translateX(5px);
+    }
+
     .footer-bottom {
       text-align: center;
-      padding-top: 30px;
-      margin-top: 40px;
-      border-top: 1px solid rgba(255,255,255,0.04);
-      color: rgba(255,255,255,0.4);
-      font-size: 0.9rem;
+      padding-top: 40px;
+      margin-top: 60px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* ================= RESPONSIVE ================= */
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .subjects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+      }
+
+      .feature-card {
+        padding: 25px 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title {
+        font-size: 2rem;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
     }
     .creator-credit {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      font-weight: 600;
-    }
-
-    /* ---------- RESPONSIVE TWEAKS ---------- */
-    @media (max-width: 768px) {
-      .hero-section { padding: 30px 16px 20px; }
-      .features-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-      .feature-card { padding: 20px 14px; }
-      .feature-icon { width: 48px; height: 48px; font-size: 1.3rem; }
-      .feature-card h4 { font-size: 1rem; }
-      .subject-header { padding: 18px 18px; min-height: 70px; }
-      .subject-body { padding: 16px 18px 18px; }
-      .action-buttons { flex-direction: column; }
-      .action-buttons .btn-primary-action,
-      .action-buttons .btn-secondary-action { flex: 1; }
-    }
-    @media (max-width: 480px) {
-      .features-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-      .stat-card { padding: 12px 6px; }
-    }
-    @media (min-width: 992px) {
-      .mobile-only { display: none !important; }
-    }
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 600;
+}
   </style>
 </head>
+
 <body>
 
-  <!-- PARTICLES (light) -->
+  <!-- Particles Background -->
   <div class="particles-container" id="particlesContainer"></div>
 
-  <!-- NOTIFICATION -->
+  <!-- Notification -->
   <div id="notification" class="notification"></div>
 
-  <!-- ========== NAVBAR ========== -->
+  <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-custom">
-    <div class="container d-flex align-items-center justify-content-between">
+    <div class="container">
       <a class="navbar-brand" href="#">
-        <div class="logo-circle"><i class="fas fa-graduation-cap"></i></div>
-        <span class="d-none d-sm-inline">Smart Classroom</span>
-        <span class="d-inline d-sm-none">SC</span>
+        <div class="logo-circle">
+          <i class="fas fa-graduation-cap"></i>
+        </div>
+        <span>Smart Classroom</span>
       </a>
 
-      <!-- desktop nav -->
-      <div class="desktop-nav ms-auto align-items-center gap-1">
-        <a class="nav-link nav-link-custom active" href="#"><i class="fas fa-home"></i> Home</a>
-        <a class="nav-link nav-link-custom" href="profile.html"><i class="fas fa-user"></i> Profile</a>
-        <a class="nav-link nav-link-custom" href="experience.html"><i class="fas fa-briefcase"></i> Experience</a>
-        <a class="nav-link nav-link-custom" href="library.html"><i class="fas fa-book"></i> Library</a>
-        <a class="nav-link nav-link-custom" href="downloads.html"><i class="fas fa-download"></i> Downloads</a>
-        <a class="nav-link nav-link-custom" href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link nav-link-custom active" href="#">
+          <i class="fas fa-home"></i> Home
+        </a>
+        <a class="nav-link nav-link-custom" href="profile.html">
+          <i class="fas fa-user"></i> Profile
+        </a>
+        <a class="nav-link nav-link-custom" href="experience.html">
+          <i class="fas fa-briefcase"></i> Experience
+        </a>
+        <a class="nav-link nav-link-custom" href="library.html">
+          <i class="fas fa-book"></i> Library
+        </a>
+        <a class="nav-link nav-link-custom" href="downloads.html">
+          <i class="fas fa-download"></i> Downloads
+        </a>
+        <a class="nav-link nav-link-custom" href="contact.html">
+          <i class="fas fa-envelope"></i> Contact
+        </a>
       </div>
 
-      <!-- profile dropdown -->
+      <!-- Profile Dropdown -->
       <div class="profile-dropdown">
         <div class="profile-btn" id="profileToggle">
-          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Ramesh" alt="profile" class="profile-img">
-          <span id="userName" class="d-none d-sm-inline">Guest</span>
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Ramesh" alt="Profile" class="profile-img">
+          <span id="userName">Guest</span>
           <i class="fas fa-chevron-down"></i>
         </div>
         <div class="profile-menu" id="profileMenu">
-          <a href="profile.html"><i class="fas fa-user"></i> My Profile</a>
-          <a href="downloads.html"><i class="fas fa-download"></i> My Downloads</a>
-          <a href="library.html"><i class="fas fa-book"></i> Library</a>
-          <a href="experience.html"><i class="fas fa-chart-line"></i> Progress</a>
-          <hr>
-          <a href="login.html" id="loginLink"><i class="fas fa-sign-in-alt"></i> Login</a>
-          <a href="signup.html" id="signupLink"><i class="fas fa-user-plus"></i> Sign Up</a>
-          <a href="#" id="logoutLink" style="display:none;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+          <a href="profile.html">
+            <i class="fas fa-user"></i> My Profile
+          </a>
+          <a href="downloads.html">
+            <i class="fas fa-download"></i> My Downloads
+          </a>
+          <a href="library.html">
+            <i class="fas fa-book"></i> Library
+          </a>
+          <a href="experience.html">
+            <i class="fas fa-chart-line"></i> Progress
+          </a>
+          <hr style="border-color: rgba(255,255,255,0.1); margin: 10px 0;">
+          <a href="login.html" id="loginLink">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </a>
+          <a href="signup.html" id="signupLink">
+            <i class="fas fa-user-plus"></i> Sign Up
+          </a>
+          <a href="#" id="logoutLink" style="display: none;">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </a>
         </div>
       </div>
     </div>
   </nav>
 
-  <!-- ========== HERO ========== -->
+  <!-- Hero Section -->
   <section class="hero-section">
     <h1 class="hero-title">Interactive Learning Hub</h1>
     <p class="hero-subtitle">Access notes, video lectures, and study materials for all engineering subjects</p>
 
     <div class="stats-container">
-      <div class="stat-card"><div class="stat-icon"><i class="fas fa-book"></i></div><div class="stat-number">250+</div><p>Materials</p></div>
-      <div class="stat-card"><div class="stat-icon"><i class="fas fa-video"></i></div><div class="stat-number">120+</div><p>Lectures</p></div>
-      <div class="stat-card"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-number">1.5K+</div><p>Students</p></div>
-      <div class="stat-card"><div class="stat-icon"><i class="fas fa-download"></i></div><div class="stat-number">4.5K+</div><p>Downloads</p></div>
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-book"></i></div>
+        <div class="stat-number">250+</div>
+        <p>Study Materials</p>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-video"></i></div>
+        <div class="stat-number">120+</div>
+        <p>Video Lectures</p>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-users"></i></div>
+        <div class="stat-number">1.5K+</div>
+        <p>Active Students</p>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-download"></i></div>
+        <div class="stat-number">4.5K+</div>
+        <p>Downloads</p>
+      </div>
     </div>
   </section>
 
-  <!-- ========== FEATURES ========== -->
+  <!-- Features Section -->
   <section class="features-section">
     <h2 class="section-title">Platform Features</h2>
+
     <div class="features-grid">
-      <a href="library.html" class="feature-card"><div class="feature-icon"><i class="fas fa-book-open"></i></div><h4>Digital Library</h4><p>Textbooks, notes &amp; references</p></a>
-      <a href="downloads.html" class="feature-card"><div class="feature-icon"><i class="fas fa-download"></i></div><h4>Smart Download</h4><p>Track &amp; manage downloads</p></a>
-      <a href="experience.html" class="feature-card"><div class="feature-icon"><i class="fas fa-chart-line"></i></div><h4>Progress Tracking</h4><p>Monitor your learning</p></a>
-      <a href="videos.html" class="feature-card"><div class="feature-icon"><i class="fas fa-video"></i></div><h4>Video Lectures</h4><p>High-quality recordings</p></a>
+      <!-- Digital Library -->
+      <a href="library.html" class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-book-open"></i>
+        </div>
+        <h4>Digital Library</h4>
+        <p>Access thousands of textbooks, notes, and reference materials</p>
+      </a>
+
+
+      <!-- Smart Download -->
+      <a href="downloads.html" class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-download"></i>
+        </div>
+        <h4>Smart Download</h4>
+        <p>Intelligent download manager with progress tracking</p>
+      </a>
+
+      <!-- Experience -->
+      <a href="experience.html" class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <h4>Progress Tracking</h4>
+        <p>Track your learning progress and achievements</p>
+      </a>
+
+      <!-- Video Lectures -->
+      <a href="videos.html" class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-video"></i>
+        </div>
+        <h4>Video Lectures</h4>
+        <p>Watch high-quality recorded lectures</p>
+      </a>
     </div>
   </section>
 
-  <!-- ========== SUBJECTS ========== -->
+  <!-- Subjects Section -->
   <section class="subjects-section">
     <h2 class="section-title">Featured Subjects</h2>
+
     <div class="subjects-grid">
-      <!-- C -->
+      <!-- C Programming -->
       <div class="subject-card">
-        <div class="subject-header" style="background:linear-gradient(135deg,#667eea,#764ba2);"><h3>C Programming</h3><span>Unit 1–4 · Semester 1</span></div>
+        <div class="subject-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+          <h3>C Programming</h3>
+          <span style="opacity: 0.9;">Unit 1 – Unit 4 | Semester 1</span>
+        </div>
         <div class="subject-body">
-          <p>Master fundamentals: data types, control, functions, pointers.</p>
+          <p>Master the fundamentals of C programming including data types, control structures, functions, and pointers.
+          </p>
           <div class="action-buttons">
-            <a href="#" class="btn-primary-action" onclick="showNotesModal('c-programming')"><i class="fas fa-file-pdf"></i> Notes</a>
-            <a href="#" class="btn-secondary-action" onclick="showVideosModal('c-programming')"><i class="fas fa-play-circle"></i> Lectures</a>
+            <a href="#" class="btn-primary-action" onclick="showNotesModal('c-programming')">
+              <i class="fas fa-file-pdf"></i> View Notes
+            </a>
+            <a href="#" class="btn-secondary-action" onclick="showVideosModal('c-programming')">
+              <i class="fas fa-play-circle"></i> Watch Lectures
+            </a>
           </div>
         </div>
       </div>
-      <!-- C++ -->
+
+      <!-- C++ Programming -->
       <div class="subject-card">
-        <div class="subject-header" style="background:linear-gradient(135deg,#f093fb,#f5576c);"><h3>C++ Programming</h3><span>OOP · Semester 2</span></div>
+        <div class="subject-header" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+          <h3>C++ Programming</h3>
+          <span style="opacity: 0.9;">Object-Oriented Programming</span>
+        </div>
         <div class="subject-body">
-          <p>Classes, inheritance, polymorphism, templates.</p>
+          <p>Learn Object-Oriented Programming concepts, classes, inheritance, polymorphism, and templates.</p>
           <div class="action-buttons">
-            <a href="#" class="btn-primary-action" onclick="showNotesModal('cpp-programming')"><i class="fas fa-file-pdf"></i> Notes</a>
-            <a href="#" class="btn-secondary-action" onclick="showVideosModal('cpp-programming')"><i class="fas fa-play-circle"></i> Lectures</a>
+            <a href="#" class="btn-primary-action" onclick="showNotesModal('cpp-programming')">
+              <i class="fas fa-file-pdf"></i> View Notes
+            </a>
+            <a href="#" class="btn-secondary-action" onclick="showVideosModal('cpp-programming')">
+              <i class="fas fa-play-circle"></i> Watch Lectures
+            </a>
           </div>
         </div>
       </div>
-      <!-- OS -->
+
+      <!-- Operating Systems -->
       <div class="subject-card">
-        <div class="subject-header" style="background:linear-gradient(135deg,#4facfe,#00f2fe);"><h3>Operating Systems</h3><span>Unit 1–6 · Semester 3</span></div>
+        <div class="subject-header" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+          <h3>Operating Systems</h3>
+          <span style="opacity: 0.9;">Unit 1 – Unit 6 | Semester 3</span>
+        </div>
         <div class="subject-body">
-          <p>Processes, memory, CPU scheduling, file systems.</p>
+          <p>Explore processes, memory management, CPU scheduling algorithms, and file systems.</p>
           <div class="action-buttons">
-            <a href="#" class="btn-primary-action" onclick="showNotesModal('os')"><i class="fas fa-file-pdf"></i> Notes</a>
-            <a href="#" class="btn-secondary-action" onclick="showVideosModal('os')"><i class="fas fa-play-circle"></i> Lectures</a>
+            <a href="#" class="btn-primary-action" onclick="showNotesModal('os')">
+              <i class="fas fa-file-pdf"></i> View Notes
+            </a>
+            <a href="#" class="btn-secondary-action" onclick="showVideosModal('os')">
+              <i class="fas fa-play-circle"></i> Watch Lectures
+            </a>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ========== QUICK LINKS ========== -->
+  <!-- Quick Links -->
   <section class="features-section">
     <h2 class="section-title">Quick Links</h2>
+
     <div class="features-grid">
-      <a href="contact.html" class="feature-card"><div class="feature-icon"><i class="fas fa-envelope"></i></div><h4>Contact</h4><p>Get support</p></a>
-      <a href="login.html" class="feature-card"><div class="feature-icon"><i class="fas fa-sign-in-alt"></i></div><h4>Login</h4><p>Access your account</p></a>
-      <a href="signup.html" class="feature-card"><div class="feature-icon"><i class="fas fa-user-plus"></i></div><h4>Sign Up</h4><p>Join community</p></a>
-      <a href="profile.html" class="feature-card"><div class="feature-icon"><i class="fas fa-user-cog"></i></div><h4>Profile</h4><p>Manage preferences</p></a>
+      <!-- Contact -->
+      <a href="contact.html" class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-envelope"></i>
+        </div>
+        <h4>Contact Support</h4>
+        <p>Get help and support for any queries</p>
+      </a>
+
+      <!-- Login -->
+      <a href="login.html" class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-sign-in-alt"></i>
+        </div>
+        <h4>Login</h4>
+        <p>Access your account and continue learning</p>
+      </a>
+
+      <!-- Signup -->
+      <a href="signup.html" class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-user-plus"></i>
+        </div>
+        <h4>Sign Up</h4>
+        <p>Create new account and join the community</p>
+      </a>
+
+      <!-- Profile -->
+      <a href="profile.html" class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-user-cog"></i>
+        </div>
+        <h4>Profile Settings</h4>
+        <p>Manage your profile and preferences</p>
+      </a>
     </div>
   </section>
+  <!-- Footer -->
+<!-- Footer -->
+<footer>
+  <div class="footer-container">
+    <div class="footer-brand">
+      <h3>Smart Classroom</h3>
+      <p>Transforming engineering education through technology.</p>
+      <p style="margin-top: 15px; font-size: 0.9rem;">
+        <i class="fas fa-code"></i> Created with <i class="fas fa-heart" style="color: var(--danger);"></i> by <span class="creator-credit">Ramesh Prasad</span>
+      </p>
+    </div>
 
-  <!-- ========== FOOTER ========== -->
-  <footer>
-    <div class="footer-container">
-      <div class="footer-brand">
-        <h3>Smart Classroom</h3>
-        <p>Transforming engineering education.</p>
-        <p style="margin-top:12px;font-size:0.9rem;"><i class="fas fa-code"></i> Created with <i class="fas fa-heart" style="color:var(--danger);"></i> by <span class="creator-credit">Ramesh Prasad</span></p>
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <a href="index.html" class="footer-link">Home</a>
+      <a href="profile.html" class="footer-link">Profile</a>
+      <a href="experience.html" class="footer-link">Experience</a>
+      <a href="library.html" class="footer-link">Library</a>
+      <a href="downloads.html" class="footer-link">Downloads</a>
+      <a href="settings.html" class="footer-link">Settings</a>
+      <a href="contact.html" class="footer-link">Contact</a>
+    </div>
+
+    <div class="footer-links">
+      <h4>Account</h4>
+      <a href="login.html" class="footer-link">Login</a>
+      <a href="signup.html" class="footer-link">Sign Up</a>
+      <a href="settings.html" class="footer-link">Settings</a>
+      <a href="contact.html" class="footer-link">Help Center</a>
+    </div>
+
+    <div class="footer-links">
+      <h4>Connect With Us</h4>
+      <a href="https://github.com/rameshprasad" target="_blank" rel="noopener noreferrer" class="footer-link">
+        <i class="fab fa-github"></i> GitHub
+      </a>
+      <a href="https://linkedin.com/in/rameshprasad" target="_blank" rel="noopener noreferrer" class="footer-link">
+        <i class="fab fa-linkedin"></i> LinkedIn
+      </a>
+      <a href="https://twitter.com/ramesh__6162" target="_blank" rel="noopener noreferrer" class="footer-link">
+        <i class="fab fa-twitter"></i> Twitter
+      </a>
+      <a href="https://instagram.com/ramesh__6162" target="_blank" rel="noopener noreferrer" class="footer-link">
+        <i class="fab fa-instagram"></i> Instagram
+      </a>
+      <a href="https://wa.me/917498147593" target="_blank" rel="noopener noreferrer" class="footer-link">
+        <i class="fab fa-whatsapp"></i> WhatsApp
+      </a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2025 Smart Classroom | All Rights Reserved</p>
+    <p style="margin-top:10px;font-size:0.9rem;">
+      <i class="fas fa-envelope"></i> rameshprasadrp123@gmail.com |
+      <i class="fas fa-phone"></i> +91 7498147593
+    </p>
+    <p style="margin-top:15px; font-size:0.9rem;">
+      Follow me on 
+      <a href="https://instagram.com/ramesh__6162" target="_blank" rel="noopener noreferrer" style="color: var(--secondary); text-decoration: none;">
+        <i class="fab fa-instagram"></i> Instagram
+      </a> • 
+      <a href="https://twitter.com/ramesh__6162" target="_blank" rel="noopener noreferrer" style="color: var(--secondary); text-decoration: none;">
+        <i class="fab fa-twitter"></i> Twitter
+      </a> • 
+      <a href="https://github.com/rameshprasad" target="_blank" rel="noopener noreferrer" style="color: var(--secondary); text-decoration: none;">
+        <i class="fab fa-github"></i> GitHub
+      </a>
+    </p>
+    <p style="margin-top:15px; font-size:0.9rem; color: var(--secondary);">
+      Developed with <i class="fas fa-heart" style="color: var(--danger);"></i> by <span style="font-weight: 700; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent;">Ramesh Prasad</span>
+    </p>
+  </div>
+</footer>
+  <!-- Notes Modal -->
+  <div class="modal-overlay" id="notesModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="notesModalTitle">Notes</h3>
+        <button class="close-modal" onclick="closeModal('notesModal')">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
-      <div class="footer-links"><h4>Quick Links</h4><a href="index.html">Home</a><a href="profile.html">Profile</a><a href="experience.html">Experience</a><a href="library.html">Library</a><a href="downloads.html">Downloads</a><a href="contact.html">Contact</a></div>
-      <div class="footer-links"><h4>Account</h4><a href="login.html">Login</a><a href="signup.html">Sign Up</a><a href="settings.html">Settings</a><a href="contact.html">Help</a></div>
-      <div class="footer-links"><h4>Connect</h4><a href="#" target="_blank"><i class="fab fa-github"></i> GitHub</a><a href="#" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a><a href="#" target="_blank"><i class="fab fa-twitter"></i> Twitter</a><a href="#" target="_blank"><i class="fab fa-instagram"></i> Instagram</a></div>
+      <div id="notesModalContent">
+        <!-- Content will be loaded here -->
+      </div>
     </div>
-    <div class="footer-bottom">
-      <p>© 2025 Smart Classroom · All Rights Reserved</p>
-      <p style="margin-top:6px;font-size:0.85rem;"><i class="fas fa-envelope"></i> rameshprasadrp123@gmail.com · <i class="fas fa-phone"></i> +91 7498147593</p>
+  </div>
+
+  <!-- Videos Modal -->
+  <div class="modal-overlay" id="videosModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="videosModalTitle">Video Lectures</h3>
+        <button class="close-modal" onclick="closeModal('videosModal')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div id="videosModalContent">
+        <!-- Content will be loaded here -->
+      </div>
     </div>
-  </footer>
+  </div>
 
-  <!-- ========== MODALS ========== -->
-  <div class="modal-overlay" id="notesModal"><div class="modal-content"><div class="modal-header"><h3 id="notesModalTitle">Notes</h3><button class="close-modal" onclick="closeModal('notesModal')"><i class="fas fa-times"></i></button></div><div id="notesModalContent"></div></div></div>
-  <div class="modal-overlay" id="videosModal"><div class="modal-content"><div class="modal-header"><h3 id="videosModalTitle">Video Lectures</h3><button class="close-modal" onclick="closeModal('videosModal')"><i class="fas fa-times"></i></button></div><div id="videosModalContent"></div></div></div>
-
-  <!-- ========== MOBILE BOTTOM NAV ========== -->
-  <nav class="mobile-bottom-nav">
-    <a href="#" class="active"><i class="fas fa-home"></i><span>Home</span></a>
-    <a href="library.html"><i class="fas fa-book"></i><span>Library</span></a>
-    <a href="downloads.html"><i class="fas fa-download"></i><span>Downloads</span></a>
-    <a href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a>
-    <a href="contact.html"><i class="fas fa-envelope"></i><span>Contact</span></a>
-  </nav>
-
-  <!-- ========== SCRIPTS ========== -->
   <script>
-    // ---------- PARTICLES (light) ----------
-    (function createParticles() {
-      const container = document.getElementById('particlesContainer');
-      const colors = ['#6366f1', '#22d3ee', '#f472b6', '#10b981'];
-      for (let i = 0; i < 30; i++) {
-        const p = document.createElement('div');
-        p.className = 'particle';
-        const size = Math.random() * 18 + 4;
-        p.style.width = size + 'px';
-        p.style.height = size + 'px';
-        p.style.background = colors[Math.floor(Math.random() * colors.length)];
-        p.style.left = Math.random() * 100 + '%';
-        p.style.top = Math.random() * 100 + '%';
-        p.style.animationDuration = (Math.random() * 18 + 12) + 's';
-        p.style.animationDelay = (Math.random() * 6) + 's';
-        container.appendChild(p);
-      }
-    })();
+    // ================= USING THE DATABASE IN YOUR APP =================
 
-    // ---------- NOTIFICATION ----------
-    function showNotification(msg, type = 'success') {
-      const n = document.getElementById('notification');
-      n.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i><span>${msg}</span>`;
-      n.className = `notification ${type}`;
-      n.style.display = 'flex';
-      clearTimeout(n._timer);
-      n._timer = setTimeout(() => { n.style.display = 'none'; }, 3000);
+    // Example: Get current user
+    function getCurrentUser() {
+      const userData = localStorage.getItem('currentUser');
+      if (userData) {
+        return JSON.parse(userData);
+      }
+      return null;
     }
 
-    // ---------- AUTH / DROPDOWN ----------
+    // Example: User login
+    function loginUser(email, password) {
+      const user = Database.getUserByEmail(email);
+      if (user && user.password === password) {
+        // Store current user in localStorage (without password)
+        const { password, ...userWithoutPassword } = user;
+        localStorage.setItem('currentUser', JSON.stringify(userWithoutPassword));
+
+        // Update last login
+        user.lastLogin = new Date().toISOString();
+        Database.updateUser(user.id, user);
+
+        return userWithoutPassword;
+      }
+      return null;
+    }
+
+    // Example: Get featured courses
+    function getFeaturedCourses() {
+      const courses = Database.getCourses();
+      return courses.slice(0, 4); // Get first 4 courses
+    }
+
+    // Example: Get user downloads
+    function getUserDownloads(userId) {
+      return Database.getDownloads(userId);
+    }
+
+    // Example: Search functionality
+    function searchContent(query) {
+      return Database.search(query);
+    }
+
+    // Example: Get platform statistics
+    function getPlatformStats() {
+      return Database.getStats();
+    }
+
+    // Example: Download material
+    function downloadMaterial(userId, materialId) {
+      const material = Database.getMaterialById(materialId);
+      if (!material) return null;
+
+      // Record the download
+      const download = Database.addDownload({
+        userId: userId,
+        itemId: materialId,
+        itemType: 'material',
+        itemName: material.name,
+        fileSize: material.size
+      });
+
+      // Update user progress
+      const course = Database.getCourseById(material.courseId);
+      if (course) {
+        const progress = Database.getProgress(userId, material.courseId)[0];
+        if (progress) {
+          if (!progress.materialCompleted.includes(materialId)) {
+            progress.materialCompleted.push(materialId);
+            progress.overallProgress = Math.min(100, progress.materialCompleted.length / 5 * 100);
+            Database.updateProgress(userId, material.courseId, progress);
+          }
+        }
+      }
+
+      return download;
+    }
+
+    // Example: Update user settings
+    function updateUserSettings(settings) {
+      const currentUser = getCurrentUser();
+      if (currentUser) {
+        return Database.updateUser(currentUser.id, { settings });
+      }
+      return Database.updateSettings(settings);
+    }
+
+    // ================= INITIALIZE ON PAGE LOAD =================
+    document.addEventListener('DOMContentLoaded', function () {
+      // Check if user is logged in
+      const currentUser = getCurrentUser();
+      if (currentUser) {
+        // Update UI for logged in user
+        document.getElementById('userName').textContent = currentUser.name;
+        document.getElementById('navbarName').textContent = currentUser.name;
+
+        // Load user-specific data
+        const downloads = getUserDownloads(currentUser.id);
+        const progress = Database.getProgress(currentUser.id);
+
+        // Update download count
+        document.getElementById('downloadsCount').textContent = downloads.length;
+
+        // Calculate overall progress
+        if (progress.length > 0) {
+          const avgProgress = progress.reduce((sum, p) => sum + p.overallProgress, 0) / progress.length;
+          document.getElementById('progressCount').textContent = Math.round(avgProgress) + '%';
+        }
+      }
+
+      // Load platform statistics
+      const stats = getPlatformStats();
+      document.getElementById('totalMaterials').textContent = stats.totalMaterials + '+';
+      document.getElementById('totalVideos').textContent = stats.totalVideos + '+';
+      document.getElementById('totalUsers').textContent = stats.totalUsers + '+';
+      document.getElementById('totalDownloads').textContent = stats.totalDownloads + '+';
+
+      // Load featured courses
+      const courses = getFeaturedCourses();
+      // Update course cards dynamically
+      courses.forEach((course, index) => {
+        const card = document.querySelectorAll('.subject-card')[index];
+        if (card) {
+          card.querySelector('h3').textContent = course.name;
+          card.querySelector('span').textContent = `Unit 1 – Unit ${course.units} | Semester ${course.semester}`;
+          card.querySelector('p').textContent = course.description;
+        }
+      });
+    });
+
+    // ================= EVENT LISTENERS FOR DATABASE OPERATIONS =================
+    // Search functionality
+    document.getElementById('searchInput')?.addEventListener('input', function (e) {
+      const query = e.target.value;
+      if (query.length > 2) {
+        const results = searchContent(query);
+        // Display search results
+        displaySearchResults(results);
+      }
+    });
+
+    // Download button handler
+    document.querySelectorAll('.btn-primary-action').forEach(button => {
+      button.addEventListener('click', function (e) {
+        const currentUser = getCurrentUser();
+        if (!currentUser) {
+          showNotification('Please login to download materials', 'error');
+          return;
+        }
+
+        const materialId = this.getAttribute('data-material-id');
+        if (materialId) {
+          const download = downloadMaterial(currentUser.id, materialId);
+          if (download) {
+            showNotification('Download started successfully!', 'success');
+          }
+        }
+      });
+    });
+
+    // Function to display search results
+    function displaySearchResults(results) {
+      const resultsContainer = document.getElementById('searchResults');
+      if (!resultsContainer) return;
+
+      if (results.courses.length === 0 && results.materials.length === 0 && results.videos.length === 0) {
+        resultsContainer.innerHTML = '<p>No results found</p>';
+        return;
+      }
+
+      let html = '<div class="search-results">';
+
+      if (results.courses.length > 0) {
+        html += '<h4>Courses</h4>';
+        results.courses.forEach(course => {
+          html += `
+                <div class="search-result-item">
+                    <h5>${course.name}</h5>
+                    <p>${course.description.substring(0, 100)}...</p>
+                </div>
+            `;
+        });
+      }
+
+      if (results.materials.length > 0) {
+        html += '<h4>Study Materials</h4>';
+        results.materials.forEach(material => {
+          html += `
+                <div class="search-result-item">
+                    <h5>${material.name}</h5>
+                    <p>${material.size} • ${material.pages} pages</p>
+                </div>
+            `;
+        });
+      }
+
+      if (results.videos.length > 0) {
+        html += '<h4>Video Lectures</h4>';
+        results.videos.forEach(video => {
+          html += `
+                <div class="search-result-item">
+                    <h5>${video.title}</h5>
+                    <p>${video.duration} • ${video.instructor}</p>
+                </div>
+            `;
+        });
+      }
+
+      html += '</div>';
+      resultsContainer.innerHTML = html;
+      resultsContainer.style.display = 'block';
+    }
+
+    // ================= BACKUP & RESTORE FUNCTIONS =================
+    function createBackup() {
+      try {
+        const backup = Database.backupData();
+        showNotification('Backup created successfully!', 'success');
+        return backup;
+      } catch (error) {
+        showNotification('Backup failed: ' + error.message, 'error');
+        return null;
+      }
+    }
+
+    function restoreBackup() {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.json';
+
+      input.onchange = function (e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function (event) {
+          try {
+            const backupData = JSON.parse(event.target.result);
+            Database.restoreData(backupData);
+            showNotification('Data restored successfully!', 'success');
+            setTimeout(() => {
+              window.location.reload();
+            }, 1500);
+          } catch (error) {
+            showNotification('Restore failed: ' + error.message, 'error');
+          }
+        };
+        reader.readAsText(file);
+      };
+
+      input.click();
+    }
+
+    // ================= ADMIN FUNCTIONS =================
+    function exportData(type) {
+      try {
+        Database.exportToCSV(type);
+        showNotification(`Exported ${type} data successfully!`, 'success');
+      } catch (error) {
+        showNotification('Export failed: ' + error.message, 'error');
+      }
+    }
+
+    function clearDatabaseCache() {
+      if (Database.clearCache()) {
+        showNotification('Cache cleared successfully!', 'success');
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      }
+    }
+
+    // ================= NOTIFICATION FUNCTION =================
+    function showNotification(message, type = 'info') {
+      // Your existing notification function
+      const notification = document.getElementById('notification');
+      if (notification) {
+        notification.textContent = message;
+        notification.className = `notification ${type}`;
+        notification.style.display = 'block';
+        setTimeout(() => {
+          notification.style.display = 'none';
+        }, 3000);
+      }
+    }
+  </script>
+  <script>
+    // ================= PARTICLES BACKGROUND =================
+    function createParticles() {
+      const container = document.getElementById('particlesContainer');
+      const colors = ['#6366f1', '#22d3ee', '#f472b6', '#10b981'];
+
+      for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+
+        const size = Math.random() * 20 + 5;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const posX = Math.random() * 100;
+        const posY = Math.random() * 100;
+        const duration = Math.random() * 20 + 10;
+        const delay = Math.random() * 5;
+
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.background = color;
+        particle.style.left = `${posX}%`;
+        particle.style.top = `${posY}%`;
+        particle.style.animationDuration = `${duration}s`;
+        particle.style.animationDelay = `${delay}s`;
+
+        container.appendChild(particle);
+      }
+    }
+
+    // ================= NOTIFICATION SYSTEM =================
+    function showNotification(message, type = 'success') {
+      const notification = document.getElementById('notification');
+      notification.innerHTML = `
+    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+    <span>${message}</span>
+  `;
+      notification.className = `notification ${type}`;
+      notification.style.display = 'flex';
+
+      setTimeout(() => {
+        notification.style.display = 'none';
+      }, 3000);
+    }
+
+    // ================= USER AUTHENTICATION =================
     function checkAuth() {
       const user = localStorage.getItem('user');
+      const profileToggle = document.getElementById('profileToggle');
       const userName = document.getElementById('userName');
       const loginLink = document.getElementById('loginLink');
       const signupLink = document.getElementById('signupLink');
       const logoutLink = document.getElementById('logoutLink');
+
       if (user) {
-        const data = JSON.parse(user);
-        userName.textContent = data.name || 'User';
+        const userData = JSON.parse(user);
+        userName.textContent = userData.name || 'User';
+
+        if (profileToggle) {
+          profileToggle.querySelector('img').src = userData.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + userData.name;
+        }
+
         if (loginLink) loginLink.style.display = 'none';
         if (signupLink) signupLink.style.display = 'none';
         if (logoutLink) logoutLink.style.display = 'block';
@@ -746,105 +1368,638 @@
         if (logoutLink) logoutLink.style.display = 'none';
       }
     }
+
+    // ================= PROFILE DROPDOWN =================
     document.getElementById('profileToggle')?.addEventListener('click', (e) => {
       e.stopPropagation();
-      document.getElementById('profileMenu').classList.toggle('active');
+      const menu = document.getElementById('profileMenu');
+      menu.classList.toggle('active');
     });
+
+    // Close dropdown when clicking outside
     document.addEventListener('click', () => {
-      document.getElementById('profileMenu')?.classList.remove('active');
+      const menu = document.getElementById('profileMenu');
+      if (menu) menu.classList.remove('active');
     });
+
+    // Logout functionality
     document.getElementById('logoutLink')?.addEventListener('click', (e) => {
       e.preventDefault();
       localStorage.removeItem('user');
-      showNotification('Logged out', 'success');
-      setTimeout(() => window.location.reload(), 600);
-    });
-    checkAuth();
-
-    // ---------- MODALS ----------
-    function showModal(id) { document.getElementById(id).style.display = 'flex'; document.body.style.overflow = 'hidden'; }
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; document.body.style.overflow = 'auto'; }
-    document.querySelectorAll('.modal-overlay').forEach(m => {
-      m.addEventListener('click', (e) => { if (e.target === m) { m.style.display = 'none'; document.body.style.overflow = 'auto'; } });
+      showNotification('Logged out successfully!', 'success');
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     });
 
-    // ---------- NOTES MODAL ----------
+    // ================= MODAL SYSTEM =================
+    function showModal(modalId) {
+      document.getElementById(modalId).style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    // Close modal when clicking outside
+    document.querySelectorAll('.modal-overlay').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.style.display = 'none';
+          document.body.style.overflow = 'auto';
+        }
+      });
+    });
+
+    // ================= SUBJECT NOTES MODAL =================
     function showNotesModal(subject) {
-      const names = { 'c-programming': 'C Programming', 'cpp-programming': 'C++ Programming', 'os': 'Operating Systems' };
-      const data = {
-        'c-programming': [{ name: 'Unit 1 - Intro to C', size: '2.4 MB', pages: 45 }, { name: 'Unit 2 - Control Structures', size: '3.1 MB', pages: 52 }, { name: 'Unit 3 - Functions & Arrays', size: '4.2 MB', pages: 68 }, { name: 'Unit 4 - Pointers & Structures', size: '3.8 MB', pages: 61 }],
-        'cpp-programming': [{ name: 'Unit 1 - OOP Concepts', size: '2.8 MB', pages: 48 }, { name: 'Unit 2 - Classes & Objects', size: '3.5 MB', pages: 55 }, { name: 'Unit 3 - Inheritance & Polymorphism', size: '4.0 MB', pages: 63 }, { name: 'Unit 4 - Templates & STL', size: '3.2 MB', pages: 51 }],
-        'os': [{ name: 'Unit 1 - Intro to OS', size: '2.6 MB', pages: 42 }, { name: 'Unit 2 - Process Management', size: '3.9 MB', pages: 65 }, { name: 'Unit 3 - Memory Management', size: '4.5 MB', pages: 72 }, { name: 'Unit 4 - File Systems', size: '3.1 MB', pages: 49 }]
+      const subjectNames = {
+        'c-programming': 'C Programming',
+        'cpp-programming': 'C++ Programming',
+        'os': 'Operating Systems'
       };
-      document.getElementById('notesModalTitle').textContent = names[subject] + ' Notes';
-      const list = data[subject].map(n => `
-        <div style="background:rgba(255,255,255,0.04);padding:14px 16px;border-radius:14px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
-          <div><strong>${n.name}</strong><div style="font-size:0.85rem;opacity:0.6;">${n.size} · ${n.pages} pages</div></div>
-          <div style="display:flex;gap:8px;">
-            <button onclick="downloadNote('${subject}','${n.name}')" style="padding:6px 14px;background:linear-gradient(135deg,var(--primary),var(--secondary));border:none;border-radius:10px;color:white;font-size:0.8rem;cursor:pointer;"><i class="fas fa-download"></i></button>
-            <button onclick="viewNote('${subject}','${n.name}')" style="padding:6px 14px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:white;font-size:0.8rem;cursor:pointer;"><i class="fas fa-eye"></i></button>
+
+      const notesData = {
+        'c-programming': [
+          { name: 'Unit 1 - Introduction to C', size: '2.4 MB', pages: 45 },
+          { name: 'Unit 2 - Control Structures', size: '3.1 MB', pages: 52 },
+          { name: 'Unit 3 - Functions and Arrays', size: '4.2 MB', pages: 68 },
+          { name: 'Unit 4 - Pointers and Structures', size: '3.8 MB', pages: 61 }
+        ],
+        'cpp-programming': [
+          { name: 'Unit 1 - OOP Concepts', size: '2.8 MB', pages: 48 },
+          { name: 'Unit 2 - Classes and Objects', size: '3.5 MB', pages: 55 },
+          { name: 'Unit 3 - Inheritance and Polymorphism', size: '4.0 MB', pages: 63 },
+          { name: 'Unit 4 - Templates and STL', size: '3.2 MB', pages: 51 }
+        ],
+        'os': [
+          { name: 'Unit 1 - Introduction to OS', size: '2.6 MB', pages: 42 },
+          { name: 'Unit 2 - Process Management', size: '3.9 MB', pages: 65 },
+          { name: 'Unit 3 - Memory Management', size: '4.5 MB', pages: 72 },
+          { name: 'Unit 4 - File Systems', size: '3.1 MB', pages: 49 }
+        ]
+      };
+
+      document.getElementById('notesModalTitle').textContent = `${subjectNames[subject]} Notes`;
+
+      const notesList = notesData[subject].map(note => `
+    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <strong>${note.name}</strong>
+          <div style="font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 5px;">
+            ${note.size} • ${note.pages} pages
           </div>
         </div>
-      `).join('');
-      document.getElementById('notesModalContent').innerHTML = `<div style="margin-bottom:16px;opacity:0.7;">Select a note to download or view.</div>${list}<div style="text-align:center;margin-top:20px;"><button onclick="downloadAllNotes('${subject}')" style="padding:12px 28px;background:linear-gradient(135deg,var(--warning),var(--accent));border:none;border-radius:14px;color:white;font-weight:600;cursor:pointer;"><i class="fas fa-download"></i> Download All</button></div>`;
+        <div style="display: flex; gap: 10px;">
+          <button onclick="downloadNote('${subject}', '${note.name}')" 
+                  style="padding: 8px 15px; background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+                         border: none; border-radius: 8px; color: white; cursor: pointer; font-size: 0.9rem;">
+            <i class="fas fa-download"></i> Download
+          </button>
+          <button onclick="viewNote('${subject}', '${note.name}')"
+                  style="padding: 8px 15px; background: rgba(255,255,255,0.1); 
+                         border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; 
+                         color: white; cursor: pointer; font-size: 0.9rem;">
+            <i class="fas fa-eye"></i> View
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+      document.getElementById('notesModalContent').innerHTML = `
+    <p style="margin-bottom: 20px; color: rgba(255,255,255,0.7);">
+      Select a note to download or view online:
+    </p>
+    ${notesList}
+    <div style="text-align: center; margin-top: 30px;">
+      <button onclick="downloadAllNotes('${subject}')" 
+              style="padding: 12px 30px; background: linear-gradient(135deg, var(--warning), var(--accent)); 
+                     border: none; border-radius: 10px; color: white; cursor: pointer; font-size: 1rem;">
+        <i class="fas fa-download"></i> Download All Notes
+      </button>
+    </div>
+  `;
+
       showModal('notesModal');
     }
 
-    // ---------- VIDEOS MODAL ----------
+    // ================= VIDEO LECTURES MODAL =================
     function showVideosModal(subject) {
-      const names = { 'c-programming': 'C Programming', 'cpp-programming': 'C++ Programming', 'os': 'Operating Systems' };
-      const data = {
-        'c-programming': ['Intro to C', 'Variables & Data Types', 'Control Structures', 'Functions & Recursion', 'Arrays & Pointers'],
-        'cpp-programming': ['Intro to OOP', 'Classes & Objects', 'Inheritance', 'Polymorphism', 'Templates & STL'],
-        'os': ['OS Introduction', 'Process Management', 'CPU Scheduling', 'Memory Management', 'File Systems']
+      const subjectNames = {
+        'c-programming': 'C Programming',
+        'cpp-programming': 'C++ Programming',
+        'os': 'Operating Systems'
       };
-      document.getElementById('videosModalTitle').textContent = names[subject] + ' Lectures';
-      const list = data[subject].map((v, i) => `
-        <div style="background:rgba(255,255,255,0.04);padding:14px 16px;border-radius:14px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-          <div><i class="fas fa-play-circle" style="color:var(--secondary);margin-right:10px;"></i><strong>${v}</strong><span style="opacity:0.5;margin-left:12px;font-size:0.8rem;">${(40 + i*5)}:${(10 + i*7)}</span></div>
-          <button onclick="watchVideo('${subject}',${i})" style="padding:6px 16px;background:linear-gradient(135deg,var(--danger),var(--warning));border:none;border-radius:10px;color:white;cursor:pointer;font-size:0.8rem;"><i class="fas fa-play"></i> Watch</button>
+
+      const videosData = {
+        'c-programming': [
+          { name: 'Introduction to C Programming', duration: '45:20' },
+          { name: 'Variables and Data Types', duration: '38:15' },
+          { name: 'Control Structures in C', duration: '52:40' },
+          { name: 'Functions and Recursion', duration: '49:35' },
+          { name: 'Arrays and Pointers', duration: '56:10' }
+        ],
+        'cpp-programming': [
+          { name: 'Introduction to OOP', duration: '42:30' },
+          { name: 'Classes and Objects', duration: '47:25' },
+          { name: 'Inheritance in C++', duration: '51:40' },
+          { name: 'Polymorphism Concepts', duration: '44:15' },
+          { name: 'Templates and STL', duration: '53:20' }
+        ],
+        'os': [
+          { name: 'OS Introduction and Types', duration: '48:30' },
+          { name: 'Process Management', duration: '55:45' },
+          { name: 'CPU Scheduling Algorithms', duration: '59:20' },
+          { name: 'Memory Management', duration: '51:10' },
+          { name: 'File Systems', duration: '46:35' }
+        ]
+      };
+
+      document.getElementById('videosModalTitle').textContent = `${subjectNames[subject]} Video Lectures`;
+
+      const videosList = videosData[subject].map((video, index) => `
+    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--danger), var(--warning)); 
+                        border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-play" style="color: white;"></i>
+            </div>
+            <div>
+              <strong>${video.name}</strong>
+              <div style="font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 5px;">
+                Duration: ${video.duration}
+              </div>
+            </div>
+          </div>
         </div>
-      `).join('');
-      document.getElementById('videosModalContent').innerHTML = `<div style="margin-bottom:16px;opacity:0.7;">Select a lecture to watch.</div>${list}<div style="text-align:center;margin-top:20px;"><button onclick="showNotification('Playlist coming soon!','success')" style="padding:12px 28px;background:linear-gradient(135deg,var(--primary),var(--secondary));border:none;border-radius:14px;color:white;font-weight:600;cursor:pointer;"><i class="fas fa-list"></i> Save Playlist</button></div>`;
+        <div style="display: flex; gap: 10px;">
+          <button onclick="watchVideo('${subject}', ${index})" 
+                  style="padding: 8px 15px; background: linear-gradient(135deg, var(--danger), var(--warning)); 
+                         border: none; border-radius: 8px; color: white; cursor: pointer; font-size: 0.9rem;">
+            <i class="fas fa-play"></i> Watch
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+      document.getElementById('videosModalContent').innerHTML = `
+    <p style="margin-bottom: 20px; color: rgba(255,255,255,0.7);">
+      Select a video lecture to watch:
+    </p>
+    ${videosList}
+    <div style="text-align: center; margin-top: 30px;">
+      <button onclick="showNotification('Playlist feature coming soon!', 'success')" 
+              style="padding: 12px 30px; background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+                     border: none; border-radius: 10px; color: white; cursor: pointer; font-size: 1rem;">
+        <i class="fas fa-list"></i> Save as Playlist
+      </button>
+    </div>
+  `;
+
       showModal('videosModal');
     }
 
-    // ---------- DOWNLOAD / VIEW HELPERS ----------
-    function downloadNote(subject, name) {
-      if (!localStorage.getItem('user')) { showNotification('Please login first', 'error'); return; }
-      showNotification(`Downloading ${name}...`, 'success');
-      setTimeout(() => { showNotification(`${name} downloaded!`, 'success'); }, 1200);
-    }
-    function downloadAllNotes(subject) {
-      if (!localStorage.getItem('user')) { showNotification('Please login first', 'error'); return; }
-      showNotification('Preparing all notes...', 'success');
-      setTimeout(() => { showNotification('All notes downloaded!', 'success'); }, 1600);
-    }
-    function viewNote(subject, name) {
-      if (!localStorage.getItem('user')) { showNotification('Please login to view', 'error'); return; }
-      showNotification(`Opening ${name}...`, 'success');
-    }
-    function watchVideo(subject, idx) {
-      if (!localStorage.getItem('user')) { showNotification('Please login to watch', 'error'); return; }
-      showNotification('Loading video player...', 'success');
+    // ================= DOWNLOAD & VIEW FUNCTIONS =================
+    function downloadNote(subject, noteName) {
+      const user = localStorage.getItem('user');
+      if (!user) {
+        showNotification('Please login to download notes', 'error');
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 1000);
+        return;
+      }
+
+      showNotification(`Downloading ${noteName}...`, 'success');
+
+      // Simulate download
       setTimeout(() => {
-        const modal = document.createElement('div');
-        modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
-        modal.innerHTML = `<div style="background:rgba(20,20,50,0.95);border-radius:28px;padding:30px;max-width:600px;width:100%;text-align:center;border:1px solid rgba(255,255,255,0.06);"><h4 style="margin-bottom:12px;">Now Playing</h4><div style="background:#0a0a20;padding:40px 20px;border-radius:20px;margin:16px 0;"><i class="fas fa-video" style="font-size:3.5rem;color:var(--secondary);"></i><p style="margin-top:12px;opacity:0.6;">Video simulation · ${subject} lecture ${idx+1}</p></div><button onclick="this.closest('div').parentElement.remove();document.body.style.overflow='auto';" style="padding:10px 30px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:40px;color:white;cursor:pointer;">Close</button></div>`;
-        document.body.appendChild(modal);
-        document.body.style.overflow = 'hidden';
-      }, 400);
+        // Add to downloads in localStorage
+        const downloads = JSON.parse(localStorage.getItem('downloads') || '[]');
+        downloads.push({
+          name: noteName,
+          subject: subject,
+          date: new Date().toISOString(),
+          type: 'notes'
+        });
+        localStorage.setItem('downloads', JSON.stringify(downloads));
+
+        showNotification(`${noteName} downloaded successfully!`, 'success');
+      }, 1500);
     }
 
-    // ---------- KEYBOARD SHORTCUTS ----------
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') { closeModal('notesModal'); closeModal('videosModal'); }
+    function downloadAllNotes(subject) {
+      const user = localStorage.getItem('user');
+      if (!user) {
+        showNotification('Please login to download notes', 'error');
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 1000);
+        return;
+      }
+
+      showNotification(`Preparing all notes for download...`, 'success');
+
+      // Simulate bulk download
+      setTimeout(() => {
+        const subjectNames = {
+          'c-programming': 'C Programming',
+          'cpp-programming': 'C++ Programming',
+          'os': 'Operating Systems'
+        };
+
+        const downloads = JSON.parse(localStorage.getItem('downloads') || '[]');
+        downloads.push({
+          name: `${subjectNames[subject]} - Complete Notes`,
+          subject: subject,
+          date: new Date().toISOString(),
+          type: 'notes-package'
+        });
+        localStorage.setItem('downloads', JSON.stringify(downloads));
+
+        showNotification(`All ${subjectNames[subject]} notes downloaded!`, 'success');
+      }, 2000);
+    }
+
+    function viewNote(subject, noteName) {
+      const user = localStorage.getItem('user');
+      if (!user) {
+        showNotification('Please login to view notes', 'error');
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 1000);
+        return;
+      }
+
+      showNotification(`Opening ${noteName}...`, 'success');
+      setTimeout(() => {
+        // In a real app, this would open the PDF
+        window.open(`notes/${subject}/${noteName.replace(/ /g, '-')}.pdf`, '_blank');
+      }, 1000);
+    }
+
+    function watchVideo(subject, videoIndex) {
+      const user = localStorage.getItem('user');
+      if (!user) {
+        showNotification('Please login to watch videos', 'error');
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 1000);
+        return;
+      }
+
+      showNotification(`Loading video...`, 'success');
+
+      // Video content based on subject and index
+      const videoContents = {
+        'c-programming': [
+          '<div style="text-align: center; padding: 30px;"><h4>Introduction to C Programming</h4><p style="margin: 20px 0;">This video covers basics of C programming language.</p><div style="background: #000; padding: 20px; border-radius: 10px; margin: 20px 0;"><i class="fas fa-video" style="font-size: 3rem; color: var(--secondary);"></i><p style="margin-top: 10px;">Video Player Simulation</p></div></div>',
+          '<div style="text-align: center; padding: 30px;"><h4>Variables and Data Types</h4><p style="margin: 20px 0;">Learn about variables, data types and constants in C.</p><div style="background: #000; padding: 20px; border-radius: 10px; margin: 20px 0;"><i class="fas fa-video" style="font-size: 3rem; color: var(--secondary);"></i><p style="margin-top: 10px;">Video Player Simulation</p></div></div>'
+        ],
+        'cpp-programming': [
+          '<div style="text-align: center; padding: 30px;"><h4>Introduction to OOP</h4><p style="margin: 20px 0;">Object Oriented Programming concepts explained.</p><div style="background: #000; padding: 20px; border-radius: 10px; margin: 20px 0;"><i class="fas fa-video" style="font-size: 3rem; color: var(--secondary);"></i><p style="margin-top: 10px;">Video Player Simulation</p></div></div>',
+          '<div style="text-align: center; padding: 30px;"><h4>Classes and Objects</h4><p style="margin: 20px 0;">Creating classes and objects in C++.</p><div style="background: #000; padding: 20px; border-radius: 10px; margin: 20px 0;"><i class="fas fa-video" style="font-size: 3rem; color: var(--secondary);"></i><p style="margin-top: 10px;">Video Player Simulation</p></div></div>'
+        ],
+        'os': [
+          '<div style="text-align: center; padding: 30px;"><h4>OS Introduction</h4><p style="margin: 20px 0;">Introduction to Operating Systems.</p><div style="background: #000; padding: 20px; border-radius: 10px; margin: 20px 0;"><i class="fas fa-video" style="font-size: 3rem; color: var(--secondary);"></i><p style="margin-top: 10px;">Video Player Simulation</p></div></div>',
+          '<div style="text-align: center; padding: 30px;"><h4>Process Management</h4><p style="margin: 20px 0;">Understanding process management in OS.</p><div style="background: #000; padding: 20px; border-radius: 10px; margin: 20px 0;"><i class="fas fa-video" style="font-size: 3rem; color: var(--secondary);"></i><p style="margin-top: 10px;">Video Player Simulation</p></div></div>'
+        ]
+      };
+
+      // Show video modal
+      const videoModal = document.createElement('div');
+      videoModal.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  `;
+
+      videoModal.innerHTML = `
+    <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); 
+                border-radius: 20px; padding: 30px; max-width: 800px; width: 90%;
+                max-height: 90vh; overflow-y: auto; position: relative;">
+      <button onclick="this.parentElement.parentElement.remove(); document.body.style.overflow = 'auto';" 
+              style="position: absolute; top: 20px; right: 20px; background: none; 
+                     border: none; color: white; font-size: 1.5rem; cursor: pointer;">
+        <i class="fas fa-times"></i>
+      </button>
+      ${videoContents[subject][videoIndex % 2]}
+      <div style="margin-top: 20px; display: flex; justify-content: center; gap: 15px;">
+        <button onclick="showNotification('Added to favorites!', 'success')" 
+                style="padding: 10px 20px; background: rgba(255,255,255,0.1); 
+                       border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; 
+                       color: white; cursor: pointer;">
+          <i class="fas fa-heart"></i> Favorite
+        </button>
+        <button onclick="showNotification('Download started!', 'success')" 
+                style="padding: 10px 20px; background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+                       border: none; border-radius: 8px; color: white; cursor: pointer;">
+          <i class="fas fa-download"></i> Download
+        </button>
+      </div>
+    </div>
+  `;
+
+      document.body.appendChild(videoModal);
+      document.body.style.overflow = 'hidden';
+    }
+
+    // ================= ANIMATE STATS COUNTERS =================
+    function animateStats() {
+      const stats = document.querySelectorAll('.stat-number');
+      stats.forEach(stat => {
+        const target = parseInt(stat.textContent);
+        let current = 0;
+        const increment = target / 50;
+
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= target) {
+            stat.textContent = target + '+';
+            clearInterval(timer);
+          } else {
+            stat.textContent = Math.floor(current) + '+';
+          }
+        }, 30);
+      });
+    }
+
+    // ================= INITIALIZE ON LOAD =================
+    document.addEventListener('DOMContentLoaded', () => {
+      // Create particles background
+      createParticles();
+
+      // Check authentication status
+      checkAuth();
+
+      // Animate stats
+      setTimeout(animateStats, 500);
+
+      // Welcome notification
+      setTimeout(() => {
+        const user = localStorage.getItem('user');
+        if (!user) {
+          showNotification('Welcome to Smart Classroom! Login to access all features.', 'success');
+        }
+      }, 1000);
+
+      // Add animation to cards on hover
+      const cards = document.querySelectorAll('.feature-card, .subject-card');
+      cards.forEach(card => {
+        card.addEventListener('mouseenter', function () {
+          this.style.transform = 'translateY(-10px)';
+        });
+
+        card.addEventListener('mouseleave', function () {
+          this.style.transform = 'translateY(0)';
+        });
+      });
+
+      // Check for saved downloads count
+      const downloads = JSON.parse(localStorage.getItem('downloads') || '[]');
+      if (downloads.length > 0) {
+        const downloadStat = document.querySelector('.stat-card:nth-child(4) .stat-number');
+        if (downloadStat) {
+          downloadStat.textContent = downloads.length + '+';
+        }
+      }
     });
 
-    // ---------- BOOTSTRAP JS (optional) ----------
-    // (already loaded via CDN)
-    console.log('Smart Classroom · responsive & aesthetic');
+    // ================= KEYBOARD SHORTCUTS =================
+    document.addEventListener('keydown', (e) => {
+      // Ctrl + / for search
+      if (e.ctrlKey && e.key === '/') {
+        e.preventDefault();
+        showNotification('Search shortcut: Type in the search bar to find content', 'success');
+      }
+
+      // Escape to close modals
+      if (e.key === 'Escape') {
+        closeModal('notesModal');
+        closeModal('videosModal');
+      }
+    });
+    // Add to your existing script section
+
+// API Configuration
+const API_BASE_URL = 'http://localhost/smart-classroom/api'; // Change to your server URL
+
+// Enhanced register function
+async function registerUser(userData) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/auth.php?action=register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        });
+
+        const data = await response.json();
+        
+        if (data.success) {
+            showNotification('Registration successful! Please login.', 'success');
+            switchAuthTab('login');
+            
+            // Auto-fill login form
+            document.querySelector('#loginForm input[type="email"]').value = userData.email;
+        } else {
+            showNotification(data.message, 'error');
+        }
+    } catch (error) {
+        console.error('Registration error:', error);
+        showNotification('Network error. Please try again.', 'error');
+    }
+}
+
+// Enhanced login function
+async function loginUser(credentials) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/auth.php?action=login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(credentials)
+        });
+
+        const data = await response.json();
+        
+        if (data.success) {
+            // Store session data
+            localStorage.setItem('session_token', data.session_token);
+            localStorage.setItem('user', JSON.stringify(data.user));
+            
+            isLoggedIn = true;
+            authModal.classList.remove('active');
+            showNotification('Login successful!', 'success');
+            updateAuthUI();
+            
+            // Load user profile
+            loadUserProfile(data.user.id);
+        } else {
+            showNotification(data.message, 'error');
+        }
+    } catch (error) {
+        console.error('Login error:', error);
+        showNotification('Network error. Please try again.', 'error');
+    }
+}
+
+// Load user profile
+async function loadUserProfile(userId) {
+    try {
+        const token = localStorage.getItem('session_token');
+        const response = await fetch(`${API_BASE_URL}/auth.php?user_id=${userId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        const data = await response.json();
+        
+        if (data.success) {
+            updateProfileUI(data.user);
+        }
+    } catch (error) {
+        console.error('Error loading profile:', error);
+    }
+}
+
+// Update profile UI
+function updateProfileUI(userData) {
+    // Update profile information in the UI
+    document.querySelector('.profile-info h3').textContent = userData.full_name;
+    document.querySelector('.profile-info p').textContent = 
+        `${userData.department || 'Student'} • Semester ${userData.semester || 'N/A'}`;
+    
+    // Update stats if available
+    if (userData.stats) {
+        // Update user stats
+    }
+}
+
+// Validate session on page load
+async function validateSession() {
+    const token = localStorage.getItem('session_token');
+    if (!token) return;
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/auth.php?action=validate`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        const data = await response.json();
+        
+        if (data.success && data.valid) {
+            isLoggedIn = true;
+            localStorage.setItem('user', JSON.stringify(data.user));
+            updateAuthUI();
+            updateProfileUI(data.user);
+        } else {
+            // Invalid session, clear storage
+            localStorage.removeItem('session_token');
+            localStorage.removeItem('user');
+            isLoggedIn = false;
+            updateAuthUI();
+        }
+    } catch (error) {
+        console.error('Session validation error:', error);
+    }
+}
+
+// Enhanced logout
+async function logoutUser() {
+    const token = localStorage.getItem('session_token');
+    
+    try {
+        await fetch(`${API_BASE_URL}/auth.php?action=logout`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+    } catch (error) {
+        console.error('Logout error:', error);
+    } finally {
+        localStorage.removeItem('session_token');
+        localStorage.removeItem('user');
+        isLoggedIn = false;
+        showNotification('Logged out successfully!', 'success');
+        updateAuthUI();
+    }
+}
+
+// Update login form handler
+document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const credentials = {
+        email: e.target[0].value,
+        password: e.target[1].value
+    };
+    
+    await loginUser(credentials);
+});
+
+// Update signup form handler
+document.getElementById('signupForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const userData = {
+        username: e.target[0].value.toLowerCase().replace(/\s+/g, '_'),
+        full_name: e.target[0].value,
+        email: e.target[1].value,
+        password: e.target[2].value,
+        role: 'student',
+        department: 'Computer Science',
+        semester: 1
+    };
+    
+    const confirmPassword = e.target[3].value;
+    
+    if (userData.password !== confirmPassword) {
+        showNotification('Passwords do not match!', 'error');
+        return;
+    }
+    
+    await registerUser(userData);
+});
+
+// Update logout handler
+logoutBtn?.addEventListener('click', async (e) => {
+    e.preventDefault();
+    await logoutUser();
+    profileMenu.classList.remove('active');
+});
+
+// Validate session on page load
+document.addEventListener('DOMContentLoaded', () => {
+    validateSession();
+    
+    // Auto-renew token periodically (every 30 minutes)
+    setInterval(validateSession, 30 * 60 * 1000);
+});
   </script>
+
+  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
