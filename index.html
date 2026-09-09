@@ -3,9 +3,10 @@
 
 <head>
   <meta charset="UTF-8">
-   <link rel="shortcut icon" href="US.png" type="image/png">
+  <link rel="shortcut icon" href="US.png" type="image/png">
   <title>Smart Classroom | Interactive Learning Hub</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  
   <!-- Database System -->
   <script src="database.js"></script>
 
@@ -19,8 +20,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -47,6 +47,7 @@
       color: white;
       overflow-x: hidden;
       position: relative;
+      padding-bottom: 0;
     }
 
     /* ================= ANIMATED BACKGROUND ================= */
@@ -69,20 +70,16 @@
     }
 
     @keyframes floatParticle {
-
       0%,
       100% {
         transform: translate(0, 0) rotate(0deg);
       }
-
       25% {
         transform: translate(100px, -150px) rotate(90deg);
       }
-
       50% {
         transform: translate(-80px, 100px) rotate(180deg);
       }
-
       75% {
         transform: translate(120px, 50px) rotate(270deg);
       }
@@ -121,6 +118,13 @@
       color: white;
     }
 
+    /* Desktop Nav */
+    .nav-links-desktop {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
     .nav-link-custom {
       color: rgba(255, 255, 255, 0.9) !important;
       font-weight: 500;
@@ -138,6 +142,118 @@
     .nav-link-custom.active {
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       color: white !important;
+    }
+
+    /* Mobile Controls */
+    .mobile-controls {
+      display: none;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hamburger-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.6rem;
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+
+    .mobile-search-btn {
+      color: rgba(255,255,255,0.8);
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    /* Mobile Search Bar */
+    .mobile-search-bar {
+      display: none;
+      padding: 12px 20px;
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .mobile-search-bar input {
+      width: 100%;
+      padding: 12px 18px;
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
+      color: white;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .mobile-search-bar input::placeholder {
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* Mobile Menu Overlay */
+    .mobile-menu-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(10px);
+      z-index: 2000;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .mobile-menu-overlay.open {
+      display: block;
+      opacity: 1;
+    }
+
+    .mobile-menu-panel {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 300px;
+      background: rgba(10,10,40,0.97);
+      backdrop-filter: blur(25px);
+      padding: 30px 24px;
+      transform: translateX(-100%);
+      transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1);
+      z-index: 2001;
+      border-right: 1px solid rgba(255,255,255,0.05);
+      overflow-y: auto;
+    }
+
+    .mobile-menu-panel.open {
+      transform: translateX(0);
+    }
+
+    .mobile-menu-panel .close-menu {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      margin-bottom: 30px;
+      opacity: 0.6;
+    }
+
+    .mobile-menu-panel a {
+      display: block;
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-menu-panel a:hover {
+      color: white;
+      padding-left: 10px;
+    }
+
+    .mobile-menu-panel a.active {
+      color: var(--secondary);
     }
 
     /* Profile Dropdown */
@@ -196,7 +312,6 @@
         opacity: 0;
         transform: translateY(-10px);
       }
-
       to {
         opacity: 1;
         transform: translateY(0);
@@ -487,6 +602,7 @@
       display: none;
       align-items: center;
       justify-content: center;
+      padding: 20px;
     }
 
     .modal-content {
@@ -498,6 +614,8 @@
       max-width: 500px;
       width: 90%;
       position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
     }
 
     .modal-header {
@@ -547,7 +665,6 @@
         transform: translateX(100%);
         opacity: 0;
       }
-
       to {
         transform: translateX(0);
         opacity: 1;
@@ -560,6 +677,48 @@
 
     .notification.error {
       border-left: 5px solid var(--danger);
+    }
+
+    /* ================= MOBILE BOTTOM NAV ================= */
+    .mobile-bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(2, 6, 23, 0.9);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 8px 0 env(safe-area-inset-bottom, 8px);
+      z-index: 1100;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .mobile-bottom-nav a {
+      color: rgba(255, 255, 255, 0.5);
+      text-decoration: none;
+      font-size: 0.7rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      padding: 4px 12px;
+      border-radius: 40px;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-bottom-nav a i {
+      font-size: 1.4rem;
+    }
+
+    .mobile-bottom-nav a.active {
+      color: var(--secondary);
+    }
+
+    .mobile-bottom-nav a span {
+      font-weight: 500;
+      letter-spacing: 0.3px;
     }
 
     /* ================= FOOTER ================= */
@@ -610,22 +769,52 @@
       color: rgba(255, 255, 255, 0.5);
     }
 
+    .creator-credit {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-weight: 600;
+    }
+
     /* ================= RESPONSIVE ================= */
+    @media (max-width: 991px) {
+      .nav-links-desktop {
+        display: none !important;
+      }
+      .mobile-controls {
+        display: flex !important;
+      }
+      .mobile-bottom-nav {
+        display: flex !important;
+      }
+      body {
+        padding-bottom: 70px;
+      }
+    }
+
     @media (max-width: 768px) {
       .hero-title {
         font-size: 2.5rem;
       }
-
       .subjects-grid {
         grid-template-columns: 1fr;
       }
-
       .action-buttons {
         flex-direction: column;
       }
-
       .feature-card {
         padding: 25px 20px;
+      }
+      .hero-section {
+        padding: 40px 16px;
+      }
+      .stats-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .stat-card {
+        padding: 16px 10px;
       }
     }
 
@@ -633,18 +822,28 @@
       .hero-title {
         font-size: 2rem;
       }
-
       .section-title {
         font-size: 2rem;
       }
+      .features-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      .feature-card {
+        padding: 18px 12px;
+      }
+      .feature-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+      }
+      .feature-card h4 {
+        font-size: 1rem;
+      }
+      .modal-content {
+        padding: 25px 18px;
+      }
     }
-    .creator-credit {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-weight: 600;
-}
   </style>
 </head>
 
@@ -666,7 +865,8 @@
         <span>Smart Classroom</span>
       </a>
 
-      <div class="navbar-nav ms-auto">
+      <!-- Desktop Nav Links -->
+      <div class="nav-links-desktop">
         <a class="nav-link nav-link-custom active" href="#">
           <i class="fas fa-home"></i> Home
         </a>
@@ -685,6 +885,16 @@
         <a class="nav-link nav-link-custom" href="contact.html">
           <i class="fas fa-envelope"></i> Contact
         </a>
+      </div>
+
+      <!-- Mobile Controls -->
+      <div class="mobile-controls">
+        <span class="mobile-search-btn" id="mobileSearchToggle">
+          <i class="fas fa-search"></i>
+        </span>
+        <button class="hamburger-btn" id="hamburgerBtn">
+          <i class="fas fa-bars"></i>
+        </button>
       </div>
 
       <!-- Profile Dropdown -->
@@ -722,6 +932,27 @@
     </div>
   </nav>
 
+  <!-- Mobile Search Bar -->
+  <div class="mobile-search-bar" id="mobileSearchBar">
+    <input type="text" placeholder="Search for subjects, notes, videos..." id="mobileSearchInput">
+  </div>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay">
+    <div class="mobile-menu-panel" id="mobileMenuPanel">
+      <button class="close-menu" id="closeMenuBtn"><i class="fas fa-times"></i></button>
+      <a href="#" class="active"><i class="fas fa-home"></i> Home</a>
+      <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+      <a href="experience.html"><i class="fas fa-briefcase"></i> Experience</a>
+      <a href="library.html"><i class="fas fa-book"></i> Library</a>
+      <a href="downloads.html"><i class="fas fa-download"></i> Downloads</a>
+      <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+      <hr style="border-color: rgba(255,255,255,0.05); margin: 16px 0;">
+      <a href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+      <a href="signup.html"><i class="fas fa-user-plus"></i> Sign Up</a>
+    </div>
+  </div>
+
   <!-- Hero Section -->
   <section class="hero-section">
     <h1 class="hero-title">Interactive Learning Hub</h1>
@@ -730,25 +961,25 @@
     <div class="stats-container">
       <div class="stat-card">
         <div class="stat-icon"><i class="fas fa-book"></i></div>
-        <div class="stat-number">250+</div>
+        <div class="stat-number" id="totalMaterials">250+</div>
         <p>Study Materials</p>
       </div>
 
       <div class="stat-card">
         <div class="stat-icon"><i class="fas fa-video"></i></div>
-        <div class="stat-number">120+</div>
+        <div class="stat-number" id="totalVideos">120+</div>
         <p>Video Lectures</p>
       </div>
 
       <div class="stat-card">
         <div class="stat-icon"><i class="fas fa-users"></i></div>
-        <div class="stat-number">1.5K+</div>
+        <div class="stat-number" id="totalUsers">1.5K+</div>
         <p>Active Students</p>
       </div>
 
       <div class="stat-card">
         <div class="stat-icon"><i class="fas fa-download"></i></div>
-        <div class="stat-number">4.5K+</div>
+        <div class="stat-number" id="totalDownloads">4.5K+</div>
         <p>Downloads</p>
       </div>
     </div>
@@ -759,7 +990,6 @@
     <h2 class="section-title">Platform Features</h2>
 
     <div class="features-grid">
-      <!-- Digital Library -->
       <a href="library.html" class="feature-card">
         <div class="feature-icon">
           <i class="fas fa-book-open"></i>
@@ -768,8 +998,6 @@
         <p>Access thousands of textbooks, notes, and reference materials</p>
       </a>
 
-
-      <!-- Smart Download -->
       <a href="downloads.html" class="feature-card">
         <div class="feature-icon">
           <i class="fas fa-download"></i>
@@ -778,7 +1006,6 @@
         <p>Intelligent download manager with progress tracking</p>
       </a>
 
-      <!-- Experience -->
       <a href="experience.html" class="feature-card">
         <div class="feature-icon">
           <i class="fas fa-chart-line"></i>
@@ -787,7 +1014,6 @@
         <p>Track your learning progress and achievements</p>
       </a>
 
-      <!-- Video Lectures -->
       <a href="videos.html" class="feature-card">
         <div class="feature-icon">
           <i class="fas fa-video"></i>
@@ -810,8 +1036,7 @@
           <span style="opacity: 0.9;">Unit 1 – Unit 4 | Semester 1</span>
         </div>
         <div class="subject-body">
-          <p>Master the fundamentals of C programming including data types, control structures, functions, and pointers.
-          </p>
+          <p>Master the fundamentals of C programming including data types, control structures, functions, and pointers.</p>
           <div class="action-buttons">
             <a href="#" class="btn-primary-action" onclick="showNotesModal('c-programming')">
               <i class="fas fa-file-pdf"></i> View Notes
@@ -868,7 +1093,6 @@
     <h2 class="section-title">Quick Links</h2>
 
     <div class="features-grid">
-      <!-- Contact -->
       <a href="contact.html" class="feature-card">
         <div class="feature-icon">
           <i class="fas fa-envelope"></i>
@@ -877,7 +1101,6 @@
         <p>Get help and support for any queries</p>
       </a>
 
-      <!-- Login -->
       <a href="login.html" class="feature-card">
         <div class="feature-icon">
           <i class="fas fa-sign-in-alt"></i>
@@ -886,7 +1109,6 @@
         <p>Access your account and continue learning</p>
       </a>
 
-      <!-- Signup -->
       <a href="signup.html" class="feature-card">
         <div class="feature-icon">
           <i class="fas fa-user-plus"></i>
@@ -895,7 +1117,6 @@
         <p>Create new account and join the community</p>
       </a>
 
-      <!-- Profile -->
       <a href="profile.html" class="feature-card">
         <div class="feature-icon">
           <i class="fas fa-user-cog"></i>
@@ -905,80 +1126,81 @@
       </a>
     </div>
   </section>
+
   <!-- Footer -->
-<!-- Footer -->
-<footer>
-  <div class="footer-container">
-    <div class="footer-brand">
-      <h3>Smart Classroom</h3>
-      <p>Transforming engineering education through technology.</p>
-      <p style="margin-top: 15px; font-size: 0.9rem;">
-        <i class="fas fa-code"></i> Created with <i class="fas fa-heart" style="color: var(--danger);"></i> by <span class="creator-credit">Ramesh Prasad</span>
+  <footer>
+    <div class="footer-container">
+      <div class="footer-brand">
+        <h3>Smart Classroom</h3>
+        <p>Transforming engineering education through technology.</p>
+        <p style="margin-top: 15px; font-size: 0.9rem;">
+          <i class="fas fa-code"></i> Created with <i class="fas fa-heart" style="color: var(--danger);"></i> by <span class="creator-credit">Ramesh Prasad</span>
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <a href="index.html" class="footer-link">Home</a>
+        <a href="profile.html" class="footer-link">Profile</a>
+        <a href="experience.html" class="footer-link">Experience</a>
+        <a href="library.html" class="footer-link">Library</a>
+        <a href="downloads.html" class="footer-link">Downloads</a>
+        <a href="settings.html" class="footer-link">Settings</a>
+        <a href="contact.html" class="footer-link">Contact</a>
+      </div>
+
+      <div class="footer-links">
+        <h4>Account</h4>
+        <a href="login.html" class="footer-link">Login</a>
+        <a href="signup.html" class="footer-link">Sign Up</a>
+        <a href="settings.html" class="footer-link">Settings</a>
+        <a href="contact.html" class="footer-link">Help Center</a>
+      </div>
+
+      <div class="footer-links">
+        <h4>Connect With Us</h4>
+        <a href="https://github.com/rameshprasad" target="_blank" rel="noopener noreferrer" class="footer-link">
+          <i class="fab fa-github"></i> GitHub
+        </a>
+        <a href="https://linkedin.com/in/rameshprasad" target="_blank" rel="noopener noreferrer" class="footer-link">
+          <i class="fab fa-linkedin"></i> LinkedIn
+        </a>
+        <a href="https://twitter.com/ramesh__6162" target="_blank" rel="noopener noreferrer" class="footer-link">
+          <i class="fab fa-twitter"></i> Twitter
+        </a>
+        <a href="https://instagram.com/ramesh__6162" target="_blank" rel="noopener noreferrer" class="footer-link">
+          <i class="fab fa-instagram"></i> Instagram
+        </a>
+        <a href="https://wa.me/917498147593" target="_blank" rel="noopener noreferrer" class="footer-link">
+          <i class="fab fa-whatsapp"></i> WhatsApp
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 Smart Classroom | All Rights Reserved</p>
+      <p style="margin-top:10px;font-size:0.9rem;">
+        <i class="fas fa-envelope"></i> rameshprasadrp123@gmail.com |
+        <i class="fas fa-phone"></i> +91 7498147593
+      </p>
+      <p style="margin-top:15px; font-size:0.9rem;">
+        Follow me on 
+        <a href="https://instagram.com/ramesh__6162" target="_blank" rel="noopener noreferrer" style="color: var(--secondary); text-decoration: none;">
+          <i class="fab fa-instagram"></i> Instagram
+        </a> • 
+        <a href="https://twitter.com/ramesh__6162" target="_blank" rel="noopener noreferrer" style="color: var(--secondary); text-decoration: none;">
+          <i class="fab fa-twitter"></i> Twitter
+        </a> • 
+        <a href="https://github.com/rameshprasad" target="_blank" rel="noopener noreferrer" style="color: var(--secondary); text-decoration: none;">
+          <i class="fab fa-github"></i> GitHub
+        </a>
+      </p>
+      <p style="margin-top:15px; font-size:0.9rem; color: var(--secondary);">
+        Developed with <i class="fas fa-heart" style="color: var(--danger);"></i> by <span style="font-weight: 700; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent;">Ramesh Prasad</span>
       </p>
     </div>
+  </footer>
 
-    <div class="footer-links">
-      <h4>Quick Links</h4>
-      <a href="index.html" class="footer-link">Home</a>
-      <a href="profile.html" class="footer-link">Profile</a>
-      <a href="experience.html" class="footer-link">Experience</a>
-      <a href="library.html" class="footer-link">Library</a>
-      <a href="downloads.html" class="footer-link">Downloads</a>
-      <a href="settings.html" class="footer-link">Settings</a>
-      <a href="contact.html" class="footer-link">Contact</a>
-    </div>
-
-    <div class="footer-links">
-      <h4>Account</h4>
-      <a href="login.html" class="footer-link">Login</a>
-      <a href="signup.html" class="footer-link">Sign Up</a>
-      <a href="settings.html" class="footer-link">Settings</a>
-      <a href="contact.html" class="footer-link">Help Center</a>
-    </div>
-
-    <div class="footer-links">
-      <h4>Connect With Us</h4>
-      <a href="https://github.com/rameshprasad" target="_blank" rel="noopener noreferrer" class="footer-link">
-        <i class="fab fa-github"></i> GitHub
-      </a>
-      <a href="https://linkedin.com/in/rameshprasad" target="_blank" rel="noopener noreferrer" class="footer-link">
-        <i class="fab fa-linkedin"></i> LinkedIn
-      </a>
-      <a href="https://twitter.com/ramesh__6162" target="_blank" rel="noopener noreferrer" class="footer-link">
-        <i class="fab fa-twitter"></i> Twitter
-      </a>
-      <a href="https://instagram.com/ramesh__6162" target="_blank" rel="noopener noreferrer" class="footer-link">
-        <i class="fab fa-instagram"></i> Instagram
-      </a>
-      <a href="https://wa.me/917498147593" target="_blank" rel="noopener noreferrer" class="footer-link">
-        <i class="fab fa-whatsapp"></i> WhatsApp
-      </a>
-    </div>
-  </div>
-
-  <div class="footer-bottom">
-    <p>© 2025 Smart Classroom | All Rights Reserved</p>
-    <p style="margin-top:10px;font-size:0.9rem;">
-      <i class="fas fa-envelope"></i> rameshprasadrp123@gmail.com |
-      <i class="fas fa-phone"></i> +91 7498147593
-    </p>
-    <p style="margin-top:15px; font-size:0.9rem;">
-      Follow me on 
-      <a href="https://instagram.com/ramesh__6162" target="_blank" rel="noopener noreferrer" style="color: var(--secondary); text-decoration: none;">
-        <i class="fab fa-instagram"></i> Instagram
-      </a> • 
-      <a href="https://twitter.com/ramesh__6162" target="_blank" rel="noopener noreferrer" style="color: var(--secondary); text-decoration: none;">
-        <i class="fab fa-twitter"></i> Twitter
-      </a> • 
-      <a href="https://github.com/rameshprasad" target="_blank" rel="noopener noreferrer" style="color: var(--secondary); text-decoration: none;">
-        <i class="fab fa-github"></i> GitHub
-      </a>
-    </p>
-    <p style="margin-top:15px; font-size:0.9rem; color: var(--secondary);">
-      Developed with <i class="fas fa-heart" style="color: var(--danger);"></i> by <span style="font-weight: 700; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent;">Ramesh Prasad</span>
-    </p>
-  </div>
-</footer>
   <!-- Notes Modal -->
   <div class="modal-overlay" id="notesModal">
     <div class="modal-content">
@@ -1009,294 +1231,15 @@
     </div>
   </div>
 
-  <script>
-    // ================= USING THE DATABASE IN YOUR APP =================
+  <!-- Mobile Bottom Navigation -->
+  <nav class="mobile-bottom-nav">
+    <a href="#" class="active"><i class="fas fa-home"></i><span>Home</span></a>
+    <a href="library.html"><i class="fas fa-book"></i><span>Library</span></a>
+    <a href="downloads.html"><i class="fas fa-download"></i><span>Downloads</span></a>
+    <a href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a>
+    <a href="contact.html"><i class="fas fa-envelope"></i><span>Contact</span></a>
+  </nav>
 
-    // Example: Get current user
-    function getCurrentUser() {
-      const userData = localStorage.getItem('currentUser');
-      if (userData) {
-        return JSON.parse(userData);
-      }
-      return null;
-    }
-
-    // Example: User login
-    function loginUser(email, password) {
-      const user = Database.getUserByEmail(email);
-      if (user && user.password === password) {
-        // Store current user in localStorage (without password)
-        const { password, ...userWithoutPassword } = user;
-        localStorage.setItem('currentUser', JSON.stringify(userWithoutPassword));
-
-        // Update last login
-        user.lastLogin = new Date().toISOString();
-        Database.updateUser(user.id, user);
-
-        return userWithoutPassword;
-      }
-      return null;
-    }
-
-    // Example: Get featured courses
-    function getFeaturedCourses() {
-      const courses = Database.getCourses();
-      return courses.slice(0, 4); // Get first 4 courses
-    }
-
-    // Example: Get user downloads
-    function getUserDownloads(userId) {
-      return Database.getDownloads(userId);
-    }
-
-    // Example: Search functionality
-    function searchContent(query) {
-      return Database.search(query);
-    }
-
-    // Example: Get platform statistics
-    function getPlatformStats() {
-      return Database.getStats();
-    }
-
-    // Example: Download material
-    function downloadMaterial(userId, materialId) {
-      const material = Database.getMaterialById(materialId);
-      if (!material) return null;
-
-      // Record the download
-      const download = Database.addDownload({
-        userId: userId,
-        itemId: materialId,
-        itemType: 'material',
-        itemName: material.name,
-        fileSize: material.size
-      });
-
-      // Update user progress
-      const course = Database.getCourseById(material.courseId);
-      if (course) {
-        const progress = Database.getProgress(userId, material.courseId)[0];
-        if (progress) {
-          if (!progress.materialCompleted.includes(materialId)) {
-            progress.materialCompleted.push(materialId);
-            progress.overallProgress = Math.min(100, progress.materialCompleted.length / 5 * 100);
-            Database.updateProgress(userId, material.courseId, progress);
-          }
-        }
-      }
-
-      return download;
-    }
-
-    // Example: Update user settings
-    function updateUserSettings(settings) {
-      const currentUser = getCurrentUser();
-      if (currentUser) {
-        return Database.updateUser(currentUser.id, { settings });
-      }
-      return Database.updateSettings(settings);
-    }
-
-    // ================= INITIALIZE ON PAGE LOAD =================
-    document.addEventListener('DOMContentLoaded', function () {
-      // Check if user is logged in
-      const currentUser = getCurrentUser();
-      if (currentUser) {
-        // Update UI for logged in user
-        document.getElementById('userName').textContent = currentUser.name;
-        document.getElementById('navbarName').textContent = currentUser.name;
-
-        // Load user-specific data
-        const downloads = getUserDownloads(currentUser.id);
-        const progress = Database.getProgress(currentUser.id);
-
-        // Update download count
-        document.getElementById('downloadsCount').textContent = downloads.length;
-
-        // Calculate overall progress
-        if (progress.length > 0) {
-          const avgProgress = progress.reduce((sum, p) => sum + p.overallProgress, 0) / progress.length;
-          document.getElementById('progressCount').textContent = Math.round(avgProgress) + '%';
-        }
-      }
-
-      // Load platform statistics
-      const stats = getPlatformStats();
-      document.getElementById('totalMaterials').textContent = stats.totalMaterials + '+';
-      document.getElementById('totalVideos').textContent = stats.totalVideos + '+';
-      document.getElementById('totalUsers').textContent = stats.totalUsers + '+';
-      document.getElementById('totalDownloads').textContent = stats.totalDownloads + '+';
-
-      // Load featured courses
-      const courses = getFeaturedCourses();
-      // Update course cards dynamically
-      courses.forEach((course, index) => {
-        const card = document.querySelectorAll('.subject-card')[index];
-        if (card) {
-          card.querySelector('h3').textContent = course.name;
-          card.querySelector('span').textContent = `Unit 1 – Unit ${course.units} | Semester ${course.semester}`;
-          card.querySelector('p').textContent = course.description;
-        }
-      });
-    });
-
-    // ================= EVENT LISTENERS FOR DATABASE OPERATIONS =================
-    // Search functionality
-    document.getElementById('searchInput')?.addEventListener('input', function (e) {
-      const query = e.target.value;
-      if (query.length > 2) {
-        const results = searchContent(query);
-        // Display search results
-        displaySearchResults(results);
-      }
-    });
-
-    // Download button handler
-    document.querySelectorAll('.btn-primary-action').forEach(button => {
-      button.addEventListener('click', function (e) {
-        const currentUser = getCurrentUser();
-        if (!currentUser) {
-          showNotification('Please login to download materials', 'error');
-          return;
-        }
-
-        const materialId = this.getAttribute('data-material-id');
-        if (materialId) {
-          const download = downloadMaterial(currentUser.id, materialId);
-          if (download) {
-            showNotification('Download started successfully!', 'success');
-          }
-        }
-      });
-    });
-
-    // Function to display search results
-    function displaySearchResults(results) {
-      const resultsContainer = document.getElementById('searchResults');
-      if (!resultsContainer) return;
-
-      if (results.courses.length === 0 && results.materials.length === 0 && results.videos.length === 0) {
-        resultsContainer.innerHTML = '<p>No results found</p>';
-        return;
-      }
-
-      let html = '<div class="search-results">';
-
-      if (results.courses.length > 0) {
-        html += '<h4>Courses</h4>';
-        results.courses.forEach(course => {
-          html += `
-                <div class="search-result-item">
-                    <h5>${course.name}</h5>
-                    <p>${course.description.substring(0, 100)}...</p>
-                </div>
-            `;
-        });
-      }
-
-      if (results.materials.length > 0) {
-        html += '<h4>Study Materials</h4>';
-        results.materials.forEach(material => {
-          html += `
-                <div class="search-result-item">
-                    <h5>${material.name}</h5>
-                    <p>${material.size} • ${material.pages} pages</p>
-                </div>
-            `;
-        });
-      }
-
-      if (results.videos.length > 0) {
-        html += '<h4>Video Lectures</h4>';
-        results.videos.forEach(video => {
-          html += `
-                <div class="search-result-item">
-                    <h5>${video.title}</h5>
-                    <p>${video.duration} • ${video.instructor}</p>
-                </div>
-            `;
-        });
-      }
-
-      html += '</div>';
-      resultsContainer.innerHTML = html;
-      resultsContainer.style.display = 'block';
-    }
-
-    // ================= BACKUP & RESTORE FUNCTIONS =================
-    function createBackup() {
-      try {
-        const backup = Database.backupData();
-        showNotification('Backup created successfully!', 'success');
-        return backup;
-      } catch (error) {
-        showNotification('Backup failed: ' + error.message, 'error');
-        return null;
-      }
-    }
-
-    function restoreBackup() {
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.accept = '.json';
-
-      input.onchange = function (e) {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = function (event) {
-          try {
-            const backupData = JSON.parse(event.target.result);
-            Database.restoreData(backupData);
-            showNotification('Data restored successfully!', 'success');
-            setTimeout(() => {
-              window.location.reload();
-            }, 1500);
-          } catch (error) {
-            showNotification('Restore failed: ' + error.message, 'error');
-          }
-        };
-        reader.readAsText(file);
-      };
-
-      input.click();
-    }
-
-    // ================= ADMIN FUNCTIONS =================
-    function exportData(type) {
-      try {
-        Database.exportToCSV(type);
-        showNotification(`Exported ${type} data successfully!`, 'success');
-      } catch (error) {
-        showNotification('Export failed: ' + error.message, 'error');
-      }
-    }
-
-    function clearDatabaseCache() {
-      if (Database.clearCache()) {
-        showNotification('Cache cleared successfully!', 'success');
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
-      }
-    }
-
-    // ================= NOTIFICATION FUNCTION =================
-    function showNotification(message, type = 'info') {
-      // Your existing notification function
-      const notification = document.getElementById('notification');
-      if (notification) {
-        notification.textContent = message;
-        notification.className = `notification ${type}`;
-        notification.style.display = 'block';
-        setTimeout(() => {
-          notification.style.display = 'none';
-        }, 3000);
-      }
-    }
-  </script>
   <script>
     // ================= PARTICLES BACKGROUND =================
     function createParticles() {
@@ -1330,9 +1273,9 @@
     function showNotification(message, type = 'success') {
       const notification = document.getElementById('notification');
       notification.innerHTML = `
-    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
-    <span>${message}</span>
-  `;
+        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+        <span>${message}</span>
+      `;
       notification.className = `notification ${type}`;
       notification.style.display = 'flex';
 
@@ -1344,7 +1287,6 @@
     // ================= USER AUTHENTICATION =================
     function checkAuth() {
       const user = localStorage.getItem('user');
-      const profileToggle = document.getElementById('profileToggle');
       const userName = document.getElementById('userName');
       const loginLink = document.getElementById('loginLink');
       const signupLink = document.getElementById('signupLink');
@@ -1353,11 +1295,6 @@
       if (user) {
         const userData = JSON.parse(user);
         userName.textContent = userData.name || 'User';
-
-        if (profileToggle) {
-          profileToggle.querySelector('img').src = userData.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + userData.name;
-        }
-
         if (loginLink) loginLink.style.display = 'none';
         if (signupLink) signupLink.style.display = 'none';
         if (logoutLink) logoutLink.style.display = 'block';
@@ -1376,13 +1313,11 @@
       menu.classList.toggle('active');
     });
 
-    // Close dropdown when clicking outside
     document.addEventListener('click', () => {
       const menu = document.getElementById('profileMenu');
       if (menu) menu.classList.remove('active');
     });
 
-    // Logout functionality
     document.getElementById('logoutLink')?.addEventListener('click', (e) => {
       e.preventDefault();
       localStorage.removeItem('user');
@@ -1390,6 +1325,41 @@
       setTimeout(() => {
         window.location.reload();
       }, 1000);
+    });
+
+    // ================= MOBILE MENU =================
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const menuOverlay = document.getElementById('mobileMenuOverlay');
+    const menuPanel = document.getElementById('mobileMenuPanel');
+    const closeMenuBtn = document.getElementById('closeMenuBtn');
+
+    function openMenu() {
+      menuOverlay.classList.add('open');
+      menuPanel.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+      menuOverlay.classList.remove('open');
+      menuPanel.classList.remove('open');
+      document.body.style.overflow = 'auto';
+    }
+
+    hamburgerBtn?.addEventListener('click', openMenu);
+    closeMenuBtn?.addEventListener('click', closeMenu);
+    menuOverlay?.addEventListener('click', (e) => {
+      if (e.target === menuOverlay) closeMenu();
+    });
+
+    // ================= MOBILE SEARCH =================
+    const searchToggle = document.getElementById('mobileSearchToggle');
+    const searchBar = document.getElementById('mobileSearchBar');
+
+    searchToggle?.addEventListener('click', () => {
+      searchBar.style.display = searchBar.style.display === 'block' ? 'none' : 'block';
+      if (searchBar.style.display === 'block') {
+        document.getElementById('mobileSearchInput')?.focus();
+      }
     });
 
     // ================= MODAL SYSTEM =================
@@ -1403,7 +1373,6 @@
       document.body.style.overflow = 'auto';
     }
 
-    // Close modal when clicking outside
     document.querySelectorAll('.modal-overlay').forEach(modal => {
       modal.addEventListener('click', (e) => {
         if (e.target === modal) {
@@ -1445,44 +1414,44 @@
       document.getElementById('notesModalTitle').textContent = `${subjectNames[subject]} Notes`;
 
       const notesList = notesData[subject].map(note => `
-    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          <strong>${note.name}</strong>
-          <div style="font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 5px;">
-            ${note.size} • ${note.pages} pages
+        <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <strong>${note.name}</strong>
+              <div style="font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 5px;">
+                ${note.size} • ${note.pages} pages
+              </div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button onclick="downloadNote('${subject}', '${note.name}')" 
+                      style="padding: 8px 15px; background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+                             border: none; border-radius: 8px; color: white; cursor: pointer; font-size: 0.9rem;">
+                <i class="fas fa-download"></i> Download
+              </button>
+              <button onclick="viewNote('${subject}', '${note.name}')"
+                      style="padding: 8px 15px; background: rgba(255,255,255,0.1); 
+                             border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; 
+                             color: white; cursor: pointer; font-size: 0.9rem;">
+                <i class="fas fa-eye"></i> View
+              </button>
+            </div>
           </div>
         </div>
-        <div style="display: flex; gap: 10px;">
-          <button onclick="downloadNote('${subject}', '${note.name}')" 
-                  style="padding: 8px 15px; background: linear-gradient(135deg, var(--primary), var(--secondary)); 
-                         border: none; border-radius: 8px; color: white; cursor: pointer; font-size: 0.9rem;">
-            <i class="fas fa-download"></i> Download
-          </button>
-          <button onclick="viewNote('${subject}', '${note.name}')"
-                  style="padding: 8px 15px; background: rgba(255,255,255,0.1); 
-                         border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; 
-                         color: white; cursor: pointer; font-size: 0.9rem;">
-            <i class="fas fa-eye"></i> View
-          </button>
-        </div>
-      </div>
-    </div>
-  `).join('');
+      `).join('');
 
       document.getElementById('notesModalContent').innerHTML = `
-    <p style="margin-bottom: 20px; color: rgba(255,255,255,0.7);">
-      Select a note to download or view online:
-    </p>
-    ${notesList}
-    <div style="text-align: center; margin-top: 30px;">
-      <button onclick="downloadAllNotes('${subject}')" 
-              style="padding: 12px 30px; background: linear-gradient(135deg, var(--warning), var(--accent)); 
-                     border: none; border-radius: 10px; color: white; cursor: pointer; font-size: 1rem;">
-        <i class="fas fa-download"></i> Download All Notes
-      </button>
-    </div>
-  `;
+        <p style="margin-bottom: 20px; color: rgba(255,255,255,0.7);">
+          Select a note to download or view online:
+        </p>
+        ${notesList}
+        <div style="text-align: center; margin-top: 30px;">
+          <button onclick="downloadAllNotes('${subject}')" 
+                  style="padding: 12px 30px; background: linear-gradient(135deg, var(--warning), var(--accent)); 
+                         border: none; border-radius: 10px; color: white; cursor: pointer; font-size: 1rem;">
+            <i class="fas fa-download"></i> Download All Notes
+          </button>
+        </div>
+      `;
 
       showModal('notesModal');
     }
@@ -1522,46 +1491,46 @@
       document.getElementById('videosModalTitle').textContent = `${subjectNames[subject]} Video Lectures`;
 
       const videosList = videosData[subject].map((video, index) => `
-    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--danger), var(--warning)); 
-                        border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-              <i class="fas fa-play" style="color: white;"></i>
-            </div>
+        <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
             <div>
-              <strong>${video.name}</strong>
-              <div style="font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 5px;">
-                Duration: ${video.duration}
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--danger), var(--warning)); 
+                            border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-play" style="color: white;"></i>
+                </div>
+                <div>
+                  <strong>${video.name}</strong>
+                  <div style="font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 5px;">
+                    Duration: ${video.duration}
+                  </div>
+                </div>
               </div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button onclick="watchVideo('${subject}', ${index})" 
+                      style="padding: 8px 15px; background: linear-gradient(135deg, var(--danger), var(--warning)); 
+                             border: none; border-radius: 8px; color: white; cursor: pointer; font-size: 0.9rem;">
+                <i class="fas fa-play"></i> Watch
+              </button>
             </div>
           </div>
         </div>
-        <div style="display: flex; gap: 10px;">
-          <button onclick="watchVideo('${subject}', ${index})" 
-                  style="padding: 8px 15px; background: linear-gradient(135deg, var(--danger), var(--warning)); 
-                         border: none; border-radius: 8px; color: white; cursor: pointer; font-size: 0.9rem;">
-            <i class="fas fa-play"></i> Watch
-          </button>
-        </div>
-      </div>
-    </div>
-  `).join('');
+      `).join('');
 
       document.getElementById('videosModalContent').innerHTML = `
-    <p style="margin-bottom: 20px; color: rgba(255,255,255,0.7);">
-      Select a video lecture to watch:
-    </p>
-    ${videosList}
-    <div style="text-align: center; margin-top: 30px;">
-      <button onclick="showNotification('Playlist feature coming soon!', 'success')" 
-              style="padding: 12px 30px; background: linear-gradient(135deg, var(--primary), var(--secondary)); 
-                     border: none; border-radius: 10px; color: white; cursor: pointer; font-size: 1rem;">
-        <i class="fas fa-list"></i> Save as Playlist
-      </button>
-    </div>
-  `;
+        <p style="margin-bottom: 20px; color: rgba(255,255,255,0.7);">
+          Select a video lecture to watch:
+        </p>
+        ${videosList}
+        <div style="text-align: center; margin-top: 30px;">
+          <button onclick="showNotification('Playlist feature coming soon!', 'success')" 
+                  style="padding: 12px 30px; background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+                         border: none; border-radius: 10px; color: white; cursor: pointer; font-size: 1rem;">
+            <i class="fas fa-list"></i> Save as Playlist
+          </button>
+        </div>
+      `;
 
       showModal('videosModal');
     }
@@ -1579,9 +1548,7 @@
 
       showNotification(`Downloading ${noteName}...`, 'success');
 
-      // Simulate download
       setTimeout(() => {
-        // Add to downloads in localStorage
         const downloads = JSON.parse(localStorage.getItem('downloads') || '[]');
         downloads.push({
           name: noteName,
@@ -1590,7 +1557,6 @@
           type: 'notes'
         });
         localStorage.setItem('downloads', JSON.stringify(downloads));
-
         showNotification(`${noteName} downloaded successfully!`, 'success');
       }, 1500);
     }
@@ -1607,7 +1573,6 @@
 
       showNotification(`Preparing all notes for download...`, 'success');
 
-      // Simulate bulk download
       setTimeout(() => {
         const subjectNames = {
           'c-programming': 'C Programming',
@@ -1623,7 +1588,6 @@
           type: 'notes-package'
         });
         localStorage.setItem('downloads', JSON.stringify(downloads));
-
         showNotification(`All ${subjectNames[subject]} notes downloaded!`, 'success');
       }, 2000);
     }
@@ -1640,7 +1604,6 @@
 
       showNotification(`Opening ${noteName}...`, 'success');
       setTimeout(() => {
-        // In a real app, this would open the PDF
         window.open(`notes/${subject}/${noteName.replace(/ /g, '-')}.pdf`, '_blank');
       }, 1000);
     }
@@ -1657,7 +1620,6 @@
 
       showNotification(`Loading video...`, 'success');
 
-      // Video content based on subject and index
       const videoContents = {
         'c-programming': [
           '<div style="text-align: center; padding: 30px;"><h4>Introduction to C Programming</h4><p style="margin: 20px 0;">This video covers basics of C programming language.</p><div style="background: #000; padding: 20px; border-radius: 10px; margin: 20px 0;"><i class="fas fa-video" style="font-size: 3rem; color: var(--secondary);"></i><p style="margin-top: 10px;">Video Player Simulation</p></div></div>',
@@ -1673,46 +1635,46 @@
         ]
       };
 
-      // Show video modal
       const videoModal = document.createElement('div');
       videoModal.style.cssText = `
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.9);
-    z-index: 10000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  `;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.9);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      `;
 
       videoModal.innerHTML = `
-    <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); 
-                border-radius: 20px; padding: 30px; max-width: 800px; width: 90%;
-                max-height: 90vh; overflow-y: auto; position: relative;">
-      <button onclick="this.parentElement.parentElement.remove(); document.body.style.overflow = 'auto';" 
-              style="position: absolute; top: 20px; right: 20px; background: none; 
-                     border: none; color: white; font-size: 1.5rem; cursor: pointer;">
-        <i class="fas fa-times"></i>
-      </button>
-      ${videoContents[subject][videoIndex % 2]}
-      <div style="margin-top: 20px; display: flex; justify-content: center; gap: 15px;">
-        <button onclick="showNotification('Added to favorites!', 'success')" 
-                style="padding: 10px 20px; background: rgba(255,255,255,0.1); 
-                       border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; 
-                       color: white; cursor: pointer;">
-          <i class="fas fa-heart"></i> Favorite
-        </button>
-        <button onclick="showNotification('Download started!', 'success')" 
-                style="padding: 10px 20px; background: linear-gradient(135deg, var(--primary), var(--secondary)); 
-                       border: none; border-radius: 8px; color: white; cursor: pointer;">
-          <i class="fas fa-download"></i> Download
-        </button>
-      </div>
-    </div>
-  `;
+        <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); 
+                    border-radius: 20px; padding: 30px; max-width: 800px; width: 90%;
+                    max-height: 90vh; overflow-y: auto; position: relative;">
+          <button onclick="this.parentElement.parentElement.remove(); document.body.style.overflow = 'auto';" 
+                  style="position: absolute; top: 20px; right: 20px; background: none; 
+                         border: none; color: white; font-size: 1.5rem; cursor: pointer;">
+            <i class="fas fa-times"></i>
+          </button>
+          ${videoContents[subject][videoIndex % 2]}
+          <div style="margin-top: 20px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+            <button onclick="showNotification('Added to favorites!', 'success')" 
+                    style="padding: 10px 20px; background: rgba(255,255,255,0.1); 
+                           border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; 
+                           color: white; cursor: pointer;">
+              <i class="fas fa-heart"></i> Favorite
+            </button>
+            <button onclick="showNotification('Download started!', 'success')" 
+                    style="padding: 10px 20px; background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+                           border: none; border-radius: 8px; color: white; cursor: pointer;">
+              <i class="fas fa-download"></i> Download
+            </button>
+          </div>
+        </div>
+      `;
 
       document.body.appendChild(videoModal);
       document.body.style.overflow = 'hidden';
@@ -1738,8 +1700,96 @@
       });
     }
 
-    // ================= INITIALIZE ON LOAD =================
-    document.addEventListener('DOMContentLoaded', () => {
+    // ================= USING THE DATABASE IN YOUR APP =================
+    // Example: Get current user
+    function getCurrentUser() {
+      const userData = localStorage.getItem('currentUser');
+      if (userData) {
+        return JSON.parse(userData);
+      }
+      return null;
+    }
+
+    // Example: User login
+    function loginUser(email, password) {
+      if (typeof Database !== 'undefined' && Database.getUserByEmail) {
+        const user = Database.getUserByEmail(email);
+        if (user && user.password === password) {
+          const { password, ...userWithoutPassword } = user;
+          localStorage.setItem('currentUser', JSON.stringify(userWithoutPassword));
+          user.lastLogin = new Date().toISOString();
+          Database.updateUser(user.id, user);
+          return userWithoutPassword;
+        }
+      }
+      return null;
+    }
+
+    // Example: Get featured courses
+    function getFeaturedCourses() {
+      if (typeof Database !== 'undefined' && Database.getCourses) {
+        const courses = Database.getCourses();
+        return courses.slice(0, 4);
+      }
+      return [];
+    }
+
+    // Example: Get user downloads
+    function getUserDownloads(userId) {
+      if (typeof Database !== 'undefined' && Database.getDownloads) {
+        return Database.getDownloads(userId);
+      }
+      return [];
+    }
+
+    // Example: Search functionality
+    function searchContent(query) {
+      if (typeof Database !== 'undefined' && Database.search) {
+        return Database.search(query);
+      }
+      return { courses: [], materials: [], videos: [] };
+    }
+
+    // Example: Get platform statistics
+    function getPlatformStats() {
+      if (typeof Database !== 'undefined' && Database.getStats) {
+        return Database.getStats();
+      }
+      return { totalMaterials: 250, totalVideos: 120, totalUsers: 1500, totalDownloads: 4500 };
+    }
+
+    // Example: Download material
+    function downloadMaterial(userId, materialId) {
+      if (typeof Database !== 'undefined' && Database.getMaterialById) {
+        const material = Database.getMaterialById(materialId);
+        if (!material) return null;
+
+        const download = Database.addDownload({
+          userId: userId,
+          itemId: materialId,
+          itemType: 'material',
+          itemName: material.name,
+          fileSize: material.size
+        });
+
+        const course = Database.getCourseById(material.courseId);
+        if (course) {
+          const progress = Database.getProgress(userId, material.courseId)[0];
+          if (progress) {
+            if (!progress.materialCompleted.includes(materialId)) {
+              progress.materialCompleted.push(materialId);
+              progress.overallProgress = Math.min(100, progress.materialCompleted.length / 5 * 100);
+              Database.updateProgress(userId, material.courseId, progress);
+            }
+          }
+        }
+        return download;
+      }
+      return null;
+    }
+
+    // ================= INITIALIZE ON PAGE LOAD =================
+    document.addEventListener('DOMContentLoaded', function() {
       // Create particles background
       createParticles();
 
@@ -1749,6 +1799,19 @@
       // Animate stats
       setTimeout(animateStats, 500);
 
+      // Check if user is logged in
+      const currentUser = getCurrentUser();
+      if (currentUser) {
+        document.getElementById('userName').textContent = currentUser.name;
+      }
+
+      // Load platform statistics
+      const stats = getPlatformStats();
+      document.getElementById('totalMaterials').textContent = stats.totalMaterials + '+';
+      document.getElementById('totalVideos').textContent = stats.totalVideos + '+';
+      document.getElementById('totalUsers').textContent = stats.totalUsers + '+';
+      document.getElementById('totalDownloads').textContent = stats.totalDownloads + '+';
+
       // Welcome notification
       setTimeout(() => {
         const user = localStorage.getItem('user');
@@ -1756,18 +1819,6 @@
           showNotification('Welcome to Smart Classroom! Login to access all features.', 'success');
         }
       }, 1000);
-
-      // Add animation to cards on hover
-      const cards = document.querySelectorAll('.feature-card, .subject-card');
-      cards.forEach(card => {
-        card.addEventListener('mouseenter', function () {
-          this.style.transform = 'translateY(-10px)';
-        });
-
-        card.addEventListener('mouseleave', function () {
-          this.style.transform = 'translateY(0)';
-        });
-      });
 
       // Check for saved downloads count
       const downloads = JSON.parse(localStorage.getItem('downloads') || '[]');
@@ -1781,225 +1832,138 @@
 
     // ================= KEYBOARD SHORTCUTS =================
     document.addEventListener('keydown', (e) => {
-      // Ctrl + / for search
       if (e.ctrlKey && e.key === '/') {
         e.preventDefault();
         showNotification('Search shortcut: Type in the search bar to find content', 'success');
       }
 
-      // Escape to close modals
       if (e.key === 'Escape') {
         closeModal('notesModal');
         closeModal('videosModal');
+        closeMenu();
       }
     });
-    // Add to your existing script section
 
-// API Configuration
-const API_BASE_URL = 'http://localhost/smart-classroom/api'; // Change to your server URL
+    // ================= API CONFIGURATION =================
+    const API_BASE_URL = 'http://localhost/smart-classroom/api';
 
-// Enhanced register function
-async function registerUser(userData) {
-    try {
+    // Enhanced register function
+    async function registerUser(userData) {
+      try {
         const response = await fetch(`${API_BASE_URL}/auth.php?action=register`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(userData)
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(userData)
         });
 
         const data = await response.json();
-        
+
         if (data.success) {
-            showNotification('Registration successful! Please login.', 'success');
-            switchAuthTab('login');
-            
-            // Auto-fill login form
-            document.querySelector('#loginForm input[type="email"]').value = userData.email;
+          showNotification('Registration successful! Please login.', 'success');
+          setTimeout(() => {
+            window.location.href = 'login.html';
+          }, 1500);
         } else {
-            showNotification(data.message, 'error');
+          showNotification(data.message || 'Registration failed', 'error');
         }
-    } catch (error) {
+      } catch (error) {
         console.error('Registration error:', error);
         showNotification('Network error. Please try again.', 'error');
+      }
     }
-}
 
-// Enhanced login function
-async function loginUser(credentials) {
-    try {
+    // Enhanced login function
+    async function loginUserAPI(credentials) {
+      try {
         const response = await fetch(`${API_BASE_URL}/auth.php?action=login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(credentials)
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(credentials)
         });
 
         const data = await response.json();
-        
+
         if (data.success) {
-            // Store session data
-            localStorage.setItem('session_token', data.session_token);
-            localStorage.setItem('user', JSON.stringify(data.user));
-            
-            isLoggedIn = true;
-            authModal.classList.remove('active');
-            showNotification('Login successful!', 'success');
-            updateAuthUI();
-            
-            // Load user profile
-            loadUserProfile(data.user.id);
+          localStorage.setItem('session_token', data.session_token);
+          localStorage.setItem('user', JSON.stringify(data.user));
+          showNotification('Login successful!', 'success');
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
         } else {
-            showNotification(data.message, 'error');
+          showNotification(data.message || 'Login failed', 'error');
         }
-    } catch (error) {
+      } catch (error) {
         console.error('Login error:', error);
         showNotification('Network error. Please try again.', 'error');
+      }
     }
-}
 
-// Load user profile
-async function loadUserProfile(userId) {
-    try {
-        const token = localStorage.getItem('session_token');
-        const response = await fetch(`${API_BASE_URL}/auth.php?user_id=${userId}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
+    // Validate session on page load
+    async function validateSession() {
+      const token = localStorage.getItem('session_token');
+      if (!token) return;
 
-        const data = await response.json();
-        
-        if (data.success) {
-            updateProfileUI(data.user);
-        }
-    } catch (error) {
-        console.error('Error loading profile:', error);
-    }
-}
-
-// Update profile UI
-function updateProfileUI(userData) {
-    // Update profile information in the UI
-    document.querySelector('.profile-info h3').textContent = userData.full_name;
-    document.querySelector('.profile-info p').textContent = 
-        `${userData.department || 'Student'} • Semester ${userData.semester || 'N/A'}`;
-    
-    // Update stats if available
-    if (userData.stats) {
-        // Update user stats
-    }
-}
-
-// Validate session on page load
-async function validateSession() {
-    const token = localStorage.getItem('session_token');
-    if (!token) return;
-
-    try {
+      try {
         const response = await fetch(`${API_BASE_URL}/auth.php?action=validate`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
         });
 
         const data = await response.json();
-        
-        if (data.success && data.valid) {
-            isLoggedIn = true;
-            localStorage.setItem('user', JSON.stringify(data.user));
-            updateAuthUI();
-            updateProfileUI(data.user);
-        } else {
-            // Invalid session, clear storage
-            localStorage.removeItem('session_token');
-            localStorage.removeItem('user');
-            isLoggedIn = false;
-            updateAuthUI();
-        }
-    } catch (error) {
-        console.error('Session validation error:', error);
-    }
-}
 
-// Enhanced logout
-async function logoutUser() {
-    const token = localStorage.getItem('session_token');
-    
-    try {
+        if (data.success && data.valid) {
+          localStorage.setItem('user', JSON.stringify(data.user));
+          checkAuth();
+        } else {
+          localStorage.removeItem('session_token');
+          localStorage.removeItem('user');
+          checkAuth();
+        }
+      } catch (error) {
+        console.error('Session validation error:', error);
+      }
+    }
+
+    // Enhanced logout
+    async function logoutUserAPI() {
+      const token = localStorage.getItem('session_token');
+
+      try {
         await fetch(`${API_BASE_URL}/auth.php?action=logout`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
         });
-    } catch (error) {
+      } catch (error) {
         console.error('Logout error:', error);
-    } finally {
+      } finally {
         localStorage.removeItem('session_token');
         localStorage.removeItem('user');
-        isLoggedIn = false;
         showNotification('Logged out successfully!', 'success');
-        updateAuthUI();
+        checkAuth();
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      }
     }
-}
 
-// Update login form handler
-document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const credentials = {
-        email: e.target[0].value,
-        password: e.target[1].value
-    };
-    
-    await loginUser(credentials);
-});
-
-// Update signup form handler
-document.getElementById('signupForm')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const userData = {
-        username: e.target[0].value.toLowerCase().replace(/\s+/g, '_'),
-        full_name: e.target[0].value,
-        email: e.target[1].value,
-        password: e.target[2].value,
-        role: 'student',
-        department: 'Computer Science',
-        semester: 1
-    };
-    
-    const confirmPassword = e.target[3].value;
-    
-    if (userData.password !== confirmPassword) {
-        showNotification('Passwords do not match!', 'error');
-        return;
-    }
-    
-    await registerUser(userData);
-});
-
-// Update logout handler
-logoutBtn?.addEventListener('click', async (e) => {
-    e.preventDefault();
-    await logoutUser();
-    profileMenu.classList.remove('active');
-});
-
-// Validate session on page load
-document.addEventListener('DOMContentLoaded', () => {
-    validateSession();
-    
-    // Auto-renew token periodically (every 30 minutes)
-    setInterval(validateSession, 30 * 60 * 1000);
-});
+    // Validate session on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      validateSession();
+      setInterval(validateSession, 30 * 60 * 1000);
+    });
   </script>
 
   <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+  </script>
 </body>
 
 </html>
