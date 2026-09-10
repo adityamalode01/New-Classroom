@@ -5,6 +5,8 @@
 <title>Secure Logout | Smart Classroom</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link rel="shortcut icon" type="image/png" href="Smart classroom logo.png">
+
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <!-- Font Awesome -->
@@ -16,7 +18,11 @@
   --secondary:#22d3ee;
   --accent:#f472b6;
   --dark:#020617;
+  --light:#f8fafc;
   --success:#10b981;
+  --danger:#ef4444;
+  --warning:#f59e0b;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 *{
@@ -26,588 +32,543 @@
   font-family:'Poppins',sans-serif;
 }
 
-/* ================= ENHANCED BACKGROUND ================= */
+html { scroll-behavior: smooth; }
+
+/* ================= BODY ================= */
 body{
-  height:100vh;
+  min-height: 100vh;
+  min-height: 100dvh;
   display:flex;
   justify-content:center;
   align-items:center;
-  background:linear-gradient(135deg, #0a0a2a 0%, #020617 100%);
-  overflow:hidden;
-  position:relative;
+  background: linear-gradient(180deg, #0a0a2a 0%, #020617 100%);
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 24px 16px;
+  position: relative;
+  animation: pageFadeIn 0.8s var(--ease);
 }
 
-/* Floating Gradient Orbs */
+@keyframes pageFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ================= FLOATING GRADIENT ORBS ================= */
 .floating-orbs{
-  position:absolute;
-  width:200vw;
-  height:200vh;
-  top:-50vh;
-  left:-50vw;
-  z-index:-1;
-  opacity:0.4;
+  position: fixed;
+  width: 200vw;
+  height: 200vh;
+  top: -50vh;
+  left: -50vw;
+  z-index: -1;
+  opacity: 0.25;
+  pointer-events: none;
 }
 
 .orb{
-  position:absolute;
-  border-radius:50%;
-  filter:blur(80px);
-  animation:float 30s infinite linear;
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  animation: float 20s infinite linear;
 }
 
 .orb-1{
-  width:600px;
-  height:600px;
-  background:radial-gradient(circle, var(--primary) 0%, transparent 70%);
-  top:10%;
-  left:10%;
-  animation-duration:35s;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+  top: 10%;
+  left: 10%;
+  animation-duration: 25s;
 }
 
 .orb-2{
-  width:500px;
-  height:500px;
-  background:radial-gradient(circle, var(--secondary) 0%, transparent 70%);
-  top:60%;
-  right:10%;
-  animation-duration:40s;
-  animation-delay:5s;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
+  top: 60%;
+  right: 10%;
+  animation-duration: 30s;
+  animation-delay: 5s;
 }
 
 .orb-3{
-  width:400px;
-  height:400px;
-  background:radial-gradient(circle, var(--accent) 0%, transparent 70%);
-  bottom:10%;
-  left:20%;
-  animation-duration:45s;
-  animation-delay:10s;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+  bottom: 10%;
+  left: 20%;
+  animation-duration: 35s;
+  animation-delay: 10s;
 }
 
 @keyframes float{
-  0%{transform:translate(0, 0) rotate(0deg);}
-  25%{transform:translate(100px, 50px) rotate(90deg);}
-  50%{transform:translate(50px, 100px) rotate(180deg);}
-  75%{transform:translate(-50px, 50px) rotate(270deg);}
-  100%{transform:translate(0, 0) rotate(360deg);}
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  25%  { transform: translate(100px, 50px) rotate(90deg); }
+  50%  { transform: translate(50px, 100px) rotate(180deg); }
+  75%  { transform: translate(-50px, 50px) rotate(270deg); }
+  100% { transform: translate(0, 0) rotate(360deg); }
 }
 
-/* Star Particles */
+/* ================= STAR PARTICLES ================= */
 .star-particle{
-  position:absolute;
-  background:white;
-  border-radius:50%;
-  animation:fall linear infinite;
+  position: fixed;
+  background: white;
+  border-radius: 50%;
+  animation: fall linear infinite;
+  pointer-events: none;
+  z-index: 0;
 }
 
 @keyframes fall{
-  from{transform:translateY(-10vh) rotate(0deg); opacity:0;}
-  10%{opacity:1;}
-  90%{opacity:1;}
-  to{transform:translateY(110vh) rotate(360deg); opacity:0;}
+  from{ transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+  10%{ opacity: 1; }
+  90%{ opacity: 1; }
+  to{ transform: translateY(110vh) rotate(360deg); opacity: 0; }
 }
 
-/* ================= CARD ================= */
+/* ================= CARD (matches theme) ================= */
 .card{
-  width:480px;
-  padding:50px 40px 60px;
-  border-radius:35px;
-  background:rgba(255,255,255,0.09);
-  backdrop-filter:blur(26px) saturate(180%);
-  border:1px solid rgba(255,255,255,0.15);
-  box-shadow:
-    0 50px 150px rgba(0,0,0,0.8),
-    inset 0 0 50px rgba(99,102,241,0.2);
-  color:white;
-  text-align:center;
-  z-index:2;
-  animation:enter 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-  position:relative;
-  overflow:hidden;
+  width: 100%;
+  max-width: 480px;
+  padding: 42px 32px 44px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.6);
+  color: white;
+  text-align: center;
+  z-index: 2;
+  position: relative;
+  transition: all 0.4s var(--ease);
 }
 
+/* Top gradient accent line */
 .card::before{
   content:'';
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:4px;
-  background:linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
-  border-radius:35px 35px 0 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+  border-radius: 28px 28px 0 0;
 }
 
-@keyframes enter{
-  from{opacity:0; transform:translateY(80px) scale(0.9);}
-  to{opacity:1; transform:translateY(0) scale(1);}
-}
-
-h2{
-  font-size:2.2rem;
-  letter-spacing:.5px;
-  margin-bottom:10px;
-  background:linear-gradient(135deg, var(--primary), var(--secondary));
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
-}
-
-.subtitle{
-  font-size:1rem;
-  opacity:.85;
-  margin-bottom:40px;
-  line-height:1.6;
-}
-
-/* ================= WALK AREA ================= */
-.walk-zone{
-  width:100%;
-  height:180px;
-  position:relative;
-  overflow:hidden;
-  margin-bottom:40px;
-  border-radius:20px;
-  background:rgba(255,255,255,0.05);
-  border:1px solid rgba(255,255,255,0.1);
-}
-
-.forest-floor{
-  position:absolute;
-  bottom:0;
-  width:100%;
-  height:40px;
-  background:linear-gradient(to top, rgba(30,41,59,0.8), rgba(15,23,42,0.9));
-  border-radius:0 0 20px 20px;
-}
-
-/* Grass tufts */
-.grass{
-  position:absolute;
-  bottom:40px;
-  width:4px;
-  height:15px;
-  background:linear-gradient(to top, #10b981, #34d399);
-  border-radius:2px 2px 0 0;
-}
-
-/* ================= REALISTIC ANIMALS ================= */
-.walker{
-  position:absolute;
-  bottom:50px;
-  left:-180px;
-  animation:walk 5s linear infinite;
-  transform-origin:center bottom;
-}
-
-@keyframes walk{
-  0%{left:-180px; transform:scaleX(1);}
-  45%{transform:scaleX(1) translateY(0);}
-  50%{transform:scaleX(-1) translateY(-5px);}
-  55%{transform:scaleX(-1) translateY(0);}
-  100%{left:calc(100% + 180px); transform:scaleX(-1);}
-}
-
-/* DOG */
-.dog-body{
-  width:80px;
-  height:40px;
-  background:linear-gradient(135deg, #92400e, #f59e0b);
-  border-radius:20px;
-  position:absolute;
-  left:20px;
-  top:15px;
-}
-
-.dog-head{
-  width:35px;
-  height:35px;
-  background:linear-gradient(135deg, #92400e, #f59e0b);
-  border-radius:50%;
-  position:absolute;
-  left:70px;
-  top:5px;
-}
-
-.dog-ear{
-  width:15px;
-  height:25px;
-  background:#78350f;
-  border-radius:10px;
-  position:absolute;
-  left:75px;
-  top:0;
-}
-
-.dog-tail{
-  width:20px;
-  height:6px;
-  background:#f59e0b;
-  position:absolute;
-  left:-5px;
-  top:25px;
-  border-radius:10px;
-  animation:wag 0.4s infinite alternate;
-}
-
-@keyframes wag{
-  from{transform:rotate(25deg);}
-  to{transform:rotate(-25deg);}
-}
-
-.dog-leg{
-  width:6px;
-  height:25px;
-  background:#78350f;
-  position:absolute;
-  bottom:0;
-  border-radius:3px;
-  animation:step 0.5s infinite alternate;
-}
-
-.dog-leg.l1{left:25px; animation-delay:0s;}
-.dog-leg.l2{left:40px; animation-delay:0.25s;}
-.dog-leg.l3{left:65px; animation-delay:0s;}
-.dog-leg.l4{left:80px; animation-delay:0.25s;}
-
-@keyframes step{
-  from{height:25px;}
-  to{height:20px;}
-}
-
-/* CAT */
-.cat-body{
-  width:70px;
-  height:35px;
-  background:linear-gradient(135deg, #6b7280, #9ca3af);
-  border-radius:20px;
-  position:absolute;
-  left:25px;
-  top:20px;
-}
-
-.cat-head{
-  width:30px;
-  height:30px;
-  background:linear-gradient(135deg, #6b7280, #9ca3af);
-  border-radius:50%;
-  position:absolute;
-  left:75px;
-  top:10px;
-}
-
-.cat-ear{
-  width:15px;
-  height:20px;
-  background:#4b5563;
-  clip-path:polygon(50% 0, 0 100%, 100% 100%);
-  position:absolute;
-  left:75px;
-  top:5px;
-}
-
-.cat-ear.right{
-  left:85px;
-}
-
-.cat-tail{
-  width:25px;
-  height:6px;
-  background:#9ca3af;
-  position:absolute;
-  left:-10px;
-  top:25px;
-  border-radius:10px;
-  animation:swish 0.6s infinite alternate;
-}
-
-@keyframes swish{
-  from{transform:rotate(20deg);}
-  to{transform:rotate(-20deg);}
-}
-
-.cat-leg{
-  width:5px;
-  height:22px;
-  background:#4b5563;
-  position:absolute;
-  bottom:0;
-  border-radius:3px;
-  animation:catStep 0.5s infinite alternate;
-}
-
-.cat-leg.l1{left:30px; animation-delay:0s;}
-.cat-leg.l2{left:45px; animation-delay:0.25s;}
-.cat-leg.l3{left:65px; animation-delay:0s;}
-.cat-leg.l4{left:80px; animation-delay:0.25s;}
-
-@keyframes catStep{
-  from{height:22px;}
-  to{height:18px;}
-}
-
-/* FOX */
-.fox-body{
-  width:75px;
-  height:35px;
-  background:linear-gradient(135deg, #ea580c, #f97316);
-  border-radius:20px;
-  position:absolute;
-  left:20px;
-  top:15px;
-}
-
-.fox-head{
-  width:32px;
-  height:32px;
-  background:linear-gradient(135deg, #ea580c, #f97316);
-  border-radius:50%;
-  position:absolute;
-  left:70px;
-  top:5px;
-}
-
-.fox-ear{
-  width:12px;
-  height:20px;
-  background:#c2410c;
-  clip-path:polygon(50% 0, 0 100%, 100% 100%);
-  position:absolute;
-  left:70px;
-  top:0;
-}
-
-.fox-ear.right{
-  left:85px;
-}
-
-.fox-tail{
-  width:35px;
-  height:8px;
-  background:#f97316;
-  position:absolute;
-  left:-15px;
-  top:20px;
-  border-radius:10px;
-  animation:foxWag 0.5s infinite alternate;
-}
-
-@keyframes foxWag{
-  from{transform:rotate(30deg) scaleY(1.2);}
-  to{transform:rotate(-30deg) scaleY(1.2);}
-}
-
-.fox-leg{
-  width:6px;
-  height:24px;
-  background:#c2410c;
-  position:absolute;
-  bottom:0;
-  border-radius:3px;
-  animation:foxStep 0.5s infinite alternate;
-}
-
-.fox-leg.l1{left:25px; animation-delay:0s;}
-.fox-leg.l2{left:40px; animation-delay:0.25s;}
-.fox-leg.l3{left:65px; animation-delay:0s;}
-.fox-leg.l4{left:80px; animation-delay:0.25s;}
-
-@keyframes foxStep{
-  from{height:24px;}
-  to{height:20px;}
-}
-
-/* BUNNY */
-.bunny-body{
-  width:65px;
-  height:40px;
-  background:linear-gradient(135deg, #f5f3ff, #ddd6fe);
-  border-radius:20px;
-  position:absolute;
-  left:25px;
-  top:15px;
-}
-
-.bunny-head{
-  width:28px;
-  height:28px;
-  background:linear-gradient(135deg, #f5f3ff, #ddd6fe);
-  border-radius:50%;
-  position:absolute;
-  left:75px;
-  top:10px;
-}
-
-.bunny-ear{
-  width:10px;
-  height:35px;
-  background:#c4b5fd;
-  border-radius:5px;
-  position:absolute;
-  left:78px;
-  top:-10px;
-}
-
-.bunny-ear.right{
-  left:88px;
-}
-
-.bunny-tail{
-  width:15px;
-  height:15px;
-  background:#ddd6fe;
-  border-radius:50%;
-  position:absolute;
-  left:5px;
-  top:20px;
-  animation:bounce 0.6s infinite alternate;
-}
-
-@keyframes bounce{
-  from{transform:translateY(0);}
-  to{transform:translateY(-3px);}
-}
-
-.bunny-leg{
-  width:5px;
-  height:20px;
-  background:#c4b5fd;
-  position:absolute;
-  bottom:0;
-  border-radius:3px;
-  animation:hop 0.5s infinite alternate;
-}
-
-.bunny-leg.l1{left:35px; animation-delay:0s;}
-.bunny-leg.l2{left:50px; animation-delay:0.25s;}
-.bunny-leg.l3{left:70px; animation-delay:0s;}
-.bunny-leg.l4{left:85px; animation-delay:0.25s;}
-
-@keyframes hop{
-  from{height:20px;}
-  to{height:15px;}
-}
-
-/* ================= PROGRESS LOADER ================= */
-.loader-container{
-  margin-top:30px;
-}
-
-.progress-bar{
-  width:100%;
-  height:8px;
-  background:rgba(255,255,255,0.1);
-  border-radius:4px;
-  overflow:hidden;
-  margin-bottom:15px;
-}
-
-.progress-fill{
-  width:0%;
-  height:100%;
-  background:linear-gradient(90deg, var(--primary), var(--secondary));
-  border-radius:4px;
-  animation:progress 3s linear forwards;
-}
-
-@keyframes progress{
-  0%{width:0%;}
-  100%{width:100%;}
-}
-
-.status-text{
-  font-size:0.9rem;
-  color:rgba(255,255,255,0.7);
-  margin-top:10px;
-  display:flex;
-  justify-content:space-between;
-}
-
-.status-steps{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-  margin-top:25px;
-}
-
-.step{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  font-size:0.9rem;
-  opacity:0.7;
-  transition:opacity 0.5s ease;
-}
-
-.step.completed{
-  opacity:1;
-  color:var(--success);
-}
-
-.step.completed .step-icon{
-  background:var(--success);
-}
-
-.step-icon{
-  width:24px;
-  height:24px;
-  border-radius:50%;
-  background:rgba(255,255,255,0.2);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:0.7rem;
-}
-
-/* ================= EXIT ANIMATION ================= */
-.fade{
-  animation:exit 0.8s ease forwards;
+/* Fade out on redirect */
+.card.fade{
+  animation: exit 0.6s var(--ease) forwards;
 }
 
 @keyframes exit{
   to{
-    opacity:0;
-    transform:scale(0.95) translateY(20px);
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
   }
+}
+
+/* ================= HEADINGS (matches section-title) ================= */
+h2{
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+h2 i{
+  -webkit-text-fill-color: var(--secondary);
+  color: var(--secondary);
+  font-size: 1.6rem;
+}
+
+.subtitle{
+  font-size: 0.95rem;
+  opacity: 0.85;
+  margin-bottom: 32px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ================= WALK ZONE (animal scene) ================= */
+.walk-zone{
+  width: 100%;
+  height: 170px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 32px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.forest-floor{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+  background: linear-gradient(to top, rgba(30, 41, 59, 0.85), rgba(15, 23, 42, 0.6));
+  border-radius: 0 0 20px 20px;
+}
+
+/* Grass tufts */
+.grass{
+  position: absolute;
+  bottom: 40px;
+  width: 4px;
+  height: 15px;
+  background: linear-gradient(to top, var(--success), #34d399);
+  border-radius: 2px 2px 0 0;
+  opacity: 0.6;
+}
+
+/* ================= ANIMAL WALKER ================= */
+.walker{
+  position: absolute;
+  bottom: 42px;   /* aligns with grass tips */
+  left: -180px;
+  animation: walk 6s linear infinite;
+  transform-origin: center bottom;
+}
+
+@keyframes walk{
+  0%   { left: -180px; transform: scaleX(1); }
+  48%  { left: calc(100% + 180px); transform: scaleX(1); }
+  49%  { left: -180px; transform: scaleX(1); }  /* reset instantly */
+  100% { left: calc(100% + 180px); transform: scaleX(1); }
+}
+
+/* ================= DOG ================= */
+.dog-body{
+  width: 80px; height: 40px;
+  background: linear-gradient(135deg, #92400e, #f59e0b);
+  border-radius: 20px;
+  position: absolute; left: 20px; top: 15px;
+}
+.dog-head{
+  width: 35px; height: 35px;
+  background: linear-gradient(135deg, #92400e, #f59e0b);
+  border-radius: 50%;
+  position: absolute; left: 70px; top: 5px;
+}
+.dog-ear{
+  width: 15px; height: 25px;
+  background: #78350f;
+  border-radius: 10px;
+  position: absolute; left: 75px; top: 0;
+}
+.dog-tail{
+  width: 20px; height: 6px;
+  background: #f59e0b;
+  position: absolute; left: -5px; top: 25px;
+  border-radius: 10px;
+  animation: wag 0.4s infinite alternate;
+}
+@keyframes wag{
+  from{ transform: rotate(25deg); }
+  to{ transform: rotate(-25deg); }
+}
+.dog-leg{
+  width: 6px; height: 25px;
+  background: #78350f;
+  position: absolute; bottom: 0;
+  border-radius: 3px;
+  animation: step 0.5s infinite alternate;
+}
+.dog-leg.l1{ left: 25px; animation-delay: 0s; }
+.dog-leg.l2{ left: 40px; animation-delay: 0.25s; }
+.dog-leg.l3{ left: 65px; animation-delay: 0s; }
+.dog-leg.l4{ left: 80px; animation-delay: 0.25s; }
+@keyframes step{
+  from{ height: 25px; }
+  to{ height: 20px; }
+}
+
+/* ================= CAT ================= */
+.cat-body{
+  width: 70px; height: 35px;
+  background: linear-gradient(135deg, #6b7280, #9ca3af);
+  border-radius: 20px;
+  position: absolute; left: 25px; top: 20px;
+}
+.cat-head{
+  width: 30px; height: 30px;
+  background: linear-gradient(135deg, #6b7280, #9ca3af);
+  border-radius: 50%;
+  position: absolute; left: 75px; top: 10px;
+}
+.cat-ear{
+  width: 15px; height: 20px;
+  background: #4b5563;
+  clip-path: polygon(50% 0, 0 100%, 100% 100%);
+  position: absolute; left: 75px; top: 5px;
+}
+.cat-ear.right{ left: 85px; }
+.cat-tail{
+  width: 25px; height: 6px;
+  background: #9ca3af;
+  position: absolute; left: -10px; top: 25px;
+  border-radius: 10px;
+  animation: swish 0.6s infinite alternate;
+}
+@keyframes swish{
+  from{ transform: rotate(20deg); }
+  to{ transform: rotate(-20deg); }
+}
+.cat-leg{
+  width: 5px; height: 22px;
+  background: #4b5563;
+  position: absolute; bottom: 0;
+  border-radius: 3px;
+  animation: catStep 0.5s infinite alternate;
+}
+.cat-leg.l1{ left: 30px; animation-delay: 0s; }
+.cat-leg.l2{ left: 45px; animation-delay: 0.25s; }
+.cat-leg.l3{ left: 65px; animation-delay: 0s; }
+.cat-leg.l4{ left: 80px; animation-delay: 0.25s; }
+@keyframes catStep{
+  from{ height: 22px; }
+  to{ height: 18px; }
+}
+
+/* ================= FOX ================= */
+.fox-body{
+  width: 75px; height: 35px;
+  background: linear-gradient(135deg, #ea580c, #f97316);
+  border-radius: 20px;
+  position: absolute; left: 20px; top: 15px;
+}
+.fox-head{
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, #ea580c, #f97316);
+  border-radius: 50%;
+  position: absolute; left: 70px; top: 5px;
+}
+.fox-ear{
+  width: 12px; height: 20px;
+  background: #c2410c;
+  clip-path: polygon(50% 0, 0 100%, 100% 100%);
+  position: absolute; left: 70px; top: 0;
+}
+.fox-ear.right{ left: 85px; }
+.fox-tail{
+  width: 35px; height: 8px;
+  background: #f97316;
+  position: absolute; left: -15px; top: 20px;
+  border-radius: 10px;
+  animation: foxWag 0.5s infinite alternate;
+}
+@keyframes foxWag{
+  from{ transform: rotate(30deg) scaleY(1.2); }
+  to{ transform: rotate(-30deg) scaleY(1.2); }
+}
+.fox-leg{
+  width: 6px; height: 24px;
+  background: #c2410c;
+  position: absolute; bottom: 0;
+  border-radius: 3px;
+  animation: foxStep 0.5s infinite alternate;
+}
+.fox-leg.l1{ left: 25px; animation-delay: 0s; }
+.fox-leg.l2{ left: 40px; animation-delay: 0.25s; }
+.fox-leg.l3{ left: 65px; animation-delay: 0s; }
+.fox-leg.l4{ left: 80px; animation-delay: 0.25s; }
+@keyframes foxStep{
+  from{ height: 24px; }
+  to{ height: 20px; }
+}
+
+/* ================= BUNNY ================= */
+.bunny-body{
+  width: 65px; height: 40px;
+  background: linear-gradient(135deg, #f5f3ff, #ddd6fe);
+  border-radius: 20px;
+  position: absolute; left: 25px; top: 15px;
+}
+.bunny-head{
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, #f5f3ff, #ddd6fe);
+  border-radius: 50%;
+  position: absolute; left: 75px; top: 10px;
+}
+.bunny-ear{
+  width: 10px; height: 35px;
+  background: #c4b5fd;
+  border-radius: 5px;
+  position: absolute; left: 78px; top: -10px;
+}
+.bunny-ear.right{ left: 88px; }
+.bunny-tail{
+  width: 15px; height: 15px;
+  background: #ddd6fe;
+  border-radius: 50%;
+  position: absolute; left: 5px; top: 20px;
+  animation: bounce 0.6s infinite alternate;
+}
+@keyframes bounce{
+  from{ transform: translateY(0); }
+  to{ transform: translateY(-3px); }
+}
+.bunny-leg{
+  width: 5px; height: 20px;
+  background: #c4b5fd;
+  position: absolute; bottom: 0;
+  border-radius: 3px;
+  animation: hop 0.5s infinite alternate;
+}
+.bunny-leg.l1{ left: 35px; animation-delay: 0s; }
+.bunny-leg.l2{ left: 50px; animation-delay: 0.25s; }
+.bunny-leg.l3{ left: 70px; animation-delay: 0s; }
+.bunny-leg.l4{ left: 85px; animation-delay: 0.25s; }
+@keyframes hop{
+  from{ height: 20px; }
+  to{ height: 15px; }
+}
+
+/* ================= PROGRESS LOADER ================= */
+.loader-container{
+  margin-top: 8px;
+}
+
+.progress-bar{
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.progress-fill{
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  border-radius: 4px;
+  transition: width 0.15s linear;
+}
+
+.status-text{
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status-text #progressPercent{
+  color: var(--secondary);
+  font-weight: 600;
+}
+
+.status-steps{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.step{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+  opacity: 0.55;
+  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.4s var(--ease);
+}
+
+.step.completed{
+  opacity: 1;
+  color: var(--success);
+}
+
+.step.completed .step-icon{
+  background: var(--success);
+  color: white;
+}
+
+.step-icon{
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+  transition: all 0.4s var(--ease);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 /* ================= FOOTER ================= */
 .footer{
-  position:absolute;
-  bottom:20px;
-  width:100%;
-  text-align:center;
-  color:rgba(255,255,255,0.4);
-  font-size:0.85rem;
+  position: fixed;
+  bottom: 16px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.85rem;
+  pointer-events: none;
+  z-index: 1;
 }
 
 /* ================= RESPONSIVE ================= */
-@media(max-width:600px){
+@media (max-width: 520px) {
+  body { padding: 16px 12px; }
+
   .card{
-    width:90%;
-    padding:40px 25px 50px;
-    margin:20px;
+    padding: 32px 22px 36px;
+    border-radius: 24px;
   }
-  
-  h2{
-    font-size:1.8rem;
-  }
-  
+
+  h2{ font-size: 1.4rem; }
+  h2 i{ font-size: 1.25rem; }
+
+  .subtitle{ font-size: 0.85rem; margin-bottom: 24px; }
+
   .walk-zone{
-    height:150px;
+    height: 140px;
+    margin-bottom: 24px;
   }
+
+  .footer{
+    font-size: 0.75rem;
+    bottom: 10px;
+  }
+}
+
+@media (max-width: 360px) {
+  h2{ font-size: 1.2rem; }
+  .walk-zone{ height: 120px; }
+  .status-steps{ font-size: 0.8rem; }
+  .step { font-size: 0.8rem; }
 }
 </style>
 </head>
 <body>
 
+<!-- Floating Orbs -->
 <div class="floating-orbs">
   <div class="orb orb-1"></div>
   <div class="orb orb-2"></div>
   <div class="orb orb-3"></div>
 </div>
 
+<!-- Card -->
 <div class="card" id="card">
-  <!-- Animal Walker -->
+
+  <!-- Animal Walk Scene -->
   <div class="walk-zone" id="walkZone">
     <div class="forest-floor"></div>
     <div class="walker" id="walker"></div>
@@ -615,18 +576,18 @@ h2{
 
   <h2><i class="fas fa-sign-out-alt"></i> Securely Logging Out</h2>
   <p class="subtitle">Clearing your session data and redirecting you safely</p>
-  
+
   <!-- Progress Loader -->
   <div class="loader-container">
     <div class="progress-bar">
-      <div class="progress-fill"></div>
+      <div class="progress-fill" id="progressFill"></div>
     </div>
-    
+
     <div class="status-text">
       <span>Session cleanup</span>
       <span id="progressPercent">0%</span>
     </div>
-    
+
     <div class="status-steps">
       <div class="step" id="step1">
         <div class="step-icon"><i class="fas fa-user-lock"></i></div>
@@ -634,7 +595,7 @@ h2{
       </div>
       <div class="step" id="step2">
         <div class="step-icon"><i class="fas fa-shield-alt"></i></div>
-        <span>Encrypting logout data</span>
+        <span>Clearing local data</span>
       </div>
       <div class="step" id="step3">
         <div class="step-icon"><i class="fas fa-redo"></i></div>
@@ -644,25 +605,26 @@ h2{
   </div>
 </div>
 
+<!-- Footer -->
 <div class="footer">
   Smart Classroom • Secure Authentication System
 </div>
 
 <script>
-// ================= CREATE STAR PARTICLES =================
+/* ================= CREATE STAR PARTICLES ================= */
 function createStars() {
   const colors = ['#ffffff', '#c7d2fe', '#a5f3fc', '#f5f3ff'];
-  
-  for(let i = 0; i < 60; i++) {
+
+  for (let i = 0; i < 60; i++) {
     const star = document.createElement('div');
     star.className = 'star-particle';
-    
-    const size = Math.random() * 4 + 2;
+
+    const size = Math.random() * 3 + 1;
     const left = Math.random() * 100;
     const duration = 5 + Math.random() * 10;
     const delay = Math.random() * 5;
     const color = colors[Math.floor(Math.random() * colors.length)];
-    
+
     star.style.width = `${size}px`;
     star.style.height = `${size}px`;
     star.style.left = `${left}%`;
@@ -670,35 +632,34 @@ function createStars() {
     star.style.animationDelay = `${delay}s`;
     star.style.background = color;
     star.style.opacity = Math.random() * 0.5 + 0.2;
-    
+
     document.body.appendChild(star);
   }
 }
 
-// ================= CREATE GRASS =================
+/* ================= CREATE GRASS ================= */
 function createGrass() {
   const walkZone = document.getElementById('walkZone');
-  
-  for(let i = 0; i < 30; i++) {
+
+  for (let i = 0; i < 30; i++) {
     const grass = document.createElement('div');
     grass.className = 'grass';
-    
+
     const left = Math.random() * 100;
-    const height = 10 + Math.random() * 25;
-    
+    const height = 8 + Math.random() * 20;
+
     grass.style.left = `${left}%`;
     grass.style.height = `${height}px`;
     grass.style.opacity = 0.4 + Math.random() * 0.4;
-    
+
     walkZone.appendChild(grass);
   }
 }
 
-// ================= ANIMAL DATA =================
+/* ================= ANIMAL DATA ================= */
 const animals = [
   {
     name: 'dog',
-    color: 'linear-gradient(135deg, #92400e, #f59e0b)',
     html: `
       <div class="dog-tail"></div>
       <div class="dog-body"></div>
@@ -712,7 +673,6 @@ const animals = [
   },
   {
     name: 'cat',
-    color: 'linear-gradient(135deg, #6b7280, #9ca3af)',
     html: `
       <div class="cat-tail"></div>
       <div class="cat-body"></div>
@@ -727,7 +687,6 @@ const animals = [
   },
   {
     name: 'fox',
-    color: 'linear-gradient(135deg, #ea580c, #f97316)',
     html: `
       <div class="fox-tail"></div>
       <div class="fox-body"></div>
@@ -742,7 +701,6 @@ const animals = [
   },
   {
     name: 'bunny',
-    color: 'linear-gradient(135deg, #f5f3ff, #ddd6fe)',
     html: `
       <div class="bunny-tail"></div>
       <div class="bunny-body"></div>
@@ -757,16 +715,13 @@ const animals = [
   }
 ];
 
-// ================= RANDOM ANIMAL SELECTION =================
+/* ================= RANDOM ANIMAL SELECTION ================= */
 function selectRandomAnimal() {
   const walker = document.getElementById('walker');
-  const randomIndex = Math.floor(Math.random() * animals.length);
-  const animal = animals[randomIndex];
-  
+  const animal = animals[Math.floor(Math.random() * animals.length)];
+
   walker.innerHTML = animal.html;
-  walker.style.color = animal.color;
-  
-  // Update animal name in subtitle
+
   const subtitle = document.querySelector('.subtitle');
   const animalNames = {
     'dog': 'friendly golden retriever',
@@ -774,85 +729,70 @@ function selectRandomAnimal() {
     'fox': 'clever fox',
     'bunny': 'cute bunny'
   };
-  
-  const currentName = animalNames[animal.name];
-  subtitle.innerHTML = `Your session is walking away with a ${currentName}.<br>Securely clearing all your data...`;
-  
+
+  subtitle.innerHTML = `Your session is walking away with a ${animalNames[animal.name]}.<br>Securely clearing your data...`;
+
   return animal.name;
 }
 
-// ================= PROGRESS ANIMATION =================
+/* ================= PROGRESS ANIMATION ================= */
 function animateProgress() {
-  const progressFill = document.querySelector('.progress-fill');
+  const progressFill = document.getElementById('progressFill');
   const progressPercent = document.getElementById('progressPercent');
   const step1 = document.getElementById('step1');
   const step2 = document.getElementById('step2');
   const step3 = document.getElementById('step3');
-  
+
   let percent = 0;
-  const interval = setInterval(() => {
-    percent += 1;
-    progressPercent.textContent = `${percent}%`;
-    
-    if(percent >= 100) {
-      clearInterval(interval);
-    } else if(percent >= 66) {
-      step3.classList.add('completed');
-    } else if(percent >= 33) {
-      step2.classList.add('completed');
-    } else if(percent >= 10) {
-      step1.classList.add('completed');
-    }
-  }, 30); // 3 seconds total
-  
-  return interval;
+
+  return new Promise(resolve => {
+    const interval = setInterval(() => {
+      percent += 1;
+      progressFill.style.width = `${percent}%`;
+      progressPercent.textContent = `${percent}%`;
+
+      if (percent >= 15) step1.classList.add('completed');
+      if (percent >= 55) step2.classList.add('completed');
+      if (percent >= 90) step3.classList.add('completed');
+
+      if (percent >= 100) {
+        clearInterval(interval);
+        resolve();
+      }
+    }, 30); // ~3s
+  });
 }
 
-// ================= LOGOUT SEQUENCE =================
-function startLogoutSequence() {
+/* ================= LOGOUT SEQUENCE ================= */
+async function startLogoutSequence() {
   const animalName = selectRandomAnimal();
   console.log(`Selected animal: ${animalName}`);
-  
-  const progressInterval = animateProgress();
-  
-  // Fade out and redirect
+
+  await animateProgress();
+
+  // Fade out
+  document.getElementById('card').classList.add('fade');
+
+  // Clear ONLY fake / session data (do NOT touch remember_me)
+  try {
+    localStorage.removeItem('user');
+    localStorage.removeItem('loggedUser');
+    localStorage.removeItem('session_token');
+    localStorage.removeItem('user_data');
+    sessionStorage.removeItem('searchQuery');
+  } catch (e) { /* ignore */ }
+
+  // Redirect to login
   setTimeout(() => {
-    document.getElementById('card').classList.add('fade');
-    
-    // Clear session data (simulated)
-    if(typeof localStorage !== 'undefined') {
-      localStorage.removeItem('session_token');
-      localStorage.removeItem('user_data');
-    }
-    
-    // Redirect to login
-    setTimeout(() => {
-      window.location.href = 'login.html';
-    }, 800);
-  }, 3000);
+    window.location.href = 'login.html';
+  }, 600);
 }
 
-// ================= INITIALIZE =================
+/* ================= INIT ================= */
 document.addEventListener('DOMContentLoaded', function() {
   createStars();
   createGrass();
   startLogoutSequence();
-  
-  // Add some random animal sounds in console (for fun)
-  const animalSounds = {
-    'dog': '🐕 Woof! Woof!',
-    'cat': '🐱 Meow!',
-    'fox': '🦊 Ring-ding-ding-ding-dingeringeding!',
-    'bunny': '🐇 *nibble nibble*'
-  };
-  
-  setTimeout(() => {
-    const currentAnimal = document.querySelector('.walker').innerHTML.includes('dog-body') ? 'dog' :
-                         document.querySelector('.walker').innerHTML.includes('cat-body') ? 'cat' :
-                         document.querySelector('.walker').innerHTML.includes('fox-body') ? 'fox' : 'bunny';
-    
-    console.log(animalSounds[currentAnimal]);
-  }, 1000);
 });
 </script>
 
