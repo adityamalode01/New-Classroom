@@ -1,1665 +1,1787 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>📥 Smart Downloads - Download Manager</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-  <style>
-    :root {
-      --primary: #6366f1;
-      --secondary: #22d3ee;
-      --accent: #f472b6;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --dark: #020617;
-      --light: #f8fafc;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    /* ================= ANIMATED BACKGROUND ================= */
-    body {
-      min-height: 100vh;
-      background: linear-gradient(135deg, #0a0a2a 0%, #020617 100%);
-      color: white;
-      overflow-x: hidden;
-      position: relative;
-    }
-
-    /* Floating Gradient Orbs */
-    .floating-orbs {
-      position: fixed;
-      width: 200vw;
-      height: 200vh;
-      top: -50vh;
-      left: -50vw;
-      z-index: -1;
-      opacity: 0.3;
-    }
-
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(70px);
-      animation: floatOrb 25s infinite linear;
-    }
-
-    .orb-1 {
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
-      top: 10%;
-      left: 10%;
-      animation-duration: 30s;
-    }
-
-    .orb-2 {
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
-      top: 60%;
-      right: 10%;
-      animation-duration: 35s;
-      animation-delay: 5s;
-    }
-
-    @keyframes floatOrb {
-      0% { transform: translate(0, 0) rotate(0deg); }
-      25% { transform: translate(100px, 50px) rotate(90deg); }
-      50% { transform: translate(50px, 100px) rotate(180deg); }
-      75% { transform: translate(-50px, 50px) rotate(270deg); }
-      100% { transform: translate(0, 0) rotate(360deg); }
-    }
-
-    /* Animated Grid Background */
-    .grid-bg {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background:
-        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-      background-size: 40px 40px;
-      z-index: -2;
-      animation: gridMove 20s linear infinite;
-    }
-
-    @keyframes gridMove {
-      0% { transform: translate(0,0); }
-      100% { transform: translate(40px,40px); }
-    }
-
-    /* Download Progress Bars Animation */
-    .download-particles {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    .download-particle {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      background: var(--secondary);
-      border-radius: 50%;
-      animation: particleFall linear infinite;
-    }
-
-    @keyframes particleFall {
-      0% {
-        transform: translateY(-100px) rotate(0deg);
-        opacity: 0;
-      }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0;
-      }
-    }
-
-    /* ================= NAVBAR ================= */
-    .navbar-custom {
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(25px);
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      padding: 20px 0;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    .navbar-brand {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: white !important;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .logo-circle {
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      color: white;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-    }
-
-    .nav-link-custom {
-      color: rgba(255,255,255,0.9) !important;
-      font-weight: 500;
-      padding: 10px 20px !important;
-      border-radius: 12px;
-      transition: all 0.3s ease;
-      margin: 0 5px;
-    }
-
-    .nav-link-custom:hover {
-      color: white !important;
-      background: rgba(255,255,255,0.1);
-      transform: translateY(-2px);
-    }
-
-    .nav-link-custom.active {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: white !important;
-    }
-
-    /* ================= HEADER ================= */
-    .hero-header {
-      text-align: center;
-      padding: 100px 20px 60px;
-      position: relative;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .hero-title {
-      font-size: 3.8rem;
-      font-weight: 800;
-      margin-bottom: 20px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      line-height: 1.2;
-    }
-
-    .hero-subtitle {
-      font-size: 1.3rem;
-      opacity: 0.9;
-      max-width: 700px;
-      margin: 0 auto 40px;
-      line-height: 1.6;
-    }
-
-    /* Stats Counter */
-    .stats-container {
-      display: flex;
-      justify-content: center;
-      gap: 25px;
-      flex-wrap: wrap;
-      margin-top: 40px;
-    }
-
-    .stat-card {
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 20px;
-      padding: 25px;
-      min-width: 160px;
-      text-align: center;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .stat-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: linear-gradient(90deg, var(--primary), var(--accent));
-      border-radius: 20px 20px 0 0;
-    }
-
-    .stat-card:hover {
-      background: rgba(255,255,255,0.12);
-      transform: translateY(-5px);
-      border-color: var(--secondary);
-    }
-
-    .stat-icon {
-      font-size: 2.5rem;
-      margin-bottom: 15px;
-      color: var(--secondary);
-    }
-
-    .stat-number {
-      font-size: 2.2rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      line-height: 1;
-    }
-
-    /* ================= DOWNLOADS DASHBOARD ================= */
-    .downloads-dashboard {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 40px 20px;
-    }
-
-    /* Quick Actions */
-    .quick-actions {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 25px;
-      margin-bottom: 40px;
-    }
-
-    .action-card {
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 25px;
-      padding: 30px;
-      text-align: center;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .action-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: linear-gradient(90deg, var(--primary), var(--accent));
-      border-radius: 25px 25px 0 0;
-    }
-
-    .action-card:hover {
-      background: rgba(255,255,255,0.12);
-      transform: translateY(-5px);
-      border-color: var(--secondary);
-    }
-
-    .action-icon {
-      width: 70px;
-      height: 70px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.8rem;
-      margin: 0 auto 20px;
-      color: white;
-      transition: all 0.3s ease;
-    }
-
-    .action-card:hover .action-icon {
-      transform: rotateY(180deg) scale(1.1);
-    }
-
-    .action-card h3 {
-      font-size: 1.4rem;
-      margin-bottom: 15px;
-      color: white;
-    }
-
-    /* ================= DOWNLOADS TABLE ================= */
-    .downloads-container {
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(20px);
-      border-radius: 25px;
-      padding: 40px;
-      margin-top: 40px;
-      border: 1px solid rgba(255,255,255,0.1);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .downloads-container::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
-      border-radius: 25px 25px 0 0;
-    }
-
-    .section-title {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 30px;
-      text-align: center;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    /* Search and Filter Bar */
-    .search-filter-bar {
-      display: flex;
-      gap: 15px;
-      margin-bottom: 30px;
-      flex-wrap: wrap;
-    }
-
-    .search-box {
-      flex: 1;
-      min-width: 300px;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 15px;
-      padding: 0 15px;
-      display: flex;
-      align-items: center;
-    }
-
-    .search-box input {
-      flex: 1;
-      background: transparent;
-      border: none;
-      padding: 15px;
-      color: white;
-      font-size: 1rem;
-    }
-
-    .search-box input:focus {
-      outline: none;
-    }
-
-    .search-box i {
-      color: rgba(255,255,255,0.5);
-    }
-
-    .filter-btn {
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 15px;
-      padding: 15px 25px;
-      color: white;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .filter-btn:hover {
-      background: rgba(255,255,255,0.1);
-      transform: translateY(-2px);
-    }
-
-    /* Downloads Table */
-    .table-container {
-      overflow-x: auto;
-      border-radius: 15px;
-      border: 1px solid rgba(255,255,255,0.1);
-      background: rgba(255,255,255,0.05);
-    }
-
-    .downloads-table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
-      min-width: 1000px;
-    }
-
-    .downloads-table thead {
-      background: linear-gradient(135deg, rgba(99,102,241,0.3), rgba(34,211,238,0.3));
-    }
-
-    .downloads-table th {
-      padding: 20px;
-      text-align: left;
-      font-weight: 600;
-      font-size: 1.1rem;
-      border-bottom: 2px solid rgba(255,255,255,0.1);
-    }
-
-    .downloads-table td {
-      padding: 20px;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      transition: background 0.3s ease;
-    }
-
-    .downloads-table tbody tr:hover {
-      background: rgba(255,255,255,0.08);
-    }
-
-    .downloads-table tbody tr:last-child td {
-      border-bottom: none;
-    }
-
-    /* File Type Badge */
-    .file-type-badge {
-      padding: 6px 15px;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 500;
-      display: inline-block;
-    }
-
-    .badge-pdf { background: rgba(239, 68, 68, 0.2); color: #fecaca; }
-    .badge-video { background: rgba(59, 130, 246, 0.2); color: #bfdbfe; }
-    .badge-doc { background: rgba(34, 197, 94, 0.2); color: #bbf7d0; }
-    .badge-zip { background: rgba(249, 115, 22, 0.2); color: #fed7aa; }
-    .badge-other { background: rgba(168, 85, 247, 0.2); color: #e9d5ff; }
-
-    /* Action Buttons */
-    .table-actions {
-      display: flex;
-      gap: 10px;
-    }
-
-    .action-btn {
-      padding: 8px 15px;
-      border-radius: 10px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.9rem;
-      border: none;
-      color: white;
-    }
-
-    .view-btn {
-      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-    }
-
-    .download-btn {
-      background: linear-gradient(135deg, #10b981, #047857);
-    }
-
-    .delete-btn {
-      background: linear-gradient(135deg, #ef4444, #b91c1c);
-    }
-
-    .action-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    }
-
-    /* Progress Bar Animation */
-    .progress-container {
-      width: 150px;
-      height: 8px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      height: 100%;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      border-radius: 4px;
-      transition: width 0.3s ease;
-    }
-
-    /* ================= BULK ACTIONS ================= */
-    .bulk-actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 30px;
-      padding-top: 20px;
-      border-top: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .bulk-buttons {
-      display: flex;
-      gap: 15px;
-    }
-
-    .bulk-btn {
-      padding: 12px 25px;
-      border-radius: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border: none;
-      color: white;
-    }
-
-    .select-all {
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.2);
-    }
-
-    .delete-selected {
-      background: linear-gradient(135deg, var(--danger), #b91c1c);
-    }
-
-    .download-selected {
-      background: linear-gradient(135deg, var(--success), #047857);
-    }
-
-    /* ================= EMPTY STATE ================= */
-    .empty-state {
-      text-align: center;
-      padding: 60px 20px;
-    }
-
-    .empty-state i {
-      font-size: 5rem;
-      color: rgba(255,255,255,0.1);
-      margin-bottom: 20px;
-      display: block;
-    }
-
-    .empty-state h3 {
-      font-size: 1.8rem;
-      margin-bottom: 15px;
-      color: white;
-    }
-
-    .empty-state p {
-      color: rgba(255,255,255,0.7);
-      margin-bottom: 30px;
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    /* ================= NOTIFICATION ================= */
-    .notification {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: rgba(255,255,255,0.95);
-      color: #333;
-      padding: 15px 25px;
-      border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      z-index: 10000;
-      display: none;
-      align-items: center;
-      gap: 10px;
-      backdrop-filter: blur(10px);
-      animation: slideIn 0.3s ease;
-    }
-
-    @keyframes slideIn {
-      from {
-        transform: translateX(100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-
-    /* ================= FOOTER ================= */
-    footer {
-      text-align: center;
-      padding: 60px 20px 30px;
-      color: rgba(255,255,255,0.6);
-      margin-top: 80px;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      background: rgba(0,0,0,0.2);
-    }
-
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      margin-top: 30px;
-      flex-wrap: wrap;
-    }
-
-    .footer-links a {
-      color: rgba(255,255,255,0.7);
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-
-    .footer-links a:hover {
-      color: var(--secondary);
-    }
-
-    /* ================= RESPONSIVE ================= */
-    @media (max-width: 1200px) {
-      .hero-title {
-        font-size: 3rem;
-      }
-      
-      .downloads-table {
-        min-width: 800px;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .hero-title {
-        font-size: 2.5rem;
-      }
-      
-      .hero-subtitle {
-        font-size: 1.1rem;
-      }
-      
-      .quick-actions {
-        grid-template-columns: 1fr;
-      }
-      
-      .search-filter-bar {
-        flex-direction: column;
-      }
-      
-      .search-box {
-        min-width: 100%;
-      }
-      
-      .bulk-actions {
-        flex-direction: column;
-        gap: 15px;
-        align-items: stretch;
-      }
-      
-      .bulk-buttons {
-        justify-content: center;
-      }
-      
-      .downloads-container {
-        padding: 25px 15px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .hero-title {
-        font-size: 2rem;
-      }
-      
-      .section-title {
-        font-size: 1.8rem;
-      }
-      
-      .table-actions {
-        flex-direction: column;
-        gap: 5px;
-      }
-      
-      .action-btn {
-        width: 100%;
-        justify-content: center;
-      }
-      
-      .stat-card {
-        min-width: 130px;
-        padding: 20px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Downloads | Smart Classroom</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="shortcut icon" type="image/png" href="Smart classroom logo.png">
+
+<!-- Poppins -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<!-- Database -->
+<script src="database.js" defer></script>
+
+<style>
+/* ================= DESIGN SYSTEM ================= */
+:root{
+  --primary:#6366f1;
+  --secondary:#22d3ee;
+  --accent:#f472b6;
+  --success:#10b981;
+  --warning:#f59e0b;
+  --danger:#ef4444;
+  --dark:#020617;
+  --light:#f8fafc;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+/* ================= BODY ================= */
+body{
+  min-height:100vh;
+  background:linear-gradient(180deg, #0a0a2a 0%, #020617 100%);
+  background-attachment: fixed;
+  color:white;
+  overflow-x:hidden;
+  position:relative;
+}
+
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  background:
+    radial-gradient(600px circle at 12% 8%, rgba(99,102,241,0.18), transparent 60%),
+    radial-gradient(500px circle at 88% 30%, rgba(34,211,238,0.14), transparent 60%),
+    radial-gradient(500px circle at 20% 85%, rgba(244,114,182,0.10), transparent 60%);
+}
+
+nav.navbar-custom,
+.section-page,
+.mobile-search-bar,
+.mobile-bottom-nav,
+.notification {
+  position: relative;
+  z-index: 1;
+}
+
+/* ================= SCROLL REVEAL ================= */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ================= NAVBAR ================= */
+.navbar-custom {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 15px 0;
+  position: relative;
+  z-index: 1000;
+}
+
+.navbar-custom .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  gap: 10px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.navbar-brand {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: white !important;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.logo-circle {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+  flex-shrink: 0;
+  transition: transform 0.4s var(--ease);
+}
+
+.navbar-brand:hover .logo-circle {
+  transform: rotate(10deg) scale(1.05);
+}
+
+.nav-links-desktop {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.nav-link-custom {
+  color: rgba(255, 255, 255, 0.85) !important;
+  font-weight: 500;
+  padding: 10px 18px !important;
+  border-radius: 12px;
+  transition: all 0.3s var(--ease);
+  text-decoration: none;
+  white-space: nowrap;
+  font-size: 0.95rem;
+}
+
+.nav-link-custom:hover {
+  color: white !important;
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+.nav-link-custom.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white !important;
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.mobile-controls {
+  display: none;
+  align-items: center;
+  gap: 12px;
+}
+
+.hamburger-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.6rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  line-height: 1;
+  transition: transform 0.3s var(--ease);
+}
+
+.hamburger-btn:hover { transform: scale(1.1); }
+
+.mobile-search-btn {
+  color: rgba(255,255,255,0.8);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.3s var(--ease);
+}
+
+.mobile-search-btn:hover { color: var(--secondary); }
+
+/* ================= MOBILE SEARCH BAR ================= */
+.mobile-search-bar {
+  display: none;
+  padding: 12px 20px;
+  background: rgba(2, 6, 23, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  animation: slideDown 0.3s var(--ease);
+}
+
+.mobile-search-bar.active { display: block; }
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.mobile-search-bar form {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.mobile-search-bar input {
+  flex: 1;
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  color: white;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.3s var(--ease);
+  min-height: 44px;
+}
+
+.mobile-search-bar input:focus {
+  border-color: var(--secondary);
+  background: rgba(255,255,255,0.1);
+  box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.15);
+}
+
+.mobile-search-bar input::placeholder { color: rgba(255,255,255,0.4); }
+
+.mobile-search-bar button {
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  cursor: pointer;
+  font-size: 0.95rem;
+  min-height: 44px;
+  transition: all 0.3s var(--ease);
+}
+
+.mobile-search-bar button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(99, 102, 241, 0.35);
+}
+
+.mobile-search-bar button:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* ================= MOBILE MENU ================= */
+.mobile-menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s var(--ease);
+}
+
+.mobile-menu-overlay.open { display: block; opacity: 1; }
+
+.mobile-menu-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 300px;
+  max-width: 85vw;
+  background: rgba(2, 6, 23, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 30px 24px calc(30px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-100%);
+  transition: transform 0.35s var(--ease);
+  z-index: 2001;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  overflow-y: auto;
+}
+
+.mobile-menu-panel.open { transform: translateX(0); }
+
+.mobile-menu-panel .close-menu {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-bottom: 30px;
+  opacity: 0.6;
+  transition: opacity 0.3s var(--ease);
+}
+
+.mobile-menu-panel .close-menu:hover { opacity: 1; }
+
+.mobile-menu-panel a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255,255,255,0.8);
+  text-decoration: none;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.3s var(--ease);
+  min-height: 48px;
+}
+
+.mobile-menu-panel a:hover { color: white; padding-left: 10px; }
+.mobile-menu-panel a.active { color: var(--secondary); }
+
+/* ================= PROFILE DROPDOWN ================= */
+.profile-dropdown { position: relative; flex-shrink: 0; }
+
+.profile-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: white;
+  padding: 8px 15px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.3s var(--ease);
+  white-space: nowrap;
+  min-height: 44px;
+}
+
+.profile-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  transform: translateY(-1px);
+}
+
+.profile-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--secondary);
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.1);
+}
+
+.profile-btn span {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.9rem;
+}
+
+.profile-chevron { font-size: 0.75rem; opacity: 0.7; }
+
+.profile-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: rgba(2, 6, 23, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 8px;
+  min-width: 220px;
+  display: none;
+  z-index: 1001;
+  box-shadow: 0 30px 100px rgba(0,0,0,0.6);
+}
+
+.profile-menu.active { display: block; animation: fadeIn 0.25s var(--ease); }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.profile-menu a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  border-radius: 10px;
+  transition: all 0.25s var(--ease);
+  font-size: 0.92rem;
+}
+
+.profile-menu a:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  transform: translateX(3px);
+}
+
+.profile-menu hr {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  margin: 8px 0;
+}
+
+/* ================= NOTIFICATION ================= */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(2, 6, 23, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: white;
+  padding: 14px 20px;
+  border-radius: 14px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  z-index: 10001;
+  display: none;
+  align-items: center;
+  gap: 12px;
+  animation: slideIn 0.35s var(--ease);
+  max-width: 360px;
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.notification.success { border-left: 4px solid var(--success); }
+.notification.success i { color: var(--success); }
+.notification.error { border-left: 4px solid var(--danger); }
+.notification.error i { color: var(--danger); }
+
+/* ================= SECTION PAGE ================= */
+.section-page{
+  max-width:1200px;
+  margin:32px auto;
+  background:rgba(255,255,255,0.06);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  padding:50px 40px;
+  border-radius:30px;
+  border:1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 30px 100px rgba(0,0,0,0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+.section-page::before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:4px;
+  background:linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+}
+
+.section-page h2{
+  text-align:center;
+  font-size:1.8rem;
+  margin-bottom:24px;
+  background:linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 600;
+}
+
+.section-page h2 i {
+  font-size: 1.6rem;
+  -webkit-text-fill-color: var(--secondary);
+  color: var(--secondary);
+}
+
+.section-page .page-subtitle {
+  text-align: center;
+  color: rgba(255,255,255,0.6);
+  font-size: 0.95rem;
+  margin-bottom: 28px;
+}
+
+/* ================= STATS PANEL ================= */
+.stats-panel{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:12px;
+  margin-bottom:28px;
+}
+
+.stat-card{
+  background:rgba(255,255,255,0.05);
+  padding:14px 12px;
+  border-radius:14px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,0.1);
+  transition:all 0.3s var(--ease);
+}
+
+.stat-card:hover{
+  background:rgba(255,255,255,0.09);
+  transform:translateY(-3px);
+  border-color:rgba(34, 211, 238, 0.4);
+}
+
+.stat-card i{
+  font-size:1.3rem;
+  margin-bottom:6px;
+  color:var(--secondary);
+  display: inline-block;
+  transition: transform 0.4s var(--ease);
+}
+
+.stat-card:hover i { transform: rotate(-8deg) scale(1.08); }
+
+.stat-card h3{
+  font-size:1.3rem;
+  margin-bottom:4px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.stat-card p{
+  color:rgba(255,255,255,0.6);
+  font-size:0.72rem;
+}
+
+/* ================= FILTER BAR ================= */
+.filter-bar{
+  display:grid;
+  grid-template-columns:1fr auto auto;
+  gap:12px;
+  margin-bottom:22px;
+  padding:16px;
+  background:rgba(255,255,255,0.04);
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+.search-box{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 0 14px;
+  min-height: 44px;
+  transition: all 0.3s var(--ease);
+}
+
+.search-box:focus-within{
+  border-color: var(--secondary);
+  box-shadow: 0 0 0 4px rgba(34,211,238,0.15);
+}
+
+.search-box i{
+  color: rgba(255,255,255,0.5);
+  font-size: 0.9rem;
+}
+
+.search-box input{
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 0.92rem;
+  font-family: 'Poppins', sans-serif;
+  outline: none;
+  padding: 12px 0;
+  min-height: 40px;
+  min-width: 0;
+}
+
+.search-box input::placeholder { color: rgba(255,255,255,0.4); }
+
+.filter-btn{
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: white;
+  border-radius: 12px;
+  padding: 10px 18px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  transition: all 0.3s var(--ease);
+  white-space: nowrap;
+}
+
+.filter-btn:hover{
+  background: rgba(255,255,255,0.12);
+  transform: translateY(-2px);
+}
+
+.filter-btn:active{ transform: translateY(0) scale(0.97); }
+
+/* ================= DOWNLOADS TABLE (no horizontal scroll) ================= */
+.table-container{
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  overflow: hidden;
+}
+
+.downloads-table{
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: white;
+  table-layout: fixed;             /* ✓ keeps within container */
+}
+
+.downloads-table thead{
+  background: linear-gradient(135deg, rgba(99,102,241,0.25), rgba(34,211,238,0.25));
+}
+
+.downloads-table th{
+  padding: 14px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.88rem;
+  border-bottom: 2px solid rgba(255,255,255,0.1);
+  word-break: break-word;
+}
+
+.downloads-table td{
+  padding: 14px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: background 0.3s var(--ease);
+  vertical-align: middle;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.downloads-table tbody tr:hover{
+  background: rgba(255,255,255,0.04);
+}
+
+.downloads-table tbody tr:last-child td{ border-bottom: none; }
+
+/* Column widths (used by table-layout: fixed) */
+.downloads-table th:nth-child(1),
+.downloads-table td:nth-child(1) { width: 44px; }      /* checkbox */
+.downloads-table th:nth-child(2),
+.downloads-table td:nth-child(2) { width: auto; }      /* name — takes the rest */
+.downloads-table th:nth-child(3),
+.downloads-table td:nth-child(3) { width: 90px; }      /* type */
+.downloads-table th:nth-child(4),
+.downloads-table td:nth-child(4) { width: 90px; }      /* size */
+.downloads-table th:nth-child(5),
+.downloads-table td:nth-child(5) { width: 110px; }     /* date */
+.downloads-table th:nth-child(6),
+.downloads-table td:nth-child(6) { width: 130px; }     /* actions */
+
+/* File cell */
+.file-cell{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;                    /* allows child ellipsis */
+}
+
+.file-icon{
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1.05rem;
+}
+
+.file-icon.pdf   { background: rgba(239,68,68,0.15);  color: #fecaca; }
+.file-icon.video { background: rgba(59,130,246,0.15); color: #bfdbfe; }
+.file-icon.doc   { background: rgba(16,185,129,0.15); color: #bbf7d0; }
+.file-icon.zip   { background: rgba(245,158,11,0.15); color: #fed7aa; }
+.file-icon.other { background: rgba(168,85,247,0.15); color: #e9d5ff; }
+
+.file-info { min-width: 0; }      /* allows inner ellipsis/wrap */
+
+.file-name{
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-bottom: 3px;
+  word-break: break-word;         /* ✓ wrap long names */
+  overflow-wrap: anywhere;
+  line-height: 1.35;
+}
+
+.file-cat{
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.55);
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* Badge */
+.type-badge{
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.type-badge.pdf   { background: rgba(239,68,68,0.2);  color: #fecaca; }
+.type-badge.video { background: rgba(59,130,246,0.2); color: #bfdbfe; }
+.type-badge.doc   { background: rgba(16,185,129,0.2); color: #bbf7d0; }
+.type-badge.zip   { background: rgba(245,158,11,0.2); color: #fed7aa; }
+.type-badge.other { background: rgba(168,85,247,0.2); color: #e9d5ff; }
+
+/* Actions */
+.row-actions{
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.icon-btn{
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  transition: all 0.3s var(--ease);
+  color: white;
+}
+
+.icon-btn.view{ background: rgba(59, 130, 246, 0.18); color: #bfdbfe; }
+.icon-btn.view:hover{ background: rgba(59, 130, 246, 0.3); transform: translateY(-2px); }
+
+.icon-btn.download{ background: rgba(16, 185, 129, 0.18); color: #bbf7d0; }
+.icon-btn.download:hover{ background: rgba(16, 185, 129, 0.3); transform: translateY(-2px); }
+
+.icon-btn.delete{ background: rgba(239, 68, 68, 0.18); color: #fecaca; }
+.icon-btn.delete:hover{ background: rgba(239, 68, 68, 0.3); transform: translateY(-2px); }
+
+.icon-btn:active{ transform: translateY(0) scale(0.95); }
+
+/* ================= EMPTY STATE ================= */
+.empty-state{
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.empty-state i{
+  font-size: 3.5rem;
+  color: rgba(255,255,255,0.2);
+  margin-bottom: 16px;
+  display: block;
+}
+
+.empty-state h3{
+  font-size: 1.2rem;
+  color: white;
+  margin-bottom: 8px;
+}
+
+.empty-state p{
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 22px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn-explore{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.92rem;
+  min-height: 44px;
+  transition: all 0.3s var(--ease);
+  box-shadow: 0 6px 20px rgba(99,102,241,0.35);
+}
+
+.btn-explore:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(99,102,241,0.45);
+  color: white;
+}
+
+.btn-explore:active{ transform: translateY(0) scale(0.98); }
+
+/* ================= BULK ACTIONS ================= */
+.bulk-actions{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  margin-top: 20px;
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.08);
+  flex-wrap: wrap;
+}
+
+.bulk-count{
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.7);
+}
+
+.bulk-count strong{
+  color: var(--secondary);
+  font-weight: 600;
+}
+
+.bulk-buttons{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.bulk-btn{
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  transition: all 0.3s var(--ease);
+  white-space: nowrap;
+}
+
+.bulk-btn.select{
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.14);
+}
+
+.bulk-btn.select:hover{
+  background: rgba(255,255,255,0.14);
+  transform: translateY(-2px);
+}
+
+.bulk-btn.download-all{
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  box-shadow: 0 6px 20px rgba(99,102,241,0.3);
+}
+
+.bulk-btn.download-all:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(99,102,241,0.4);
+}
+
+.bulk-btn.delete-all{
+  background: rgba(239,68,68,0.15);
+  border: 1px solid var(--danger);
+  color: #fecaca;
+}
+
+.bulk-btn.delete-all:hover{
+  background: var(--danger);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(239,68,68,0.35);
+}
+
+.bulk-btn:active{ transform: translateY(0) scale(0.98); }
+
+/* ================= MOBILE BOTTOM NAV ================= */
+.mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(2, 6, 23, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 10px 0 env(safe-area-inset-bottom, 10px);
+  z-index: 1100;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.mobile-bottom-nav a {
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: none;
+  font-size: 0.7rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 12px;
+  border-radius: 40px;
+  transition: all 0.3s var(--ease);
+  min-height: 44px;
+  min-width: 56px;
+  justify-content: center;
+}
+
+.mobile-bottom-nav a i { font-size: 1.3rem; }
+.mobile-bottom-nav a:hover { color: white; }
+.mobile-bottom-nav a.active { color: var(--secondary); }
+.mobile-bottom-nav a span { font-weight: 500; letter-spacing: 0.3px; }
+
+/* ================= RESPONSIVE (Rule 8) ================= */
+@media(max-width:991px){
+  body { padding-bottom: 80px; }
+
+  .nav-links-desktop { display: none !important; }
+  .mobile-controls { display: flex !important; }
+  .mobile-bottom-nav { display: flex !important; }
+
+  .navbar-brand span { font-size: 1.15rem; }
+  .logo-circle { width: 38px; height: 38px; font-size: 1.2rem; }
+
+  .profile-btn { padding: 6px 10px; gap: 6px; }
+  .profile-btn span { max-width: 70px; font-size: 0.85rem; }
+  .profile-img { width: 30px; height: 30px; }
+
+  .notification {
+    top: 16px;
+    left: 16px;
+    right: 16px;
+    max-width: none;
+  }
+}
+
+@media(max-width:768px){
+  .section-page{
+    margin:20px 12px;
+    padding:24px 18px;
+    border-radius:22px;
+  }
+
+  .section-page h2{
+    font-size:1.35rem;
+    margin-bottom:18px;
+  }
+  .section-page h2 i { font-size:1.15rem; }
+
+  .section-page .page-subtitle {
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+  }
+
+  .stats-panel {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .stat-card { padding: 10px 6px; border-radius: 12px; }
+  .stat-card i { font-size: 1rem; margin-bottom: 4px; }
+  .stat-card h3 { font-size: 1rem; margin-bottom: 2px; }
+  .stat-card p { font-size: 0.62rem; line-height: 1.2; }
+
+  .filter-bar{
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .search-box{
+    grid-column: span 2;
+    min-height: 42px;
+  }
+
+  .filter-btn{
+    padding: 10px 12px;
+    font-size: 0.82rem;
+    min-height: 42px;
+    justify-content: center;
+  }
+
+  /* Table shrinks — text wraps instead of scrolling */
+  .downloads-table th,
+  .downloads-table td{
+    padding: 10px 8px;
+  }
+
+  .downloads-table th { font-size: 0.75rem; }
+
+  .file-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 0.9rem;
+  }
+
+  .file-name { font-size: 0.8rem; }
+  .file-cat { font-size: 0.66rem; }
+
+  .type-badge{ font-size: 0.62rem; padding: 3px 7px; }
+
+  .icon-btn { width: 30px; height: 30px; font-size: 0.72rem; }
+
+  .bulk-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .bulk-buttons { justify-content: stretch; }
+  .bulk-btn { flex: 1; justify-content: center; }
+}
+
+@media(max-width:480px){
+  .navbar-custom { padding: 10px 0; }
+  .navbar-brand { gap: 8px; font-size: 1.3rem; }
+  .navbar-brand span { font-size: 0.95rem; }
+  .logo-circle { width: 32px; height: 32px; font-size: 1rem; }
+
+  .profile-btn span { display: none; }
+  .profile-btn { padding: 6px; border-radius: 50%; }
+  .profile-chevron { display: none; }
+
+  .mobile-controls { gap: 6px; }
+  .hamburger-btn { font-size: 1.3rem; padding: 2px 4px; }
+  .mobile-search-btn { font-size: 1rem; }
+
+  .section-page {
+    margin: 12px 8px;
+    padding: 16px 12px;
+    border-radius: 18px;
+  }
+
+  .section-page h2 {
+    font-size: 1.1rem;
+    margin-bottom: 14px;
+  }
+  .section-page h2 i { font-size: 0.95rem; }
+
+  .stats-panel {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+
+  .stat-card { padding: 8px 4px; border-radius: 10px; }
+  .stat-card i { font-size: 0.85rem; margin-bottom: 3px; }
+  .stat-card h3 { font-size: 0.85rem; margin-bottom: 2px; }
+  .stat-card p { font-size: 0.55rem; line-height: 1.1; }
+
+  .filter-bar {
+    gap: 6px;
+    padding: 10px;
+  }
+
+  .search-box { min-height: 40px; }
+  .search-box input { font-size: 0.82rem; }
+
+  .filter-btn {
+    padding: 8px 10px;
+    font-size: 0.75rem;
+    min-height: 40px;
+    gap: 5px;
+  }
+
+  /* Table: hide less-critical columns on tiny screens, keep name + actions */
+  .downloads-table th:nth-child(3),
+  .downloads-table td:nth-child(3),
+  .downloads-table th:nth-child(4),
+  .downloads-table td:nth-child(4),
+  .downloads-table th:nth-child(5),
+  .downloads-table td:nth-child(5) {
+    display: none;
+  }
+
+  .downloads-table th:nth-child(1),
+  .downloads-table td:nth-child(1) { width: 36px; }
+
+  .downloads-table th:nth-child(6),
+  .downloads-table td:nth-child(6) { width: 116px; }
+
+  .downloads-table th,
+  .downloads-table td { padding: 10px 8px; }
+
+  .file-icon { width: 32px; height: 32px; font-size: 0.85rem; }
+  .file-name { font-size: 0.78rem; }
+  .file-cat { font-size: 0.65rem; }
+
+  .icon-btn { width: 28px; height: 28px; font-size: 0.7rem; }
+
+  .bulk-count { font-size: 0.8rem; }
+  .bulk-btn { font-size: 0.78rem; padding: 8px 12px; }
+
+  .mobile-bottom-nav a { font-size: 0.6rem; padding: 4px 8px; }
+  .mobile-bottom-nav a i { font-size: 1.15rem; }
+}
+
+@media(max-width:360px){
+  .navbar-brand span { display: none; }
+  .section-page h2 { font-size: 1rem; }
+
+  .file-icon { width: 30px; height: 30px; font-size: 0.8rem; }
+  .file-name { font-size: 0.72rem; }
+
+  .downloads-table th:nth-child(6),
+  .downloads-table td:nth-child(6) { width: 96px; }
+
+  .mobile-bottom-nav a { font-size: 0.55rem; min-width: 48px; }
+  .mobile-bottom-nav a i { font-size: 1.05rem; }
+}
+</style>
 </head>
 <body>
 
-<!-- Animated Background -->
-<div class="grid-bg"></div>
-<div class="floating-orbs">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-</div>
-<div class="download-particles" id="particles"></div>
-
-<!-- Notification System -->
 <div id="notification" class="notification"></div>
 
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-custom">
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar-custom">
   <div class="container">
     <a class="navbar-brand" href="index.html">
-      <div class="logo-circle">
-        <i class="fas fa-download"></i>
-      </div>
-      <span>Smart Downloads</span>
+      <div class="logo-circle"><i class="fas fa-graduation-cap"></i></div>
+      <span>Smart Classroom</span>
     </a>
-    
-    <div class="navbar-nav ms-auto">
-      <a class="nav-link nav-link-custom" href="index.html">
-        <i class="fas fa-home"></i> Home
-      </a>
-      <a class="nav-link nav-link-custom active" href="downloads.html">
-        <i class="fas fa-download"></i> Downloads
-      </a>
-      <a class="nav-link nav-link-custom" href="library.html">
-        <i class="fas fa-book"></i> Library
-      </a>
+
+    <div class="nav-links-desktop">
+      <a class="nav-link nav-link-custom" href="index.html"><i class="fas fa-home"></i> Home</a>
+      <a class="nav-link nav-link-custom" href="profile.html"><i class="fas fa-user"></i> Profile</a>
+      <a class="nav-link nav-link-custom" href="library.html"><i class="fas fa-book"></i> Library</a>
+      <a class="nav-link nav-link-custom" href="lectures.html"><i class="fas fa-play-circle"></i> Lectures</a>
+      <a class="nav-link nav-link-custom active" href="downloads.html"><i class="fas fa-download"></i> Downloads</a>
+    </div>
+
+    <div class="header-right">
+      <div class="mobile-controls">
+        <span class="mobile-search-btn" id="mobileSearchToggle" title="Search">
+          <i class="fas fa-search"></i>
+        </span>
+        <button class="hamburger-btn" id="hamburgerBtn" title="Menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+      <div class="profile-dropdown">
+        <div class="profile-btn" id="profileToggle">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Guest" alt="Profile" class="profile-img" id="navAvatar">
+          <span id="userName">Guest</span>
+          <i class="fas fa-chevron-down profile-chevron"></i>
+        </div>
+        <div class="profile-menu" id="profileMenu">
+          <a href="profile.html"><i class="fas fa-user"></i> My Profile</a>
+          <a href="downloads.html"><i class="fas fa-download"></i> My Downloads</a>
+          <a href="library.html"><i class="fas fa-book"></i> Library</a>
+          <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+          <hr>
+          <a href="login.html" id="loginLink"><i class="fas fa-sign-in-alt"></i> Login</a>
+          <a href="signup.html" id="signupLink"><i class="fas fa-user-plus"></i> Sign Up</a>
+          <a href="#" id="logoutLink" style="display: none;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+      </div>
     </div>
   </div>
 </nav>
 
-<!-- Hero Section -->
-<section class="hero-header">
-  <h1 class="hero-title">📥 Smart Download Manager</h1>
-  <p class="hero-subtitle">Manage all your downloaded study materials, track progress, and access files instantly</p>
-  
-  <div class="stats-container">
+<!-- ================= MOBILE SEARCH BAR ================= -->
+<div class="mobile-search-bar" id="mobileSearchBar">
+  <form onsubmit="event.preventDefault(); applyMobileSearch();">
+    <input type="text" placeholder="Search downloads..." id="mobileSearchInput">
+    <button type="submit" title="Search"><i class="fas fa-search"></i></button>
+  </form>
+</div>
+
+<!-- ================= MOBILE MENU ================= -->
+<div class="mobile-menu-overlay" id="mobileMenuOverlay">
+  <div class="mobile-menu-panel" id="mobileMenuPanel">
+    <button class="close-menu" id="closeMenuBtn"><i class="fas fa-times"></i></button>
+    <a href="index.html"><i class="fas fa-home"></i> Home</a>
+    <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+    <a href="library.html"><i class="fas fa-book"></i> Library</a>
+    <a href="lectures.html"><i class="fas fa-play-circle"></i> Lectures</a>
+    <a href="downloads.html" class="active"><i class="fas fa-download"></i> Downloads</a>
+    <hr style="border-color: rgba(255,255,255,0.05); margin: 16px 0;">
+    <a href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+    <a href="signup.html"><i class="fas fa-user-plus"></i> Sign Up</a>
+  </div>
+</div>
+
+<!-- ================= DOWNLOADED FILES PAGE ================= -->
+<div class="section-page reveal">
+  <h2><i class="fas fa-download"></i> Downloaded Files</h2>
+  <p class="page-subtitle">All your downloaded study materials in one place</p>
+
+  <!-- Stats Panel -->
+  <div class="stats-panel">
     <div class="stat-card">
-      <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
-      <div class="stat-number" id="totalFiles">0</div>
+      <i class="fas fa-file-alt"></i>
+      <h3 id="totalFiles">0</h3>
       <p>Total Files</p>
     </div>
-    
     <div class="stat-card">
-      <div class="stat-icon"><i class="fas fa-hdd"></i></div>
-      <div class="stat-number" id="totalSize">0 MB</div>
+      <i class="fas fa-hdd"></i>
+      <h3 id="totalSize">0 MB</h3>
       <p>Total Size</p>
     </div>
-    
     <div class="stat-card">
-      <div class="stat-icon"><i class="fas fa-calendar-alt"></i></div>
-      <div class="stat-number" id="recentFiles">0</div>
+      <i class="fas fa-calendar-alt"></i>
+      <h3 id="recentFiles">0</h3>
       <p>Last 7 Days</p>
     </div>
-    
     <div class="stat-card">
-      <div class="stat-icon"><i class="fas fa-bolt"></i></div>
-      <div class="stat-number" id="availableSpace">2.5 GB</div>
-      <p>Free Space</p>
-    </div>
-  </div>
-</section>
-
-<!-- Downloads Dashboard -->
-<section class="downloads-dashboard">
-  <!-- Quick Actions -->
-  <div class="quick-actions">
-    <div class="action-card" id="organizeDownloads">
-      <div class="action-icon">
-        <i class="fas fa-folder-plus"></i>
-      </div>
-      <h3>Organize Files</h3>
-      <p>Create folders and organize your downloads</p>
-    </div>
-    
-    <div class="action-card" id="cloudBackup">
-      <div class="action-icon">
-        <i class="fas fa-cloud-upload-alt"></i>
-      </div>
-      <h3>Cloud Backup</h3>
-      <p>Backup important files to cloud storage</p>
-    </div>
-    
-    <div class="action-card" id="bulkDownload">
-      <div class="action-icon">
-        <i class="fas fa-layer-group"></i>
-      </div>
-      <h3>Bulk Download</h3>
-      <p>Download multiple files at once</p>
-    </div>
-    
-    <div class="action-card" id="speedTest">
-      <div class="action-icon">
-        <i class="fas fa-tachometer-alt"></i>
-      </div>
-      <h3>Speed Test</h3>
-      <p>Test your download speed</p>
+      <i class="fas fa-check-circle"></i>
+      <h3 id="completedFiles">0</h3>
+      <p>Completed</p>
     </div>
   </div>
 
-  <!-- Downloads Table -->
-  <div class="downloads-container">
-    <h2 class="section-title">Your Downloads</h2>
-    
-    <!-- Search and Filter -->
-    <div class="search-filter-bar">
-      <div class="search-box">
-        <i class="fas fa-search"></i>
-        <input type="text" id="searchInput" placeholder="Search files by name, type, or date...">
-      </div>
-      
-      <button class="filter-btn" id="filterBtn">
-        <i class="fas fa-filter"></i> Filter
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="Search downloaded files...">
+    </div>
+    <button class="filter-btn" id="filterBtn">
+      <i class="fas fa-filter"></i> Filter
+    </button>
+    <button class="filter-btn" id="sortBtn">
+      <i class="fas fa-sort-amount-down"></i> Sort
+    </button>
+  </div>
+
+  <!-- Downloads Table (no horizontal scroll) -->
+  <div class="table-container">
+    <table class="downloads-table">
+      <thead>
+        <tr>
+          <th><input type="checkbox" id="selectAll"></th>
+          <th>File Name</th>
+          <th>Type</th>
+          <th>Size</th>
+          <th>Downloaded</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <!-- Bulk Actions -->
+  <div class="bulk-actions">
+    <div class="bulk-count">
+      <strong id="selectedCount">0</strong> files selected
+    </div>
+    <div class="bulk-buttons">
+      <button class="bulk-btn select" id="selectAllBtn">
+        <i class="fas fa-check-square"></i> Select All
       </button>
-      
-      <button class="filter-btn" id="sortBtn">
-        <i class="fas fa-sort-amount-down"></i> Sort
+      <button class="bulk-btn download-all" id="downloadSelectedBtn">
+        <i class="fas fa-download"></i> Download Selected
+      </button>
+      <button class="bulk-btn delete-all" id="deleteSelectedBtn">
+        <i class="fas fa-trash-alt"></i> Delete Selected
       </button>
     </div>
-    
-    <!-- Downloads Table -->
-    <div class="table-container">
-      <table class="downloads-table" id="downloadsTable">
-        <thead>
-          <tr>
-            <th style="width: 50px;">
-              <input type="checkbox" id="selectAll">
-            </th>
-            <th>File Name</th>
-            <th>Type</th>
-            <th>Size</th>
-            <th>Date Downloaded</th>
-            <th>Progress</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="tableBody">
-          <!-- Downloads will be populated here -->
-        </tbody>
-      </table>
-    </div>
-    
-    <!-- Bulk Actions -->
-    <div class="bulk-actions">
-      <div>
-        <span id="selectedCount">0 files selected</span>
-      </div>
-      
-      <div class="bulk-buttons">
-        <button class="bulk-btn select-all" id="selectAllBtn">
-          <i class="fas fa-check-square"></i> Select All
-        </button>
-        
-        <button class="bulk-btn download-selected" id="downloadSelectedBtn">
-          <i class="fas fa-download"></i> Download Selected
-        </button>
-        
-        <button class="bulk-btn delete-selected" id="deleteSelectedBtn">
-          <i class="fas fa-trash-alt"></i> Delete Selected
-        </button>
-      </div>
-    </div>
   </div>
-</section>
+</div>
 
-<!-- Footer -->
-<footer>
-  <p>© 2025 Smart Classroom | Professional Download Manager</p>
-  <div class="footer-links">
-    <a href="index.html">Home</a>
-    <a href="library.html">Library</a>
-    <a href="lectures.html">Lectures</a>
-    <a href="contact.html">Contact</a>
-  </div>
-  <p style="margin-top:20px;font-size:0.9rem;">
-    <i class="fas fa-envelope"></i> rameshprasadrp123@gmail.com | 
-    <i class="fas fa-phone"></i> +91 7498147593 |
-    <i class="fab fa-instagram"></i> @Ramesh__6162
-  </p>
-</footer>
+<!-- ================= MOBILE BOTTOM NAV ================= -->
+<nav class="mobile-bottom-nav">
+  <a href="index.html"><i class="fas fa-home"></i><span>Home</span></a>
+  <a href="library.html"><i class="fas fa-book"></i><span>Library</span></a>
+  <a href="lectures.html"><i class="fas fa-play-circle"></i><span>Lectures</span></a>
+  <a href="downloads.html" class="active"><i class="fas fa-download"></i><span>Downloads</span></a>
+  <a href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a>
+</nav>
 
 <script>
-// ================= NOTIFICATION SYSTEM =================
+/* ================= NOTIFICATION (Rule 7 — shared timer) ================= */
 function showNotification(message, type = 'success') {
-  const notification = document.getElementById('notification');
-  notification.innerHTML = `
-    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}" 
-       style="color: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'}"></i>
-    <span>${message}</span>
-  `;
-  notification.style.display = 'flex';
-  
-  setTimeout(() => {
-    notification.style.display = 'none';
-  }, 3000);
+  const n = document.getElementById('notification');
+  n.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i><span>${message}</span>`;
+  n.className = `notification ${type}`;
+  n.style.display = 'flex';
+  clearTimeout(window._t);
+  window._t = setTimeout(() => { n.style.display = 'none'; }, 3000);
 }
 
-// ================= CREATE PARTICLE EFFECT =================
-function createParticles() {
-  const container = document.getElementById('particles');
-  const colors = ['#22d3ee', '#6366f1', '#f472b6', '#10b981', '#f59e0b'];
-  
-  for(let i = 0; i < 30; i++) {
-    const particle = document.createElement('div');
-    particle.className = 'download-particle';
-    
-    const size = Math.random() * 8 + 2;
-    const left = Math.random() * 100;
-    const duration = 3 + Math.random() * 7;
-    const delay = Math.random() * 5;
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    
-    particle.style.width = `${size}px`;
-    particle.style.height = `${size}px`;
-    particle.style.left = `${left}%`;
-    particle.style.animationDuration = `${duration}s`;
-    particle.style.animationDelay = `${delay}s`;
-    particle.style.background = color;
-    
-    container.appendChild(particle);
-  }
-}
+/* ================= AUTH (Rule 7 — all 3 keys) ================= */
+function checkAuth() {
+  const user = localStorage.getItem('user') || localStorage.getItem('loggedUser');
+  const token = localStorage.getItem('session_token');
+  const userName = document.getElementById('userName');
+  const loginLink = document.getElementById('loginLink');
+  const signupLink = document.getElementById('signupLink');
+  const logoutLink = document.getElementById('logoutLink');
 
-// ================= SAMPLE DOWNLOAD DATA =================
-const downloadData = [
-  {
-    id: 1,
-    name: "Complete C Programming Notes.pdf",
-    type: "pdf",
-    size: "2.4 MB",
-    date: "2025-01-15",
-    progress: 100,
-    category: "Programming"
-  },
-  {
-    id: 2,
-    name: "Data Structures Lecture 3.mp4",
-    type: "video",
-    size: "45.2 MB",
-    date: "2025-01-14",
-    progress: 100,
-    category: "Lectures"
-  },
-  {
-    id: 3,
-    name: "Database Systems Assignment.docx",
-    type: "doc",
-    size: "1.8 MB",
-    date: "2025-01-13",
-    progress: 100,
-    category: "Assignments"
-  },
-  {
-    id: 4,
-    name: "Web Development Project.zip",
-    type: "zip",
-    size: "15.7 MB",
-    date: "2025-01-12",
-    progress: 85,
-    category: "Projects"
-  },
-  {
-    id: 5,
-    name: "Operating Systems Slides.pptx",
-    type: "ppt",
-    size: "3.2 MB",
-    date: "2025-01-11",
-    progress: 100,
-    category: "Presentations"
-  },
-  {
-    id: 6,
-    name: "Python Crash Course.pdf",
-    type: "pdf",
-    size: "5.1 MB",
-    date: "2025-01-10",
-    progress: 100,
-    category: "Programming"
-  },
-  {
-    id: 7,
-    name: "AI Fundamentals Lecture.mp4",
-    type: "video",
-    size: "68.3 MB",
-    date: "2025-01-09",
-    progress: 60,
-    category: "Lectures"
-  },
-  {
-    id: 8,
-    name: "Network Security Notes.pdf",
-    type: "pdf",
-    size: "1.2 MB",
-    date: "2025-01-08",
-    progress: 100,
-    category: "Networking"
-  }
-];
-
-// ================= RENDER DOWNLOADS TABLE =================
-function renderDownloads(filteredData = downloadData) {
-  const tableBody = document.getElementById('tableBody');
-  const totalFiles = document.getElementById('totalFiles');
-  const totalSize = document.getElementById('totalSize');
-  const recentFiles = document.getElementById('recentFiles');
-  
-  tableBody.innerHTML = '';
-  
-  if (filteredData.length === 0) {
-    tableBody.innerHTML = `
-      <tr>
-        <td colspan="7">
-          <div class="empty-state">
-            <i class="fas fa-download"></i>
-            <h3>No Downloads Found</h3>
-            <p>Your downloaded files will appear here. Try searching with different keywords.</p>
-            <button onclick="addSampleFiles()" 
-                    style="padding: 12px 25px; background: linear-gradient(135deg, var(--primary), var(--secondary)); 
-                           border: none; border-radius: 10px; color: white; cursor: pointer; margin-top: 20px;">
-              <i class="fas fa-plus"></i> Add Sample Files
-            </button>
-          </div>
-        </td>
-      </tr>
-    `;
+  if (user || token) {
+    let displayName = 'User';
+    let avatarUrl = null;
+    if (user) {
+      try {
+        const userData = JSON.parse(user);
+        displayName = userData.name || userData.displayName || userData.email?.split('@')[0] || 'User';
+        avatarUrl = userData.avatar;
+      } catch (e) { displayName = 'User'; }
+    }
+    userName.textContent = displayName;
+    if (avatarUrl) document.getElementById('navAvatar').src = avatarUrl;
+    if (loginLink) loginLink.style.display = 'none';
+    if (signupLink) signupLink.style.display = 'none';
+    if (logoutLink) logoutLink.style.display = 'flex';
+    return true;
   } else {
-    filteredData.forEach(file => {
-      const badgeClass = `badge-${file.type}`;
-      const row = document.createElement('tr');
-      row.setAttribute('data-id', file.id);
-      
-      row.innerHTML = `
-        <td>
-          <input type="checkbox" class="file-checkbox" data-id="${file.id}">
-        </td>
-        <td>
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <i class="fas fa-${getFileIcon(file.type)}" 
-               style="font-size: 1.2rem; color: ${getFileColor(file.type)}"></i>
-            <div>
-              <div style="font-weight: 500;">${file.name}</div>
-              <div style="font-size: 0.85rem; opacity: 0.7;">${file.category}</div>
-            </div>
-          </div>
-        </td>
-        <td><span class="file-type-badge ${badgeClass}">${file.type.toUpperCase()}</span></td>
-        <td>${file.size}</td>
-        <td>${formatDate(file.date)}</td>
-        <td>
-          <div class="progress-container">
-            <div class="progress-bar" style="width: ${file.progress}%"></div>
-          </div>
-          <div style="font-size: 0.85rem; margin-top: 5px;">${file.progress}%</div>
-        </td>
-        <td>
-          <div class="table-actions">
-            <button class="action-btn view-btn" onclick="viewFile(${file.id})">
-              <i class="fas fa-eye"></i> View
-            </button>
-            <button class="action-btn download-btn" onclick="downloadFile(${file.id})">
-              <i class="fas fa-download"></i> Get
-            </button>
-            <button class="action-btn delete-btn" onclick="deleteFile(${file.id})">
-              <i class="fas fa-trash"></i>
-            </button>
-          </div>
-        </td>
-      `;
-      
-      tableBody.appendChild(row);
-    });
+    userName.textContent = 'Guest';
+    if (loginLink) loginLink.style.display = 'flex';
+    if (signupLink) signupLink.style.display = 'flex';
+    if (logoutLink) logoutLink.style.display = 'none';
+    return false;
   }
-  
-  // Update stats
-  updateStats(filteredData);
 }
 
-// ================= UTILITY FUNCTIONS =================
+/* ================= LOGIN GATE ================= */
+function requireLogin() {
+  const isLoggedIn = checkAuth();
+  if (!isLoggedIn) {
+    showNotification('Please login to view your downloads', 'error');
+    setTimeout(() => { window.location.href = 'login.html'; }, 1200);
+    return false;
+  }
+  return true;
+}
+
+/* ================= LOGOUT (keeps remember_me) ================= */
+document.getElementById('logoutLink')?.addEventListener('click', (e) => {
+  e.preventDefault();
+  localStorage.removeItem('user');
+  localStorage.removeItem('loggedUser');
+  localStorage.removeItem('session_token');
+  showNotification('Logged out successfully!', 'success');
+  setTimeout(() => { window.location.href = 'index.html'; }, 900);
+});
+
+/* ================= PROFILE DROPDOWN ================= */
+const profileToggle = document.getElementById('profileToggle');
+const profileMenu = document.getElementById('profileMenu');
+
+profileToggle?.addEventListener('click', (e) => {
+  e.stopPropagation();
+  profileMenu.classList.toggle('active');
+});
+
+document.addEventListener('click', (e) => {
+  if (profileMenu && !profileMenu.contains(e.target) && !profileToggle.contains(e.target)) {
+    profileMenu.classList.remove('active');
+  }
+});
+
+/* ================= MOBILE MENU ================= */
+const hamburgerBtn = document.getElementById('hamburgerBtn');
+const menuOverlay = document.getElementById('mobileMenuOverlay');
+const menuPanel = document.getElementById('mobileMenuPanel');
+const closeMenuBtn = document.getElementById('closeMenuBtn');
+
+function openMenu() {
+  menuOverlay.classList.add('open');
+  menuPanel.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMenu() {
+  menuOverlay.classList.remove('open');
+  menuPanel.classList.remove('open');
+  document.body.style.overflow = '';
+}
+hamburgerBtn?.addEventListener('click', openMenu);
+closeMenuBtn?.addEventListener('click', closeMenu);
+menuOverlay?.addEventListener('click', (e) => { if (e.target === menuOverlay) closeMenu(); });
+menuPanel?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+
+/* ================= MOBILE SEARCH ================= */
+const searchToggle = document.getElementById('mobileSearchToggle');
+const searchBar = document.getElementById('mobileSearchBar');
+const mobileSearchInput = document.getElementById('mobileSearchInput');
+
+searchToggle?.addEventListener('click', () => {
+  const isOpen = searchBar.classList.contains('active');
+  if (isOpen) {
+    searchBar.classList.remove('active');
+  } else {
+    searchBar.classList.add('active');
+    setTimeout(() => mobileSearchInput?.focus(), 100);
+  }
+});
+
+function applyMobileSearch() {
+  const q = mobileSearchInput?.value.trim();
+  if (!q) {
+    showNotification('Please enter a search term', 'error');
+    mobileSearchInput?.focus();
+    return;
+  }
+  document.getElementById('searchInput').value = q;
+  searchDownloads(q);
+  searchBar.classList.remove('active');
+  document.querySelector('.section-page')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ================= DATA (from database.js) ================= */
+let allDownloads = [];
+
+function loadDownloadsFromDB() {
+  if (typeof Database !== 'undefined' && typeof Database.getDownloads === 'function') {
+    const raw = Database.getDownloads() || [];
+    return raw.map(d => normalizeDownload(d)).filter(Boolean);
+  }
+  try {
+    const raw = JSON.parse(localStorage.getItem('downloads') || '[]');
+    return raw.map(d => normalizeDownload(d)).filter(Boolean);
+  } catch (e) { return []; }
+}
+
+function normalizeDownload(d) {
+  if (!d) return null;
+  const name = d.name || d.itemName || 'Untitled';
+  const type = (d.type || d.itemType || guessTypeFromName(name) || 'other').toLowerCase();
+  const size = d.size || d.fileSize || '—';
+  const date = d.date || d.downloadedAt || new Date().toISOString();
+  const category = d.category || d.subject || 'Library';
+
+  return {
+    id: d.id || ('dl_' + Math.random().toString(36).slice(2, 9)),
+    name,
+    type: type === 'material' ? 'pdf' : type === 'video' ? 'video' : type,
+    size,
+    date,
+    category,
+    progress: d.progress !== undefined ? d.progress : 100
+  };
+}
+
+function guessTypeFromName(name) {
+  const n = (name || '').toLowerCase();
+  if (n.endsWith('.pdf')) return 'pdf';
+  if (n.endsWith('.mp4') || n.endsWith('.mov') || n.endsWith('.avi')) return 'video';
+  if (n.endsWith('.doc') || n.endsWith('.docx')) return 'doc';
+  if (n.endsWith('.zip') || n.endsWith('.rar')) return 'zip';
+  if (n.endsWith('.ppt') || n.endsWith('.pptx')) return 'doc';
+  return 'other';
+}
+
+/* ================= FILE HELPERS ================= */
 function getFileIcon(type) {
   const icons = {
-    'pdf': 'file-pdf',
-    'video': 'file-video',
-    'doc': 'file-word',
-    'zip': 'file-archive',
-    'ppt': 'file-powerpoint',
-    'other': 'file'
+    pdf: 'file-pdf',
+    video: 'file-video',
+    doc: 'file-word',
+    zip: 'file-archive',
+    other: 'file'
   };
   return icons[type] || 'file';
 }
 
-function getFileColor(type) {
-  const colors = {
-    'pdf': '#ef4444',
-    'video': '#3b82f6',
-    'doc': '#10b981',
-    'zip': '#f59e0b',
-    'ppt': '#f472b6',
-    'other': '#94a3b8'
-  };
-  return colors[type] || '#94a3b8';
-}
-
 function formatDate(dateString) {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', { 
-    year: 'numeric', 
-    month: 'short', 
-    day: 'numeric' 
-  });
+  try {
+    const d = new Date(dateString);
+    if (isNaN(d.getTime())) return '—';
+    return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+  } catch (e) { return '—'; }
 }
 
-function updateStats(data) {
-  const totalFiles = document.getElementById('totalFiles');
-  const totalSize = document.getElementById('totalSize');
-  const recentFiles = document.getElementById('recentFiles');
-  
-  totalFiles.textContent = data.length;
-  
-  // Calculate total size
-  let totalSizeMB = 0;
-  data.forEach(file => {
-    const size = parseFloat(file.size);
-    totalSizeMB += size;
-  });
-  totalSize.textContent = `${totalSizeMB.toFixed(1)} MB`;
-  
-  // Calculate recent files (last 7 days)
-  const oneWeekAgo = new Date();
-  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-  
-  const recentCount = data.filter(file => {
-    const fileDate = new Date(file.date);
-    return fileDate >= oneWeekAgo;
-  }).length;
-  
-  recentFiles.textContent = recentCount;
-}
+/* ================= RENDER ================= */
+function renderDownloads(list) {
+  const tbody = document.getElementById('tableBody');
+  const data = list || allDownloads;
 
-// ================= FILE ACTIONS =================
-function viewFile(fileId) {
-  const file = downloadData.find(f => f.id === fileId);
-  if (!file) return;
-  
-  showNotification(`Opening ${file.name}...`, 'success');
-  
-  // Simulate opening file
-  setTimeout(() => {
-    showNotification(`${file.name} opened successfully!`, 'success');
-    
-    // Create preview modal
-    const modalContent = `
-      <div style="text-align: center; padding: 40px;">
-        <div style="font-size: 4rem; color: ${getFileColor(file.type)}; margin-bottom: 20px;">
-          <i class="fas fa-${getFileIcon(file.type)}"></i>
-        </div>
-        <h3>${file.name}</h3>
-        <div style="margin: 20px 0; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 15px;">
-          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; text-align: left;">
-            <div><strong>Type:</strong> ${file.type.toUpperCase()}</div>
-            <div><strong>Size:</strong> ${file.size}</div>
-            <div><strong>Category:</strong> ${file.category}</div>
-            <div><strong>Downloaded:</strong> ${formatDate(file.date)}</div>
+  if (!data.length) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6">
+          <div class="empty-state">
+            <i class="fas fa-download"></i>
+            <h3>No downloads yet</h3>
+            <p>Your downloaded study materials will appear here once you download them from the library.</p>
+            <a href="library.html" class="btn-explore">
+              <i class="fas fa-book"></i> Browse Library
+            </a>
+          </div>
+        </td>
+      </tr>
+    `;
+    updateStats([]);
+    updateSelectedCount();
+    return;
+  }
+
+  tbody.innerHTML = data.map(d => `
+    <tr data-id="${d.id}">
+      <td>
+        <input type="checkbox" class="row-checkbox" data-id="${d.id}">
+      </td>
+      <td>
+        <div class="file-cell">
+          <div class="file-icon ${d.type}"><i class="fas fa-${getFileIcon(d.type)}"></i></div>
+          <div class="file-info">
+            <div class="file-name">${String(d.name).replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+            <div class="file-cat">${String(d.category).replace(/</g, '&lt;')}</div>
           </div>
         </div>
-        <div style="display: flex; gap: 10px; justify-content: center; margin-top: 30px;">
-          <button onclick="downloadFile(${fileId})" 
-                  style="padding: 12px 25px; background: linear-gradient(135deg, var(--success), #047857); 
-                         border: none; border-radius: 10px; color: white; cursor: pointer;">
-            <i class="fas fa-download"></i> Download
+      </td>
+      <td><span class="type-badge ${d.type}">${d.type.toUpperCase()}</span></td>
+      <td>${d.size}</td>
+      <td>${formatDate(d.date)}</td>
+      <td>
+        <div class="row-actions">
+          <button class="icon-btn view" onclick="viewDownload('${d.id}')" title="View">
+            <i class="fas fa-eye"></i>
           </button>
-          <button onclick="closeModal()"
-                  style="padding: 12px 25px; background: rgba(255,255,255,0.1); 
-                         border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; 
-                         color: white; cursor: pointer;">
-            <i class="fas fa-times"></i> Close
+          <button class="icon-btn download" onclick="downloadItem('${d.id}')" title="Download">
+            <i class="fas fa-download"></i>
+          </button>
+          <button class="icon-btn delete" onclick="deleteItem('${d.id}')" title="Delete">
+            <i class="fas fa-trash"></i>
           </button>
         </div>
-      </div>
-    `;
-    
-    showModal('File Preview', modalContent);
-  }, 800);
-}
+      </td>
+    </tr>
+  `).join('');
 
-function downloadFile(fileId) {
-  const file = downloadData.find(f => f.id === fileId);
-  if (!file) return;
-  
-  const btn = document.querySelector(`button[onclick="downloadFile(${fileId})"]`);
-  const originalHTML = btn.innerHTML;
-  
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading...';
-  btn.disabled = true;
-  
-  // Simulate download
-  setTimeout(() => {
-    btn.innerHTML = '<i class="fas fa-check"></i> Downloaded!';
-    btn.style.background = 'linear-gradient(135deg, #10b981, #047857)';
-    
-    showNotification(`Downloaded: ${file.name}`, 'success');
-    
-    // Simulate file download
-    const link = document.createElement('a');
-    link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent('This is a simulated file download');
-    link.download = file.name;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    setTimeout(() => {
-      btn.innerHTML = originalHTML;
-      btn.style.background = '';
-      btn.disabled = false;
-    }, 1500);
-  }, 1500);
-}
-
-function deleteFile(fileId) {
-  if (confirm('Are you sure you want to delete this file?')) {
-    const index = downloadData.findIndex(f => f.id === fileId);
-    if (index !== -1) {
-      const deletedFile = downloadData[index];
-      downloadData.splice(index, 1);
-      renderDownloads();
-      showNotification(`Deleted: ${deletedFile.name}`, 'success');
-    }
-  }
-}
-
-// ================= BULK ACTIONS =================
-document.getElementById('selectAll').addEventListener('change', function(e) {
-  const checkboxes = document.querySelectorAll('.file-checkbox');
-  checkboxes.forEach(checkbox => {
-    checkbox.checked = e.target.checked;
-  });
+  updateStats(data);
   updateSelectedCount();
+  setupRowCheckboxes();
+}
+
+/* ================= STATS ================= */
+function updateStats(data) {
+  document.getElementById('totalFiles').textContent = data.length;
+
+  let totalMB = 0;
+  data.forEach(d => {
+    const n = parseFloat(String(d.size).replace(/[^\d.]/g, ''));
+    if (!isNaN(n)) totalMB += n;
+  });
+  document.getElementById('totalSize').textContent = totalMB > 0 ? `${totalMB.toFixed(1)} MB` : '0 MB';
+
+  const weekAgo = new Date();
+  weekAgo.setDate(weekAgo.getDate() - 7);
+  document.getElementById('recentFiles').textContent = data.filter(d => {
+    try { return new Date(d.date) >= weekAgo; } catch (e) { return false; }
+  }).length;
+
+  document.getElementById('completedFiles').textContent = data.filter(d => d.progress >= 100).length;
+}
+
+/* ================= SEARCH ================= */
+function searchDownloads(q) {
+  const term = (q || '').trim().toLowerCase();
+  if (!term) { renderDownloads(allDownloads); return; }
+  const filtered = allDownloads.filter(d =>
+    d.name.toLowerCase().includes(term) ||
+    d.category.toLowerCase().includes(term) ||
+    d.type.toLowerCase().includes(term)
+  );
+  renderDownloads(filtered);
+}
+
+document.getElementById('searchInput')?.addEventListener('input', (e) => searchDownloads(e.target.value));
+
+/* ================= FILTER / SORT ================= */
+document.getElementById('filterBtn')?.addEventListener('click', () => {
+  const term = prompt('Filter by type (pdf / video / doc / zip / other). Leave empty for all:');
+  if (term === null) return;
+  const t = term.trim().toLowerCase();
+  if (!t) { renderDownloads(allDownloads); return; }
+  const filtered = allDownloads.filter(d => d.type === t);
+  renderDownloads(filtered);
+  showNotification(filtered.length ? `Showing ${filtered.length} ${t.toUpperCase()} file(s)` : `No ${t.toUpperCase()} files`, filtered.length ? 'success' : 'error');
 });
 
-document.getElementById('selectAllBtn').addEventListener('click', function() {
-  const selectAllCheckbox = document.getElementById('selectAll');
-  selectAllCheckbox.checked = !selectAllCheckbox.checked;
-  selectAllCheckbox.dispatchEvent(new Event('change'));
+document.getElementById('sortBtn')?.addEventListener('click', () => {
+  const by = prompt('Sort by:\n• name\n• date\n• size\n• type', 'date');
+  if (!by) return;
+  const key = by.trim().toLowerCase();
+  let sorted = [...allDownloads];
+
+  if (key === 'name') sorted.sort((a, b) => a.name.localeCompare(b.name));
+  else if (key === 'date') sorted.sort((a, b) => new Date(b.date) - new Date(a.date));
+  else if (key === 'size') sorted.sort((a, b) => {
+    const av = parseFloat(String(a.size).replace(/[^\d.]/g, '')) || 0;
+    const bv = parseFloat(String(b.size).replace(/[^\d.]/g, '')) || 0;
+    return bv - av;
+  });
+  else if (key === 'type') sorted.sort((a, b) => a.type.localeCompare(b.type));
+  else { showNotification('Unknown sort option', 'error'); return; }
+
+  renderDownloads(sorted);
+  showNotification(`Sorted by ${key}`, 'success');
 });
 
-document.getElementById('downloadSelectedBtn').addEventListener('click', function() {
-  const selectedFiles = getSelectedFiles();
-  if (selectedFiles.length === 0) {
-    showNotification('Please select files to download', 'error');
-    return;
-  }
-  
-  this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading...';
-  this.disabled = true;
-  
+/* ================= ROW ACTIONS ================= */
+function findDownload(id) { return allDownloads.find(d => d.id === id); }
+
+function viewDownload(id) {
+  const d = findDownload(id);
+  if (!d) return;
+  showNotification(`Opening "${d.name}"… (Demo)`, 'success');
+}
+
+function downloadItem(id) {
+  const d = findDownload(id);
+  if (!d) return;
+  showNotification(`Downloading "${d.name}"…`, 'success');
+
   setTimeout(() => {
-    showNotification(`Downloading ${selectedFiles.length} files...`, 'success');
-    
-    // Simulate bulk download
-    selectedFiles.forEach((file, index) => {
-      setTimeout(() => {
-        downloadFile(file.id);
-      }, index * 500);
-    });
-    
-    setTimeout(() => {
-      this.innerHTML = '<i class="fas fa-download"></i> Download Selected';
-      this.disabled = false;
-    }, selectedFiles.length * 600);
-  }, 500);
-});
+    const placeholder = `Smart Classroom\nSimulated download: ${d.name}\nCategory: ${d.category}\nDate: ${d.date}\n`;
+    const blob = new Blob([placeholder], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = d.name.replace(/\.[^.]+$/, '') + '.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showNotification(`"${d.name}" download started`, 'success');
+  }, 600);
+}
 
-document.getElementById('deleteSelectedBtn').addEventListener('click', function() {
-  const selectedFiles = getSelectedFiles();
-  if (selectedFiles.length === 0) {
-    showNotification('Please select files to delete', 'error');
-    return;
-  }
-  
-  if (confirm(`Are you sure you want to delete ${selectedFiles.length} files?`)) {
-    selectedFiles.forEach(file => {
-      const index = downloadData.findIndex(f => f.id === file.id);
-      if (index !== -1) {
-        downloadData.splice(index, 1);
-      }
-    });
-    
-    renderDownloads();
-    showNotification(`Deleted ${selectedFiles.length} files`, 'success');
-  }
-});
+function deleteItem(id) {
+  const d = findDownload(id);
+  if (!d) return;
+  if (!confirm(`Delete "${d.name}" from your downloads?`)) return;
 
-function getSelectedFiles() {
-  const checkboxes = document.querySelectorAll('.file-checkbox:checked');
-  const selectedIds = Array.from(checkboxes).map(cb => parseInt(cb.getAttribute('data-id')));
-  return downloadData.filter(file => selectedIds.includes(file.id));
+  const raw = (typeof Database !== 'undefined' && typeof Database.getDownloads === 'function')
+    ? Database.getDownloads() || []
+    : JSON.parse(localStorage.getItem('downloads') || '[]');
+
+  const filtered = raw.filter(item => {
+    const n = normalizeDownload(item);
+    return n && n.id !== id;
+  });
+  localStorage.setItem('downloads', JSON.stringify(filtered));
+
+  allDownloads = allDownloads.filter(x => x.id !== id);
+  renderDownloads(allDownloads);
+  showNotification(`Deleted "${d.name}"`, 'success');
+}
+
+/* ================= CHECKBOX HANDLING ================= */
+function setupRowCheckboxes() {
+  document.querySelectorAll('.row-checkbox').forEach(cb => {
+    cb.addEventListener('change', updateSelectedCount);
+  });
+  const selectAll = document.getElementById('selectAll');
+  if (selectAll) selectAll.checked = false;
 }
 
 function updateSelectedCount() {
-  const count = document.querySelectorAll('.file-checkbox:checked').length;
-  document.getElementById('selectedCount').textContent = `${count} files selected`;
+  const count = document.querySelectorAll('.row-checkbox:checked').length;
+  document.getElementById('selectedCount').textContent = count;
 }
 
-// ================= SEARCH AND FILTER =================
-document.getElementById('searchInput').addEventListener('input', function(e) {
-  const searchTerm = e.target.value.toLowerCase();
-  
-  if (!searchTerm.trim()) {
-    renderDownloads();
-    return;
-  }
-  
-  const filtered = downloadData.filter(file => 
-    file.name.toLowerCase().includes(searchTerm) ||
-    file.category.toLowerCase().includes(searchTerm) ||
-    file.type.toLowerCase().includes(searchTerm)
-  );
-  
-  renderDownloads(filtered);
+document.getElementById('selectAll')?.addEventListener('change', function (e) {
+  document.querySelectorAll('.row-checkbox').forEach(cb => { cb.checked = e.target.checked; });
+  updateSelectedCount();
 });
 
-document.getElementById('filterBtn').addEventListener('click', function() {
-  const filterContent = `
-    <div style="text-align: left; padding: 20px;">
-      <h3 style="margin-bottom: 20px;">Filter Downloads</h3>
-      <div style="display: grid; gap: 15px;">
-        <div>
-          <label style="display: block; margin-bottom: 5px;">File Type</label>
-          <select id="filterType" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white;">
-            <option value="">All Types</option>
-            <option value="pdf">PDF</option>
-            <option value="video">Video</option>
-            <option value="doc">Document</option>
-            <option value="zip">Archive</option>
-          </select>
-        </div>
-        <div>
-          <label style="display: block; margin-bottom: 5px;">Category</label>
-          <select id="filterCategory" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white;">
-            <option value="">All Categories</option>
-            <option value="Programming">Programming</option>
-            <option value="Lectures">Lectures</option>
-            <option value="Assignments">Assignments</option>
-            <option value="Projects">Projects</option>
-          </select>
-        </div>
-        <div style="display: flex; gap: 10px; margin-top: 20px;">
-          <button onclick="applyFilters()" style="flex: 1; padding: 12px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none; border-radius: 8px; color: white; cursor: pointer;">
-            Apply Filters
-          </button>
-          <button onclick="closeModal()" style="flex: 1; padding: 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; cursor: pointer;">
-            Cancel
-          </button>
-        </div>
-      </div>
-    </div>
-  `;
-  
-  showModal('Filter Downloads', filterContent);
+document.getElementById('selectAllBtn')?.addEventListener('click', () => {
+  const sa = document.getElementById('selectAll');
+  if (!sa) return;
+  sa.checked = !sa.checked;
+  sa.dispatchEvent(new Event('change'));
 });
 
-document.getElementById('sortBtn').addEventListener('click', function() {
-  const sortContent = `
-    <div style="text-align: left; padding: 20px;">
-      <h3 style="margin-bottom: 20px;">Sort Downloads</h3>
-      <div style="display: grid; gap: 10px;">
-        <label style="display: flex; align-items: center; gap: 10px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px; cursor: pointer;">
-          <input type="radio" name="sort" value="name" checked> Name (A-Z)
-        </label>
-        <label style="display: flex; align-items: center; gap: 10px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px; cursor: pointer;">
-          <input type="radio" name="sort" value="date"> Date (Newest)
-        </label>
-        <label style="display: flex; align-items: center; gap: 10px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px; cursor: pointer;">
-          <input type="radio" name="sort" value="size"> Size (Largest)
-        </label>
-        <label style="display: flex; align-items: center; gap: 10px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px; cursor: pointer;">
-          <input type="radio" name="sort" value="type"> File Type
-        </label>
-        <div style="display: flex; gap: 10px; margin-top: 20px;">
-          <button onclick="applySort()" style="flex: 1; padding: 12px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none; border-radius: 8px; color: white; cursor: pointer;">
-            Apply Sort
-          </button>
-          <button onclick="closeModal()" style="flex: 1; padding: 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; cursor: pointer;">
-            Cancel
-          </button>
-        </div>
-      </div>
-    </div>
-  `;
-  
-  showModal('Sort Downloads', sortContent);
+function getSelectedIds() {
+  return Array.from(document.querySelectorAll('.row-checkbox:checked')).map(cb => cb.getAttribute('data-id'));
+}
+
+document.getElementById('downloadSelectedBtn')?.addEventListener('click', () => {
+  const ids = getSelectedIds();
+  if (!ids.length) { showNotification('Select at least one file', 'error'); return; }
+  ids.forEach((id, i) => setTimeout(() => downloadItem(id), i * 250));
+  showNotification(`Downloading ${ids.length} file(s)…`, 'success');
 });
 
-function applyFilters() {
-  const typeFilter = document.getElementById('filterType')?.value;
-  const categoryFilter = document.getElementById('filterCategory')?.value;
-  
-  const filtered = downloadData.filter(file => {
-    if (typeFilter && file.type !== typeFilter) return false;
-    if (categoryFilter && file.category !== categoryFilter) return false;
-    return true;
+document.getElementById('deleteSelectedBtn')?.addEventListener('click', () => {
+  const ids = getSelectedIds();
+  if (!ids.length) { showNotification('Select at least one file', 'error'); return; }
+  if (!confirm(`Delete ${ids.length} file(s)? This cannot be undone.`)) return;
+
+  const raw = (typeof Database !== 'undefined' && typeof Database.getDownloads === 'function')
+    ? Database.getDownloads() || []
+    : JSON.parse(localStorage.getItem('downloads') || '[]');
+
+  const filtered = raw.filter(item => {
+    const n = normalizeDownload(item);
+    return n && !ids.includes(n.id);
   });
-  
-  renderDownloads(filtered);
-  closeModal();
-  showNotification(`Applied filters: ${typeFilter || 'All'} files, ${categoryFilter || 'All categories'}`, 'success');
+  localStorage.setItem('downloads', JSON.stringify(filtered));
+
+  allDownloads = allDownloads.filter(x => !ids.includes(x.id));
+  renderDownloads(allDownloads);
+  showNotification(`Deleted ${ids.length} file(s)`, 'success');
+});
+
+/* ================= SCROLL REVEAL ================= */
+function setupScrollReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 }
 
-function applySort() {
-  const sortBy = document.querySelector('input[name="sort"]:checked')?.value;
-  
-  let sorted = [...downloadData];
-  
-  switch(sortBy) {
-    case 'name':
-      sorted.sort((a, b) => a.name.localeCompare(b.name));
-      break;
-    case 'date':
-      sorted.sort((a, b) => new Date(b.date) - new Date(a.date));
-      break;
-    case 'size':
-      sorted.sort((a, b) => parseFloat(b.size) - parseFloat(a.size));
-      break;
-    case 'type':
-      sorted.sort((a, b) => a.type.localeCompare(b.type));
-      break;
+/* ================= KEYBOARD SHORTCUTS ================= */
+document.addEventListener('keydown', (e) => {
+  if (e.ctrlKey && e.key === '/') {
+    e.preventDefault();
+    searchBar.classList.add('active');
+    setTimeout(() => mobileSearchInput?.focus(), 100);
   }
-  
-  renderDownloads(sorted);
-  closeModal();
-  showNotification(`Sorted by: ${sortBy}`, 'success');
-}
-
-// ================= QUICK ACTIONS =================
-document.getElementById('organizeDownloads').addEventListener('click', function() {
-  showNotification('Opening file organizer...', 'success');
-  setTimeout(() => {
-    showModal('File Organizer', `
-      <div style="text-align: center; padding: 30px;">
-        <i class="fas fa-folder-plus" style="font-size: 3rem; color: var(--secondary); margin-bottom: 20px;"></i>
-        <h3>Organize Your Downloads</h3>
-        <p style="margin: 20px 0; opacity: 0.8;">Create folders and organize your files</p>
-        <div style="display: grid; gap: 15px; max-width: 300px; margin: 0 auto;">
-          <input type="text" id="folderName" placeholder="Enter folder name" style="padding: 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white;">
-          <button onclick="createFolder()" style="padding: 12px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none; border-radius: 8px; color: white; cursor: pointer;">
-            Create Folder
-          </button>
-        </div>
-      </div>
-    `);
-  }, 500);
-});
-
-document.getElementById('cloudBackup').addEventListener('click', function() {
-  showNotification('Initiating cloud backup...', 'success');
-  setTimeout(() => {
-    showNotification('Backup completed! Files are safe in cloud storage.', 'success');
-  }, 1500);
-});
-
-document.getElementById('bulkDownload').addEventListener('click', function() {
-  showNotification('Preparing bulk download...', 'success');
-});
-
-document.getElementById('speedTest').addEventListener('click', function() {
-  const btn = this;
-  const originalHTML = btn.innerHTML;
-  
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testing...';
-  
-  setTimeout(() => {
-    const speed = Math.random() * 50 + 10; // Random speed between 10-60 Mbps
-    btn.innerHTML = originalHTML;
-    
-    showModal('Speed Test Results', `
-      <div style="text-align: center; padding: 30px;">
-        <i class="fas fa-tachometer-alt" style="font-size: 3rem; color: var(--success); margin-bottom: 20px;"></i>
-        <h3>Download Speed Test</h3>
-        <div style="font-size: 3rem; font-weight: 700; margin: 20px 0; color: var(--secondary);">
-          ${speed.toFixed(1)} Mbps
-        </div>
-        <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-top: 20px;">
-          <div style="text-align: left;">
-            <div><strong>Status:</strong> ${speed > 25 ? 'Excellent' : speed > 10 ? 'Good' : 'Poor'}</div>
-            <div><strong>Latency:</strong> ${(Math.random() * 30 + 10).toFixed(0)}ms</div>
-            <div><strong>Connection:</strong> Stable</div>
-          </div>
-        </div>
-      </div>
-    `);
-  }, 2000);
-});
-
-function createFolder() {
-  const folderName = document.getElementById('folderName').value;
-  if (!folderName.trim()) {
-    showNotification('Please enter a folder name', 'error');
-    return;
+  if (e.key === 'Escape') {
+    closeMenu();
+    searchBar.classList.remove('active');
   }
-  
-  showNotification(`Created folder: ${folderName}`, 'success');
-  closeModal();
-}
+});
 
-function addSampleFiles() {
-  const sampleFiles = [
-    {
-      id: downloadData.length + 1,
-      name: "Mathematics Formulas.pdf",
-      type: "pdf",
-      size: "1.8 MB",
-      date: new Date().toISOString().split('T')[0],
-      progress: 100,
-      category: "Mathematics"
-    },
-    {
-      id: downloadData.length + 2,
-      name: "Chemistry Lab Manual.zip",
-      type: "zip",
-      size: "12.3 MB",
-      date: new Date().toISOString().split('T')[0],
-      progress: 100,
-      category: "Chemistry"
+/* ================= INIT ================= */
+document.addEventListener('DOMContentLoaded', () => {
+  if (!requireLogin()) return;
+  setupScrollReveal();
+
+  setTimeout(() => {
+    allDownloads = loadDownloadsFromDB();
+    renderDownloads(allDownloads);
+  }, 0);
+
+  setTimeout(() => {
+    if (allDownloads.length === 0) {
+      showNotification('No downloads yet — visit the library to get started!', 'success');
     }
-  ];
-  
-  downloadData.push(...sampleFiles);
-  renderDownloads();
-  showNotification('Added sample files!', 'success');
-}
-
-// ================= MODAL SYSTEM =================
-let currentModal = null;
-
-function showModal(title, content) {
-  if (currentModal) closeModal();
-  
-  const modal = document.createElement('div');
-  modal.style.cssText = `
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.8);
-    backdrop-filter: blur(10px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10000;
-    animation: fadeIn 0.3s ease;
-  `;
-  
-  const modalInner = document.createElement('div');
-  modalInner.style.cssText = `
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 25px;
-    padding: 30px;
-    max-width: 500px;
-    width: 90%;
-    max-height: 80vh;
-    overflow-y: auto;
-    position: relative;
-    animation: slideUp 0.3s ease;
-  `;
-  
-  modalInner.innerHTML = content;
-  modal.appendChild(modalInner);
-  
-  // Close button
-  const closeBtn = document.createElement('button');
-  closeBtn.innerHTML = '<i class="fas fa-times"></i>';
-  closeBtn.style.cssText = `
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
-  `;
-  closeBtn.onclick = closeModal;
-  modalInner.appendChild(closeBtn);
-  
-  // Close on outside click
-  modal.onclick = (e) => {
-    if (e.target === modal) {
-      closeModal();
-    }
-  };
-  
-  document.body.appendChild(modal);
-  currentModal = modal;
-}
-
-function closeModal() {
-  if (currentModal) {
-    document.body.removeChild(currentModal);
-    currentModal = null;
-  }
-}
-
-// ================= INITIALIZATION =================
-document.addEventListener('DOMContentLoaded', function() {
-  createParticles();
-  renderDownloads();
-  
-  // Add event listeners for checkboxes
-  document.addEventListener('change', function(e) {
-    if (e.target.classList.contains('file-checkbox')) {
-      updateSelectedCount();
-    }
-  });
-  
-  console.log('Smart Downloads Manager initialized!');
+  }, 900);
 });
 </script>
+
 </body>
 </html>
