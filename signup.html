@@ -2,285 +2,670 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>📝 Signup | Smart Classroom</title>
+<title>Signup | Smart Classroom</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Fonts & Icons -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<link rel="shortcut icon" type="image/png" href="Smart classroom logo.png">
+
+<!-- Poppins (Rule 11 — full weights) -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<!-- Database -->
+<script src="database.js" defer></script>
 
 <style>
+/* ================= DESIGN SYSTEM (Rule 2) ================= */
 :root{
-  --primary:#8b5cf6;
-  --secondary:#ec4899;
+  --primary:#6366f1;
+  --secondary:#22d3ee;
+  --accent:#f472b6;
+  --success:#10b981;
+  --warning:#f59e0b;
+  --danger:#ef4444;
   --dark:#020617;
+  --light:#f8fafc;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family:'Poppins',sans-serif;
+  font-family:'Poppins', sans-serif;
 }
 
-/* ================= BACKGROUND ================= */
+html { scroll-behavior: smooth; }
+
+/* ================= BODY (Rule 2 + Rule 6 fix) ================= */
 body{
-  height:100vh;
+  min-height:100vh;
+  background:linear-gradient(180deg, #0a0a2a 0%, #020617 100%);
+  background-attachment: fixed;
+  color:white;
   display:flex;
   justify-content:center;
   align-items:center;
-  background:var(--dark);
-  overflow:hidden;
+  padding: 24px 20px;
+  overflow-x:hidden;
+  position:relative;
 }
 
-/* Aurora */
-.aurora{
-  position:absolute;
-  inset:-50%;
+/* Static radial glows (Rule 6 — no aurora, no rotation) */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
   background:
-    radial-gradient(circle at 20% 30%, rgba(139,92,246,.35), transparent 45%),
-    radial-gradient(circle at 80% 40%, rgba(236,72,153,.35), transparent 45%),
-    radial-gradient(circle at 50% 70%, rgba(167,139,250,.35), transparent 45%);
-  filter:blur(90px);
-  animation:aurora 22s linear infinite;
-}
-@keyframes aurora{
-  to{transform:rotate(360deg);}
+    radial-gradient(600px circle at 15% 20%, rgba(99,102,241,0.22), transparent 60%),
+    radial-gradient(500px circle at 85% 30%, rgba(34,211,238,0.16), transparent 60%),
+    radial-gradient(500px circle at 25% 85%, rgba(244,114,182,0.14), transparent 60%);
 }
 
-/* Particles */
-.particle{
-  position:absolute;
-  width:6px;
-  height:6px;
-  background:white;
-  border-radius:50%;
-  opacity:.12;
-  animation:float linear infinite;
-}
-@keyframes float{
-  from{transform:translateY(110vh);}
-  to{transform:translateY(-10vh);}
-}
-
-/* ================= CARD ================= */
+/* ================= WRAPPER ================= */
 .wrapper{
-  perspective:1200px;
-  z-index:2;
+  position: relative;
+  z-index: 2;
+  perspective: 1200px;
+  width: 100%;
+  max-width: 440px;
 }
 
+/* ================= SIGNUP CARD ================= */
 .signup-card{
-  width:440px;
-  padding:44px 36px;
-  border-radius:30px;
-  background:rgba(255,255,255,0.12);
-  backdrop-filter:blur(22px);
-  border:1px solid rgba(255,255,255,0.18);
+  width: 100%;
+  padding: 44px 36px;
+  border-radius: 28px;
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.12);
   box-shadow:
-    0 40px 120px rgba(0,0,0,0.7),
-    inset 0 0 40px rgba(139,92,246,0.25);
-  text-align:center;
-  color:white;
-  transform-style:preserve-3d;
-  animation:enter 1s cubic-bezier(.19,1,.22,1);
+    0 30px 100px rgba(0,0,0,0.6),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+  text-align: center;
+  color: white;
+  transform-style: preserve-3d;
+  animation: enter 0.9s var(--ease);
+  transition: transform 0.15s var(--ease);
+  will-change: transform;
 }
 
 @keyframes enter{
-  from{opacity:0; transform:translateY(60px) scale(.85);}
-  to{opacity:1; transform:translateY(0) scale(1);}
+  from{ opacity: 0; transform: translateY(40px) scale(0.96); }
+  to  { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+/* ================= HEADING ================= */
 .signup-card h2{
-  font-size:2.2rem;
-  margin-bottom:6px;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .signup-card p{
-  font-size:.95rem;
-  opacity:.85;
-  margin-bottom:28px;
+  font-size: 0.9rem;
+  opacity: 0.75;
+  margin-bottom: 26px;
 }
 
-/* ================= INPUTS ================= */
+/* ================= FIELDS ================= */
 .field{
-  position:relative;
-  margin-bottom:22px;
+  position: relative;
+  margin-bottom: 20px;
+  text-align: left;
 }
 
 .field input{
-  width:100%;
-  padding:14px 48px;
-  border-radius:16px;
-  border:1px solid rgba(255,255,255,.25);
-  background:transparent;
-  color:white;
-  font-size:1rem;
-  outline:none;
-  transition:.3s;
+  width: 100%;
+  padding: 14px 48px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.05);
+  color: white;
+  font-size: 0.95rem;
+  font-family: 'Poppins', sans-serif;
+  outline: none;
+  transition: all 0.3s var(--ease);
+  min-height: 48px;
 }
 
 .field input:focus{
-  border-color:var(--primary);
-  box-shadow:0 0 18px rgba(139,92,246,.6);
+  border-color: var(--secondary);
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 0 0 4px rgba(34,211,238,0.18);
 }
 
+/* Floating label */
 .field label{
-  position:absolute;
-  left:48px;
-  top:50%;
-  transform:translateY(-50%);
-  font-size:.85rem;
-  color:#c7d2fe;
-  pointer-events:none;
-  transition:.3s;
+  position: absolute;
+  left: 48px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.55);
+  pointer-events: none;
+  transition: all 0.25s var(--ease);
+  background: transparent;
+  padding: 0 6px;
 }
 
 .field input:focus + label,
+.field input:not(:placeholder-shown) + label,
 .field input:valid + label{
-  top:-8px;
-  background:var(--dark);
-  padding:0 6px;
-  font-size:.7rem;
+  top: 0;
+  left: 42px;
+  font-size: 0.72rem;
+  color: var(--secondary);
+  background: #0a0a2a;
+  transform: translateY(-50%);
 }
 
 .field i{
-  position:absolute;
-  top:50%;
-  left:16px;
-  transform:translateY(-50%);
-  color:#c7d2fe;
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  color: rgba(255,255,255,0.5);
+  font-size: 0.95rem;
+  transition: color 0.3s var(--ease);
+}
+
+.field input:focus ~ i{
+  color: var(--secondary);
 }
 
 .field .toggle{
-  right:16px;
-  left:auto;
-  cursor:pointer;
+  right: 16px;
+  left: auto;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: color 0.3s var(--ease), transform 0.3s var(--ease);
+}
+
+.field .toggle:hover{
+  color: var(--secondary);
+  transform: translateY(-50%) scale(1.1);
 }
 
 /* ================= BUTTON ================= */
 .signup-btn{
-  width:100%;
-  padding:15px;
-  border:none;
-  border-radius:18px;
-  background:linear-gradient(135deg,var(--primary),var(--secondary));
-  color:white;
-  font-size:1.1rem;
-  cursor:pointer;
-  position:relative;
-  overflow:hidden;
-  transition:.3s;
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s var(--ease);
+  min-height: 48px;
+  box-shadow: 0 8px 24px rgba(99,102,241,0.35);
+  margin-top: 4px;
 }
 
 .signup-btn:hover{
-  transform:translateY(-2px);
-  box-shadow:0 15px 35px rgba(0,0,0,.4);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(99,102,241,0.45);
+}
+
+.signup-btn:active{
+  transform: translateY(0) scale(0.98);
 }
 
 .signup-btn.loading{
-  background:#64748b;
-  pointer-events:none;
+  background: linear-gradient(135deg, #475569, #64748b);
+  pointer-events: none;
+  color: transparent;
 }
 
 .signup-btn.loading::after{
   content:"";
-  width:24px;
-  height:24px;
-  border:3px solid white;
-  border-top-color:transparent;
-  border-radius:50%;
-  position:absolute;
-  inset:0;
-  margin:auto;
-  animation:spin 1s linear infinite;
+  width: 22px;
+  height: 22px;
+  border: 3px solid rgba(255,255,255,0.4);
+  border-top-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin{
-  to{transform:rotate(360deg);}
+  to{ transform: translate(-50%, -50%) rotate(360deg); }
 }
 
 /* ================= LINKS ================= */
 .links{
-  margin-top:18px;
-  font-size:.9rem;
+  margin-top: 20px;
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.7);
 }
 
 .links a{
-  color:#ddd6fe;
-  text-decoration:none;
+  color: var(--secondary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s var(--ease);
 }
-.links a:hover{text-decoration:underline;}
+
+.links a:hover{
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+/* ================= NOTIFICATION (Rule 7 + Rule 9) ================= */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(2, 6, 23, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: white;
+  padding: 14px 20px;
+  border-radius: 14px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  gap: 12px;
+  animation: slideIn 0.35s var(--ease);
+  max-width: 360px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.notification.success { border-left: 4px solid var(--success); }
+.notification.success i { color: var(--success); }
+.notification.error { border-left: 4px solid var(--danger); }
+.notification.error i { color: var(--danger); }
+
+/* ================= RESPONSIVE (Rule 8) ================= */
+@media(max-width: 768px){
+  .signup-card{
+    padding: 32px 24px;
+    border-radius: 24px;
+  }
+
+  .signup-card h2{
+    font-size: 1.7rem;
+  }
+
+  .signup-card p{
+    font-size: 0.85rem;
+    margin-bottom: 22px;
+  }
+
+  .field input{
+    padding: 13px 42px;
+    font-size: 0.9rem;
+  }
+
+  .field label{
+    left: 42px;
+    font-size: 0.85rem;
+  }
+
+  .field input:focus + label,
+  .field input:not(:placeholder-shown) + label,
+  .field input:valid + label{
+    left: 36px;
+    font-size: 0.68rem;
+  }
+}
+
+@media(max-width: 480px){
+  body{
+    padding: 16px 12px;
+  }
+
+  .signup-card{
+    padding: 28px 20px;
+    border-radius: 22px;
+  }
+
+  .signup-card h2{
+    font-size: 1.5rem;
+  }
+
+  .field{
+    margin-bottom: 16px;
+  }
+
+  .field input{
+    padding: 12px 38px;
+    font-size: 0.88rem;
+  }
+
+  .field i{
+    left: 14px;
+    font-size: 0.88rem;
+  }
+
+  .field label{
+    left: 38px;
+    font-size: 0.82rem;
+  }
+
+  .field .toggle{
+    right: 14px;
+  }
+
+  .signup-btn{
+    font-size: 0.95rem;
+    padding: 13px;
+  }
+
+  .links{
+    font-size: 0.82rem;
+  }
+
+  /* Notification reposition (Rule 9) */
+  .notification {
+    top: 16px;
+    left: 16px;
+    right: 16px;
+    max-width: none;
+  }
+}
+
+@media(max-width: 360px){
+  .signup-card{
+    padding: 24px 16px;
+  }
+
+  .signup-card h2{
+    font-size: 1.35rem;
+  }
+
+  .signup-card p{
+    font-size: 0.78rem;
+  }
+
+  .field input{
+    font-size: 0.85rem;
+  }
+}
+
+/* Reduced motion (respects accessibility) */
+@media (prefers-reduced-motion: reduce){
+  *,
+  *::before,
+  *::after{
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 </style>
 </head>
 
 <body>
 
-<div class="aurora"></div>
+<!-- ================= NOTIFICATION ================= -->
+<div id="notification" class="notification"></div>
 
-<script>
-for(let i=0;i<40;i++){
-  const p=document.createElement("div");
-  p.className="particle";
-  p.style.left=Math.random()*100+"%";
-  p.style.animationDuration=6+Math.random()*10+"s";
-  document.body.appendChild(p);
-}
-</script>
-
+<!-- ================= SIGNUP CARD ================= -->
 <div class="wrapper">
   <div class="signup-card" id="card">
     <h2>Create Account</h2>
     <p>Join Smart Classroom and start learning</p>
 
-    <form id="signupForm">
+    <form id="signupForm" novalidate>
 
       <div class="field">
+        <input type="text" id="signupName" placeholder=" " required minlength="2" autocomplete="name">
+        <label for="signupName">Full Name</label>
         <i class="fas fa-user"></i>
-        <input type="text" required>
-        <label>Full Name</label>
       </div>
 
       <div class="field">
+        <input type="email" id="signupEmail" placeholder=" " required autocomplete="email">
+        <label for="signupEmail">Email Address</label>
         <i class="fas fa-envelope"></i>
-        <input type="email" required>
-        <label>Email Address</label>
       </div>
 
       <div class="field">
+        <input type="password" id="signupPassword" placeholder=" " required minlength="8" autocomplete="new-password">
+        <label for="signupPassword">Create Password</label>
         <i class="fas fa-lock"></i>
-        <input type="password" id="pass" required>
-        <label>Create Password</label>
-        <i class="fas fa-eye toggle" onclick="togglePass()"></i>
+        <i class="fas fa-eye toggle" id="toggleIcon" onclick="togglePass()" title="Show / hide password"></i>
       </div>
 
-      <button class="signup-btn">Sign Up</button>
+      <button type="submit" class="signup-btn" id="signupBtn">Sign Up</button>
     </form>
 
     <div class="links">
-      🔐 Already have an account?
+      Already have an account?
       <a href="login.html">Login here</a>
     </div>
   </div>
 </div>
 
 <script>
-/* 3D tilt like login page */
-const card=document.getElementById("card");
-document.addEventListener("mousemove",e=>{
-  const x=(innerWidth/2-e.clientX)/30;
-  const y=(innerHeight/2-e.clientY)/30;
-  card.style.transform=`rotateY(${x}deg) rotateX(${y}deg)`;
-});
-
-/* Password toggle */
-function togglePass(){
-  const p=document.getElementById("pass");
-  p.type=p.type==="password"?"text":"password";
+/* ================= NOTIFICATION (Rule 7 — shared timer) ================= */
+function showNotification(message, type = 'success') {
+  const n = document.getElementById('notification');
+  n.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i><span>${message}</span>`;
+  n.className = `notification ${type}`;
+  n.style.display = 'flex';
+  clearTimeout(window._t);
+  window._t = setTimeout(() => { n.style.display = 'none'; }, 3000);
 }
 
-/* Button loading */
-document.getElementById("signupForm").addEventListener("submit",()=>{
-  document.querySelector(".signup-btn").classList.add("loading");
+/* ================= AUTH CHECK (Rule 7 — all 3 keys) ================= */
+/* If a user is already logged in, don't show signup — redirect to home. */
+function checkAuth() {
+  const user = localStorage.getItem('user') || localStorage.getItem('loggedUser');
+  const token = localStorage.getItem('session_token');
+  if (user || token) {
+    window.location.href = 'index.html';
+  }
+}
+
+/* ================= PASSWORD TOGGLE ================= */
+function togglePass() {
+  const p = document.getElementById('signupPassword');
+  const icon = document.getElementById('toggleIcon');
+  if (p.type === 'password') {
+    p.type = 'text';
+    icon.classList.remove('fa-eye');
+    icon.classList.add('fa-eye-slash');
+  } else {
+    p.type = 'password';
+    icon.classList.remove('fa-eye-slash');
+    icon.classList.add('fa-eye');
+  }
+}
+
+/* ================= PRE-FILL REMEMBER_ME EMAIL ================= */
+/* If user previously logged in with remember_me, pre-fill email (Rule 7). */
+function prefillFromRememberMe() {
+  const remembered = localStorage.getItem('remember_me');
+  if (remembered) {
+    const emailInput = document.getElementById('signupEmail');
+    if (emailInput && !emailInput.value) {
+      emailInput.value = remembered;
+    }
+  }
+}
+
+/* ================= EMAIL VALIDATION ================= */
+function isValidEmail(email) {
+  // Simple but effective: requires text@text.text with no spaces
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+/* ================= SIGNUP SUBMIT (Rule 7 + uses Database.addUser) ================= */
+document.getElementById('signupForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  const name = document.getElementById('signupName').value.trim();
+  const email = document.getElementById('signupEmail').value.trim().toLowerCase();
+  const password = document.getElementById('signupPassword').value;
+  const btn = document.getElementById('signupBtn');
+
+  /* --- VALIDATION --- */
+  if (!name || name.length < 2) {
+    showNotification('Please enter your full name (min 2 characters)', 'error');
+    document.getElementById('signupName').focus();
+    return;
+  }
+
+  if (!email || !isValidEmail(email)) {
+    showNotification('Please enter a valid email address', 'error');
+    document.getElementById('signupEmail').focus();
+    return;
+  }
+
+  if (!password || password.length < 8) {
+    showNotification('Password must be at least 8 characters', 'error');
+    document.getElementById('signupPassword').focus();
+    return;
+  }
+
+  /* --- DATABASE CHECK --- */
+  if (typeof Database === 'undefined' || typeof Database.addUser !== 'function') {
+    showNotification('Database not loaded. Please refresh the page.', 'error');
+    console.error('Database.js not loaded or addUser() missing.');
+    return;
+  }
+
+  /* --- DUPLICATE EMAIL CHECK --- */
+  const existing = Database.getUserByEmail(email);
+  if (existing) {
+    showNotification('An account with this email already exists', 'error');
+    document.getElementById('signupEmail').focus();
+    return;
+  }
+
+  /* --- LOADING STATE --- */
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  try {
+    /* --- CREATE USER in Database ---
+       NOTE: Database.addUser() is SYNCHRONOUS (returns the user object directly).
+       It also does NOT hash passwords — this is fine for a local/demo project,
+       but if this goes online, replace with proper hashing (bcrypt / SHA-256 via crypto.subtle). */
+    const newUser = Database.addUser({
+      username: name.replace(/\s+/g, '').toLowerCase(),
+      email: email,
+      password: password,     // stored plaintext by database.js — see warning above
+      name: name,
+      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(name)}`,
+      phone: '',
+      education: '',
+      university: '',
+      location: '',
+      bio: ''
+    });
+
+    if (!newUser || !newUser.id) {
+      throw new Error('Failed to create user account');
+    }
+
+    /* --- SESSION --- 
+       Save all 3 auth keys (Rule 7) so every page recognizes the session:
+       - 'user'          → the main user object
+       - 'loggedUser'    → duplicate for compatibility
+       - 'session_token' → fake token for this local demo
+       NEVER auto-clear 'remember_me'. */
+    const userPayload = JSON.stringify(newUser);
+    localStorage.setItem('user', userPayload);
+    localStorage.setItem('loggedUser', userPayload);
+    localStorage.setItem('session_token', 'sess_' + Date.now() + '_' + Math.random().toString(36).slice(2, 10));
+
+    /* --- SUCCESS FEEDBACK --- */
+    showNotification('Account created! Redirecting...', 'success');
+
+    /* --- REDIRECT to index.html (Q2: B) --- */
+    setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 1000);
+
+  } catch (err) {
+    console.error('Signup error:', err);
+    btn.classList.remove('loading');
+    btn.disabled = false;
+    showNotification(err.message || 'Signup failed. Please try again.', 'error');
+  }
+});
+
+/* ================= 3D TILT (PC ONLY, throttled, respects reduced-motion) ================= */
+/* Rule 6: only run on PC (≥992px) and via requestAnimationFrame.
+   Applied to an inner wrapper so it doesn't fight the `enter` animation. */
+(function setupTilt() {
+  const card = document.getElementById('card');
+  if (!card) return;
+
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) return;
+
+  let rafId = null;
+  let targetX = 0;
+  let targetY = 0;
+  let currentX = 0;
+  let currentY = 0;
+
+  function animate() {
+    // Smooth lerp toward target
+    currentX += (targetX - currentX) * 0.12;
+    currentY += (targetY - currentY) * 0.12;
+    card.style.transform = `rotateY(${currentX}deg) rotateX(${currentY}deg)`;
+
+    if (Math.abs(targetX - currentX) > 0.01 || Math.abs(targetY - currentY) > 0.01) {
+      rafId = requestAnimationFrame(animate);
+    } else {
+      rafId = null;
+    }
+  }
+
+  document.addEventListener('mousemove', (e) => {
+    // Only on PC
+    if (window.innerWidth < 992) return;
+
+    targetX = (window.innerWidth / 2 - e.clientX) / 30;
+    targetY = (window.innerHeight / 2 - e.clientY) / 30;
+
+    if (rafId === null) rafId = requestAnimationFrame(animate);
+  });
+
+  // Reset tilt when mouse leaves the window
+  document.addEventListener('mouseleave', () => {
+    targetX = 0;
+    targetY = 0;
+    if (rafId === null) rafId = requestAnimationFrame(animate);
+  });
+})();
+
+/* ================= INIT ================= */
+document.addEventListener('DOMContentLoaded', () => {
+  checkAuth();
+  prefillFromRememberMe();
+  // Focus first input for better UX
+  setTimeout(() => document.getElementById('signupName')?.focus(), 300);
 });
 </script>
 
