@@ -3,28 +3,15 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="shortcut icon" href="US.png" type="image/png">
   <title>My Profile | Smart Classroom</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Database System -->
-  <script src="database.js"></script>
+  <script src="database.js" defer></script>
 
-  <!-- Favicon -->
-  <link rel="shortcut icon" type="website icon" href="Smart classroom logo.png">
-
-  <!-- Bootstrap -->
+  <link rel="shortcut icon" type="image/png" href="Smart classroom logo.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-  <!-- Chart.js for progress visualization -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -36,941 +23,770 @@
       --danger: #ef4444;
       --dark: #020617;
       --light: #f8fafc;
+      --ease: cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    html { scroll-behavior: smooth; }
 
     body {
       min-height: 100vh;
-      background: linear-gradient(135deg, #0a0a2a 0%, #020617 100%);
+      background: linear-gradient(180deg, #0a0a2a 0%, #020617 100%);
       color: white;
       overflow-x: hidden;
       position: relative;
     }
 
-    /* ================= ANIMATED BACKGROUND ================= */
+    /* ================= PARTICLES ================= */
     .particles-container {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       z-index: -1;
       pointer-events: none;
     }
-
     .particle {
       position: absolute;
       border-radius: 50%;
-      background: var(--primary);
-      opacity: 0.3;
-      animation: floatParticle 20s infinite linear;
+      opacity: 0.15;
+      animation: floatParticle 30s infinite linear;
     }
-
     @keyframes floatParticle {
-
-      0%,
-      100% {
-        transform: translate(0, 0) rotate(0deg);
-      }
-
-      25% {
-        transform: translate(100px, -150px) rotate(90deg);
-      }
-
-      50% {
-        transform: translate(-80px, 100px) rotate(180deg);
-      }
-
-      75% {
-        transform: translate(120px, 50px) rotate(270deg);
-      }
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(60px, -90px) rotate(90deg); }
+      50% { transform: translate(-40px, 60px) rotate(180deg); }
+      75% { transform: translate(80px, 30px) rotate(270deg); }
     }
 
     /* ================= NAVBAR ================= */
     .navbar-custom {
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(25px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       padding: 15px 0;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
+      position: relative;
+      z-index: 100;
     }
-
+    .navbar-custom .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: nowrap;
+      gap: 10px;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
     .navbar-brand {
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       font-weight: 700;
       color: white !important;
       display: flex;
       align-items: center;
       gap: 12px;
       text-decoration: none;
+      flex-shrink: 0;
     }
-
     .logo-circle {
-      width: 45px;
-      height: 45px;
+      width: 45px; height: 45px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--primary), var(--secondary));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; color: white;
+      flex-shrink: 0;
+      transition: transform 0.4s var(--ease);
     }
+    .navbar-brand:hover .logo-circle { transform: rotate(8deg) scale(1.03); }
 
+    .nav-links-desktop {
+      display: flex; align-items: center; gap: 4px; flex-wrap: wrap;
+    }
     .nav-link-custom {
-      color: rgba(255, 255, 255, 0.9) !important;
+      color: rgba(255, 255, 255, 0.85) !important;
       font-weight: 500;
-      padding: 10px 20px !important;
+      padding: 10px 18px !important;
       border-radius: 12px;
-      transition: all 0.3s ease;
+      transition: all 0.3s var(--ease);
       text-decoration: none;
+      white-space: nowrap;
+      font-size: 0.95rem;
     }
-
     .nav-link-custom:hover {
       color: white !important;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.12);
     }
-
     .nav-link-custom.active {
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       color: white !important;
     }
 
-    /* Profile Dropdown */
-    .profile-dropdown {
-      position: relative;
+    .header-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .mobile-controls { display: none; align-items: center; gap: 12px; }
+    .hamburger-btn {
+      background: none; border: none; color: white;
+      font-size: 1.6rem; cursor: pointer; padding: 4px 8px; line-height: 1;
+    }
+    .mobile-search-btn {
+      color: rgba(255,255,255,0.8);
+      font-size: 1.2rem; cursor: pointer; padding: 4px;
+    }
+    .mobile-search-bar {
+      display: none;
+      padding: 12px 20px;
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .mobile-search-bar form { display: flex; gap: 8px; max-width: 1400px; margin: 0 auto; }
+    .mobile-search-bar input {
+      flex: 1; padding: 12px 18px; border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
+      color: white; font-size: 0.95rem; outline: none;
+    }
+    .mobile-search-bar button {
+      padding: 12px 18px; border-radius: 30px; border: none;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white; cursor: pointer;
     }
 
+    /* ================= MOBILE MENU ================= */
+    .mobile-menu-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(10px);
+      z-index: 2000; display: none; opacity: 0;
+      transition: opacity 0.3s var(--ease);
+    }
+    .mobile-menu-overlay.open { display: block; opacity: 1; }
+    .mobile-menu-panel {
+      position: fixed; top: 0; left: 0; bottom: 0;
+      width: 300px; max-width: 85vw;
+      background: rgba(10,10,40,0.97);
+      backdrop-filter: blur(25px);
+      padding: 30px 24px;
+      transform: translateX(-100%);
+      transition: transform 0.35s var(--ease);
+      z-index: 2001; overflow-y: auto;
+      border-right: 1px solid rgba(255,255,255,0.05);
+    }
+    .mobile-menu-panel.open { transform: translateX(0); }
+    .mobile-menu-panel .close-menu {
+      background: none; border: none; color: white;
+      font-size: 1.5rem; cursor: pointer;
+      margin-bottom: 30px; opacity: 0.6;
+    }
+    .mobile-menu-panel a {
+      display: flex; align-items: center; gap: 12px;
+      color: rgba(255,255,255,0.8);
+      text-decoration: none; padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-weight: 500;
+    }
+    .mobile-menu-panel a.active { color: var(--secondary); }
+
+    /* ================= PROFILE DROPDOWN ================= */
+    .profile-dropdown { position: relative; }
     .profile-btn {
       background: rgba(255, 255, 255, 0.1);
       border: 1px solid rgba(255, 255, 255, 0.2);
       color: white;
-      padding: 8px 15px;
-      border-radius: 50px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-decoration: none;
+      padding: 8px 15px; border-radius: 50px;
+      display: flex; align-items: center; gap: 10px;
+      cursor: pointer; transition: all 0.3s var(--ease);
+      text-decoration: none; white-space: nowrap;
     }
-
-    .profile-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
+    .profile-btn:hover { background: rgba(255, 255, 255, 0.18); }
     .profile-img {
-      width: 35px;
-      height: 35px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--secondary);
+      width: 35px; height: 35px; border-radius: 50%;
+      object-fit: cover; border: 2px solid var(--secondary);
     }
-
+    .profile-btn span {
+      max-width: 100px; overflow: hidden;
+      text-overflow: ellipsis; white-space: nowrap;
+    }
     .profile-menu {
-      position: absolute;
-      top: 100%;
-      right: 0;
-      background: rgba(255, 255, 255, 0.1);
+      position: absolute; top: calc(100% + 10px); right: 0;
+      background: rgba(20, 20, 50, 0.97);
       backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 15px;
-      padding: 10px;
-      min-width: 200px;
-      display: none;
-      margin-top: 10px;
-      z-index: 1000;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 15px; padding: 10px;
+      min-width: 220px; display: none;
+      z-index: 1001;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.5);
     }
-
-    .profile-menu.active {
-      display: block;
-      animation: fadeIn 0.3s ease;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
+    .profile-menu.active { display: block; }
     .profile-menu a {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 12px 15px;
-      color: white;
-      text-decoration: none;
-      border-radius: 8px;
-      transition: all 0.3s ease;
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 15px; color: white;
+      text-decoration: none; border-radius: 8px;
+      font-size: 0.95rem;
+      transition: background 0.2s var(--ease);
     }
+    .profile-menu a:hover { background: rgba(255, 255, 255, 0.1); }
 
-    .profile-menu a:hover {
-      background: rgba(255, 255, 255, 0.1);
+    /* ================= NOTIFICATION ================= */
+    .notification {
+      position: fixed; top: 20px; right: 20px;
+      background: rgba(255, 255, 255, 0.97);
+      color: #333; padding: 15px 25px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      z-index: 10001; display: none;
+      align-items: center; gap: 10px;
+      max-width: 90vw; font-size: 0.95rem;
     }
+    .notification.success { border-left: 5px solid var(--success); }
+    .notification.error { border-left: 5px solid var(--danger); }
 
-    /* ================= PROFILE HEADER ================= */
+    /* ================= PROFILE HEADER — COMPACT ================= */
     .profile-header {
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.06);
       backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 30px;
-      padding: 40px;
-      margin: 40px auto;
-      max-width: 1200px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 20px 24px;
+      margin: 16px auto 10px;
+      max-width: 1100px;
       position: relative;
       overflow: hidden;
     }
-
     .profile-header::before {
       content: '';
       position: absolute;
-      top: -50%;
-      right: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
-      animation: rotate 20s linear infinite;
+      inset: 0;
+      background: radial-gradient(circle at 85% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 55%);
+      pointer-events: none;
+      z-index: 0;
     }
-
-    @keyframes rotate {
-      from {
-        transform: rotate(0deg);
-      }
-
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    .profile-cover {
-      position: relative;
-      z-index: 1;
-    }
+    .profile-cover { position: relative; z-index: 1; }
 
     .profile-avatar {
-      width: 150px;
-      height: 150px;
+      width: 80px; height: 80px;
       border-radius: 50%;
-      border: 5px solid var(--secondary);
+      border: 3px solid var(--secondary);
       overflow: hidden;
-      margin-bottom: 20px;
+      margin-bottom: 6px;
       position: relative;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: border-color 0.3s var(--ease);
     }
-
-    .profile-avatar:hover {
-      transform: scale(1.05);
-      border-color: var(--primary);
-    }
-
-    .profile-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
+    .profile-avatar:hover { border-color: var(--primary); }
+    .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
     .avatar-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      position: absolute; inset: 0;
       background: rgba(0, 0, 0, 0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transition: opacity 0.3s ease;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.3s var(--ease);
+      font-size: 1.1rem;
     }
+    .profile-avatar:hover .avatar-overlay { opacity: 1; }
 
-    .profile-avatar:hover .avatar-overlay {
-      opacity: 1;
-    }
-
-    /* ================= PROFILE STATS ================= */
+    /* Stats — smaller, tighter */
     .profile-stats {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 20px;
-      margin-top: 30px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+      max-width: 500px;
     }
-
     .stat-item {
       background: rgba(255, 255, 255, 0.05);
-      border-radius: 20px;
-      padding: 20px;
+      border-radius: 12px; padding: 8px 6px;
       text-align: center;
-      transition: all 0.3s ease;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.3s var(--ease);
     }
-
     .stat-item:hover {
-      background: rgba(255, 255, 255, 0.08);
-      transform: translateY(-5px);
-      border-color: var(--secondary);
+      background: rgba(255, 255, 255, 0.09);
+      transform: translateY(-2px);
+      border-color: rgba(34, 211, 238, 0.3);
     }
-
     .stat-value {
-      font-size: 2.5rem;
-      font-weight: 700;
+      font-size: 1.2rem; font-weight: 700;
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
+      line-height: 1.2;
     }
-
     .stat-label {
-      color: rgba(255, 255, 255, 0.7);
-      font-size: 0.9rem;
-      margin-top: 5px;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.65rem; margin-top: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
     }
 
-    /* ================= PROFILE TABS ================= */
+    /* ================= TABS — COMPACT ================= */
     .profile-tabs {
       display: flex;
-      gap: 10px;
-      margin: 30px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding-bottom: 15px;
+      gap: 6px;
+      margin: 12px auto 14px;
+      justify-content: center;
       flex-wrap: wrap;
+      max-width: 600px;
+      padding: 0 16px;
     }
-
     .profile-tab {
-      padding: 12px 25px;
-      background: transparent;
-      border: none;
-      color: rgba(255, 255, 255, 0.7);
-      border-radius: 12px;
+      padding: 7px 16px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.75);
+      border-radius: 9px;
       cursor: pointer;
-      transition: all 0.3s ease;
-      font-size: 1rem;
+      font-size: 0.82rem;
       font-weight: 500;
+      white-space: nowrap;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s var(--ease);
     }
-
+    .profile-tab i { font-size: 0.8rem; opacity: 0.9; }
     .profile-tab:hover {
       background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(34, 211, 238, 0.4);
       color: white;
     }
-
     .profile-tab.active {
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       color: white;
+      border-color: transparent;
+      box-shadow: 0 3px 12px rgba(99, 102, 241, 0.35);
     }
 
-    /* ================= TAB CONTENT ================= */
     .tab-content {
       display: none;
-      animation: fadeIn 0.5s ease;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 16px 20px;
     }
+    .tab-content.active { display: block; }
 
-    .tab-content.active {
-      display: block;
-    }
-
-    /* ================= SKILLS SECTION ================= */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 25px;
-      margin-top: 20px;
-    }
-
-    .skill-card {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 20px;
-      padding: 25px;
-      border-left: 4px solid var(--primary);
-      transition: all 0.3s ease;
-    }
-
-    .skill-card:hover {
-      transform: translateX(10px);
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    .skill-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-    }
-
-    .skill-name {
-      font-size: 1.2rem;
-      font-weight: 600;
-    }
-
-    .skill-percentage {
-      color: var(--secondary);
-      font-weight: 600;
-    }
-
-    .skill-progress {
-      height: 8px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 4px;
-      overflow: hidden;
-      margin: 10px 0;
-    }
-
-    .skill-progress-bar {
-      height: 100%;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      border-radius: 4px;
-      transition: width 1s ease;
-    }
-
-    /* ================= ACTIVITY TIMELINE ================= */
-    .timeline {
-      position: relative;
-      padding-left: 30px;
-      margin-top: 20px;
-    }
-
+    /* ================= TIMELINE ================= */
+    .timeline { position: relative; padding-left: 22px; margin-top: 10px; }
     .timeline::before {
-      content: '';
-      position: absolute;
-      left: 10px;
-      top: 0;
-      bottom: 0;
-      width: 2px;
-      background: var(--secondary);
+      content: ''; position: absolute;
+      left: 6px; top: 0; bottom: 0;
+      width: 2px; background: var(--secondary);
     }
-
-    .timeline-item {
-      position: relative;
-      margin-bottom: 30px;
-      padding-left: 30px;
-    }
-
+    .timeline-item { position: relative; margin-bottom: 14px; padding-left: 22px; }
     .timeline-item::before {
-      content: '';
-      position: absolute;
-      left: -5px;
-      top: 5px;
-      width: 12px;
-      height: 12px;
+      content: ''; position: absolute;
+      left: -5px; top: 4px;
+      width: 9px; height: 9px;
       border-radius: 50%;
       background: var(--primary);
       border: 2px solid var(--secondary);
     }
+    .timeline-date { color: var(--secondary); font-size: 0.72rem; margin-bottom: 2px; }
+    .timeline-title { font-size: 0.88rem; margin-bottom: 2px; }
+    .timeline-description { color: rgba(255, 255, 255, 0.65); font-size: 0.78rem; }
 
-    .timeline-date {
-      color: var(--secondary);
-      font-size: 0.9rem;
-      margin-bottom: 5px;
-    }
-
-    .timeline-title {
-      font-size: 1.1rem;
-      margin-bottom: 5px;
-    }
-
-    .timeline-description {
-      color: rgba(255, 255, 255, 0.7);
-      font-size: 0.95rem;
-    }
-
-    /* ================= DOWNLOADS GRID ================= */
+    /* ================= DOWNLOADS ================= */
     .downloads-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
-      margin-top: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 10px; margin-top: 10px;
     }
-
     .download-item {
       background: rgba(255, 255, 255, 0.05);
-      border-radius: 15px;
-      padding: 20px;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      transition: all 0.3s ease;
+      border-radius: 12px; padding: 12px;
+      display: flex; align-items: center; gap: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: transform 0.3s var(--ease), border-color 0.3s var(--ease);
     }
-
     .download-item:hover {
-      background: rgba(255, 255, 255, 0.08);
-      transform: translateY(-5px);
+      transform: translateY(-2px);
+      border-color: rgba(34, 211, 238, 0.35);
     }
-
     .download-icon {
-      width: 50px;
-      height: 50px;
+      width: 36px; height: 36px;
       background: linear-gradient(135deg, var(--primary), var(--secondary));
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.95rem; flex-shrink: 0;
     }
-
-    .download-info {
-      flex: 1;
-    }
-
+    .download-info { flex: 1; min-width: 0; }
     .download-name {
-      font-weight: 500;
-      margin-bottom: 5px;
+      font-weight: 500; margin-bottom: 2px; font-size: 0.85rem;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
+    .download-meta { font-size: 0.7rem; color: rgba(255, 255, 255, 0.55); }
 
-    .download-meta {
-      font-size: 0.85rem;
-      color: rgba(255, 255, 255, 0.6);
-    }
-
-    /* ================= ACHIEVEMENTS GRID ================= */
-    .achievements-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 20px;
-      margin-top: 20px;
-    }
-
-    .achievement-card {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 20px;
-      padding: 25px;
-      text-align: center;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .achievement-card:hover {
-      transform: translateY(-10px);
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    .achievement-icon {
-      width: 70px;
-      height: 70px;
-      background: linear-gradient(135deg, var(--warning), var(--accent));
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      margin: 0 auto 20px;
-      color: white;
-    }
-
-    .achievement-name {
-      font-size: 1.2rem;
-      margin-bottom: 10px;
-    }
-
-    .achievement-date {
-      color: var(--secondary);
-      font-size: 0.9rem;
-    }
-
-    /* ================= SETTINGS FORM ================= */
-    .settings-form {
-      max-width: 600px;
-      margin-top: 20px;
-    }
-
-    .form-group {
-      margin-bottom: 25px;
-    }
-
+    /* ================= FORM ================= */
+    .form-group { margin-bottom: 10px; }
     .form-label {
-      display: block;
-      margin-bottom: 8px;
-      color: rgba(255, 255, 255, 0.9);
+      display: block; margin-bottom: 4px;
+      color: rgba(255, 255, 255, 0.8); font-size: 0.78rem;
+      font-weight: 500;
     }
-
     .form-input {
-      width: 100%;
-      padding: 15px;
-      background: rgba(255, 255, 255, 0.08);
+      width: 100%; padding: 8px 11px;
+      background: rgba(255, 255, 255, 0.06);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      color: white;
-      font-size: 1rem;
-      transition: all 0.3s ease;
+      border-radius: 8px; color: white;
+      font-size: 0.82rem; font-family: inherit;
+      transition: border-color 0.3s var(--ease);
     }
-
     .form-input:focus {
-      outline: none;
-      border-color: var(--secondary);
-      background: rgba(255, 255, 255, 0.12);
+      outline: none; border-color: var(--secondary);
+      background: rgba(255, 255, 255, 0.09);
     }
-
-    .form-input::placeholder {
-      color: rgba(255, 255, 255, 0.4);
-    }
+    .form-input::placeholder { color: rgba(255, 255, 255, 0.35); }
 
     .toggle-switch {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 15px;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 12px;
-      margin-bottom: 15px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 7px 11px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 8px; margin-bottom: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
     }
-
-    .toggle-label {
-      font-weight: 500;
-    }
-
+    .toggle-label { font-weight: 500; font-size: 0.78rem; }
     .toggle {
-      width: 60px;
-      height: 30px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 15px;
-      position: relative;
-      cursor: pointer;
-      transition: all 0.3s ease;
+      width: 36px; height: 20px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 10px; position: relative;
+      cursor: pointer; transition: background 0.3s var(--ease);
+      flex-shrink: 0;
     }
-
     .toggle.active {
       background: linear-gradient(135deg, var(--primary), var(--secondary));
     }
-
     .toggle::after {
-      content: '';
-      position: absolute;
-      width: 26px;
-      height: 26px;
-      background: white;
-      border-radius: 50%;
-      top: 2px;
-      left: 2px;
-      transition: all 0.3s ease;
+      content: ''; position: absolute;
+      width: 16px; height: 16px;
+      background: white; border-radius: 50%;
+      top: 2px; left: 2px;
+      transition: left 0.3s var(--ease);
     }
+    .toggle.active::after { left: 18px; }
 
-    .toggle.active::after {
-      left: 32px;
-    }
-
-    /* ================= PROGRESS CHARTS ================= */
+    /* ================= CHART ================= */
     .chart-container {
       background: rgba(255, 255, 255, 0.05);
-      border-radius: 20px;
-      padding: 25px;
-      margin-top: 20px;
+      border-radius: 14px; padding: 14px;
+      margin-top: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
-
-    /* ================= BUTTONS ================= */
-    .btn-primary {
-      padding: 12px 30px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      border: none;
-      border-radius: 12px;
-      color: white;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: inline-flex;
+    .chart-container h4 {
+      margin-bottom: 10px; font-size: 0.92rem;
+      color: rgba(255, 255, 255, 0.95);
+      display: flex;
       align-items: center;
-      gap: 10px;
-      text-decoration: none;
+      gap: 7px;
     }
+    .chart-container h4 i {
+      color: var(--secondary);
+      font-size: 0.85rem;
+    }
+    .chart-wrap {
+      position: relative;
+      width: 100%;
+      height: 180px;
+    }
+    .chart-wrap canvas { max-width: 100%; }
 
-    .btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
-      color: white;
+    /* ================= BUTTONS — SMALL ================= */
+    .btn-primary {
+      padding: 6px 13px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border: none; border-radius: 7px; color: white;
+      font-weight: 500; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 5px;
+      font-family: inherit; font-size: 0.75rem;
+      transition: opacity 0.25s var(--ease);
     }
+    .btn-primary:hover { opacity: 0.9; color: white; }
 
     .btn-secondary {
-      padding: 12px 30px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 12px;
-      color: white;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
+      padding: 6px 13px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 7px; color: white;
+      font-weight: 500; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 5px;
+      font-family: inherit; font-size: 0.75rem;
+      transition: background 0.25s var(--ease);
+    }
+    .btn-secondary:hover { background: rgba(255, 255, 255, 0.13); color: white; }
+
+    .btn-secondary i,
+    .btn-primary i { font-size: 0.72rem; }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      color: #fecaca;
+    }
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.22);
+      border-color: rgba(239, 68, 68, 0.55);
     }
 
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: translateY(-3px);
-      color: white;
-    }
-
-    /* ================= NOTIFICATION ================= */
-    .notification {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: rgba(255, 255, 255, 0.95);
-      color: #333;
-      padding: 15px 25px;
-      border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      z-index: 10000;
+    /* ================= MOBILE BOTTOM NAV ================= */
+    .mobile-bottom-nav {
       display: none;
-      align-items: center;
-      gap: 10px;
-      backdrop-filter: blur(10px);
-      animation: slideIn 0.3s ease;
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: rgba(2, 6, 23, 0.95);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 10px 0 env(safe-area-inset-bottom, 10px);
+      z-index: 1100;
+      justify-content: space-around; align-items: center;
     }
-
-    @keyframes slideIn {
-      from {
-        transform: translateX(100%);
-        opacity: 0;
-      }
-
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
+    .mobile-bottom-nav a {
+      color: rgba(255, 255, 255, 0.55);
+      text-decoration: none; font-size: 0.7rem;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 2px;
+      padding: 6px 12px; border-radius: 40px;
     }
-
-    .notification.success {
-      border-left: 5px solid var(--success);
-    }
-
-    .notification.error {
-      border-left: 5px solid var(--danger);
-    }
-
-    /* ================= FOOTER ================= */
-    footer {
-      background: rgba(0, 0, 0, 0.3);
-      padding: 60px 20px 30px;
-      margin-top: 80px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .footer-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 40px;
-    }
-
-    .footer-brand h3 {
-      font-size: 1.8rem;
-      margin-bottom: 15px;
-    }
-
-    .footer-links h4 {
-      color: var(--secondary);
-      margin-bottom: 20px;
-      font-size: 1.2rem;
-    }
-
-    .footer-links a {
-      display: block;
-      color: rgba(255, 255, 255, 0.7);
-      text-decoration: none;
-      margin-bottom: 12px;
-      transition: all 0.3s ease;
-    }
-
-    .footer-links a:hover {
-      color: var(--secondary);
-      transform: translateX(5px);
-    }
-
-    .footer-bottom {
-      text-align: center;
-      padding-top: 40px;
-      margin-top: 60px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      color: rgba(255, 255, 255, 0.5);
-    }
+    .mobile-bottom-nav a i { font-size: 1.3rem; }
+    .mobile-bottom-nav a.active { color: var(--secondary); }
+    .mobile-bottom-nav a span { font-weight: 500; }
 
     /* ================= RESPONSIVE ================= */
+    @media (max-width: 991px) {
+      body { padding-bottom: 80px; }
+      .nav-links-desktop { display: none !important; }
+      .mobile-controls { display: flex !important; }
+      .mobile-bottom-nav { display: flex !important; }
+
+      .navbar-brand span { font-size: 1.15rem; }
+      .logo-circle { width: 38px; height: 38px; font-size: 1.2rem; }
+      .profile-btn { padding: 6px 10px; gap: 6px; }
+      .profile-btn span { max-width: 70px; font-size: 0.85rem; }
+      .profile-img { width: 30px; height: 30px; }
+    }
+
     @media (max-width: 768px) {
       .profile-header {
-        padding: 30px 20px;
+        padding: 16px 14px;
+        margin: 12px 10px 8px;
+        border-radius: 18px;
       }
-
       .profile-avatar {
-        width: 120px;
-        height: 120px;
+        width: 70px; height: 70px;
+        margin: 0 auto 4px;
       }
-
       .profile-stats {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+        margin-top: 10px;
+        max-width: 100%;
       }
+      .stat-item { padding: 6px 4px; border-radius: 10px; }
+      .stat-value { font-size: 1rem; }
+      .stat-label { font-size: 0.55rem; }
 
       .profile-tabs {
-        justify-content: center;
+        gap: 5px;
+        padding: 0 10px;
+        margin: 10px auto 12px;
       }
-
       .profile-tab {
-        padding: 8px 15px;
-        font-size: 0.9rem;
+        padding: 6px 12px;
+        font-size: 0.75rem;
+        gap: 4px;
       }
+      .profile-tab i { font-size: 0.7rem; }
 
-      .skills-grid {
-        grid-template-columns: 1fr;
-      }
+      .tab-content { padding: 0 10px 16px; }
+      .downloads-grid { grid-template-columns: 1fr; }
+
+      .chart-container { padding: 12px; }
+      .chart-container h4 { font-size: 0.85rem; }
+      .chart-wrap { height: 160px; }
+
+      .notification { left: 16px; right: 16px; top: 16px; max-width: none; }
     }
 
     @media (max-width: 480px) {
-      .profile-stats {
-        grid-template-columns: 1fr;
-      }
+      .navbar-custom { padding: 10px 0; }
+      .navbar-brand { gap: 8px; font-size: 1.3rem; }
+      .navbar-brand span { font-size: 0.95rem; }
+      .logo-circle { width: 32px; height: 32px; font-size: 1rem; }
+      .profile-btn span { display: none; }
+      .profile-btn { padding: 6px; border-radius: 50%; }
+      .profile-btn i.fa-chevron-down { display: none; }
+      .mobile-controls { gap: 6px; }
+      .hamburger-btn { font-size: 1.3rem; }
+      .mobile-search-btn { font-size: 1rem; }
 
-      .stat-value {
-        font-size: 2rem;
-      }
+      .profile-header { padding: 12px 10px; margin: 10px 6px 6px; }
+      .profile-avatar { width: 60px; height: 60px; border-width: 2px; }
+      .profile-stats { gap: 4px; margin-top: 8px; }
+      .stat-item { padding: 5px 3px; border-radius: 8px; }
+      .stat-value { font-size: 0.85rem; }
+      .stat-label { font-size: 0.5rem; }
 
-      .downloads-grid {
-        grid-template-columns: 1fr;
+      .profile-tabs {
+        flex-direction: row;
+        align-items: center;
+        gap: 4px;
+        padding: 0 6px;
+        margin: 8px auto 10px;
       }
+      .profile-tab {
+        flex: 1;
+        justify-content: center;
+        padding: 6px 8px;
+        font-size: 0.68rem;
+        gap: 3px;
+      }
+      .profile-tab i { font-size: 0.65rem; }
 
-      .achievements-grid {
-        grid-template-columns: 1fr;
-      }
+      .mobile-bottom-nav a { font-size: 0.6rem; padding: 4px 8px; }
+      .mobile-bottom-nav a i { font-size: 1.15rem; }
+    }
+
+    @media (max-width: 360px) {
+      .navbar-brand span { display: none; }
+      .profile-tab { padding: 5px 6px; font-size: 0.62rem; }
+      .profile-tab span { display: none; }
+      .profile-tab i { font-size: 0.85rem; }
+    }
+
+    /* Compact edit profile row */
+    .profile-edit-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .profile-info-text {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.65);
+      margin: 0;
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Particles Background -->
   <div class="particles-container" id="particlesContainer"></div>
-
-  <!-- Notification -->
   <div id="notification" class="notification"></div>
 
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-custom">
+  <!-- NAVBAR -->
+  <nav class="navbar-custom">
     <div class="container">
       <a class="navbar-brand" href="index.html">
-        <div class="logo-circle">
-          <i class="fas fa-graduation-cap"></i>
-        </div>
+        <div class="logo-circle"><i class="fas fa-graduation-cap"></i></div>
         <span>Smart Classroom</span>
       </a>
 
-      <div class="navbar-nav ms-auto">
-        <a class="nav-link nav-link-custom" href="index.html">
-          <i class="fas fa-home"></i> Home
-        </a>
-        <a class="nav-link nav-link-custom active" href="profile.html">
-          <i class="fas fa-user"></i> Profile
-        </a>
-        <a class="nav-link nav-link-custom" href="experience.html">
-          <i class="fas fa-briefcase"></i> Experience
-        </a>
-        <a class="nav-link nav-link-custom" href="library.html">
-          <i class="fas fa-book"></i> Library
-        </a>
-        <a class="nav-link nav-link-custom" href="downloads.html">
-          <i class="fas fa-download"></i> Downloads
-        </a>
-        <a class="nav-link nav-link-custom" href="contact.html">
-          <i class="fas fa-envelope"></i> Contact
-        </a>
+      <div class="nav-links-desktop">
+        <a class="nav-link nav-link-custom" href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a class="nav-link nav-link-custom active" href="profile.html"><i class="fas fa-user"></i> Profile</a>
+
+        <a class="nav-link nav-link-custom" href="library.html"><i class="fas fa-book"></i> Library</a>
+        <a class="nav-link nav-link-custom" href="lectures.html"><i class="fas fa-play-circle"></i> Lectures</a>
+        <a class="nav-link nav-link-custom" href="downloads.html"><i class="fas fa-download"></i> Downloads</a>
+        <a class="nav-link nav-link-custom" href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
       </div>
 
-      <!-- Profile Dropdown -->
-      <div class="profile-dropdown">
-        <div class="profile-btn" id="profileToggle">
-          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Ramesh" alt="Profile" class="profile-img">
-          <span id="userName">Guest</span>
-          <i class="fas fa-chevron-down"></i>
+      <div class="header-right">
+        <div class="mobile-controls">
+          <span class="mobile-search-btn" id="mobileSearchToggle" title="Search"><i class="fas fa-search"></i></span>
+          <button class="hamburger-btn" id="hamburgerBtn" title="Menu"><i class="fas fa-bars"></i></button>
         </div>
-        <div class="profile-menu" id="profileMenu">
-          <a href="profile.html">
-            <i class="fas fa-user"></i> My Profile
-          </a>
-          <a href="downloads.html">
-            <i class="fas fa-download"></i> My Downloads
-          </a>
-          <a href="library.html">
-            <i class="fas fa-book"></i> Library
-          </a>
-          <a href="experience.html">
-            <i class="fas fa-chart-line"></i> Progress
-          </a>
-          <hr style="border-color: rgba(255,255,255,0.1); margin: 10px 0;">
-          <a href="login.html" id="loginLink">
-            <i class="fas fa-sign-in-alt"></i> Login
-          </a>
-          <a href="signup.html" id="signupLink">
-            <i class="fas fa-user-plus"></i> Sign Up
-          </a>
-          <a href="#" id="logoutLink" style="display: none;">
-            <i class="fas fa-sign-out-alt"></i> Logout
-          </a>
+
+        <div class="profile-dropdown">
+          <div class="profile-btn" id="profileToggle">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Ramesh" alt="Profile" class="profile-img" id="navAvatar">
+            <span id="userName">Guest</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="profile-menu" id="profileMenu">
+            <a href="profile.html"><i class="fas fa-user"></i> My Profile</a>
+            <a href="downloads.html"><i class="fas fa-download"></i> My Downloads</a>
+            <a href="library.html"><i class="fas fa-book"></i> Library</a>
+            <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+            <hr style="border-color: rgba(255,255,255,0.1); margin: 10px 0;">
+            <a href="login.html" id="loginLink"><i class="fas fa-sign-in-alt"></i> Login</a>
+            <a href="signup.html" id="signupLink"><i class="fas fa-user-plus"></i> Sign Up</a>
+            <a href="#" id="logoutLink" style="display: none;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+          </div>
         </div>
       </div>
     </div>
   </nav>
 
-  <!-- Profile Header -->
+  <!-- Mobile Search Bar -->
+  <div class="mobile-search-bar" id="mobileSearchBar">
+    <form onsubmit="event.preventDefault(); performMobileSearch();">
+      <input type="text" placeholder="Search materials, lectures..." id="mobileSearchInput">
+      <button type="submit"><i class="fas fa-search"></i></button>
+    </form>
+  </div>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay">
+    <div class="mobile-menu-panel" id="mobileMenuPanel">
+      <button class="close-menu" id="closeMenuBtn"><i class="fas fa-times"></i></button>
+      <a href="index.html"><i class="fas fa-home"></i> Home</a>
+      <a href="profile.html" class="active"><i class="fas fa-user"></i> Profile</a>
+      
+      <a href="library.html"><i class="fas fa-book"></i> Library</a>
+      <a href="lectures.html"><i class="fas fa-play-circle"></i> Lectures</a>
+      <a href="downloads.html"><i class="fas fa-download"></i> Downloads</a>
+      <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+      <hr style="border-color: rgba(255,255,255,0.05); margin: 16px 0;">
+      <a href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+      <a href="signup.html"><i class="fas fa-user-plus"></i> Sign Up</a>
+    </div>
+  </div>
+
+  <!-- ===== PROFILE HEADER — COMPACT ===== -->
   <div class="container">
     <div class="profile-header">
       <div class="profile-cover">
-        <div class="row align-items-center">
-          <div class="col-md-3 text-center text-md-start">
+        <div class="row align-items-center g-2">
+          <div class="col-md-2 text-center text-md-start">
             <div class="profile-avatar" onclick="triggerAvatarUpload()">
               <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Ramesh" alt="Profile Avatar" id="avatarImg">
-              <div class="avatar-overlay">
-                <i class="fas fa-camera"></i>
-              </div>
+              <div class="avatar-overlay"><i class="fas fa-camera"></i></div>
             </div>
             <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
           </div>
 
-          <div class="col-md-9">
-            <div class="d-flex justify-content-between align-items-center flex-wrap">
+          <div class="col-md-10">
+            <div class="profile-edit-row">
               <div>
-                <h2 id="profileName">Ramesh Prasad</h2>
-                <p class="mb-2" style="color: var(--secondary);" id="profileRole">Computer Science Student</p>
-                <p style="color: rgba(255,255,255,0.7);">
-                  <i class="fas fa-map-marker-alt"></i> <span id="profileLocation">New Delhi, India</span> •
-                  <i class="fas fa-envelope"></i> <span id="profileEmail">ramesh@example.com</span> •
-                  <i class="fas fa-calendar"></i> Joined <span id="profileJoined">Jan 2024</span>
+                <h2 id="profileName" style="font-size: 1.2rem; margin: 0;">Guest User</h2>
+                <p class="mb-1" style="color: var(--secondary); font-size: 0.8rem; margin: 0;" id="profileRole">Student</p>
+                <p class="profile-info-text">
+                  <i class="fas fa-map-marker-alt"></i> <span id="profileLocation">India</span> •
+                  <i class="fas fa-envelope"></i> <span id="profileEmail">guest@example.com</span> •
+                  <i class="fas fa-calendar"></i> Joined <span id="profileJoined">Jan 2025</span>
                 </p>
               </div>
-              <div class="mt-3 mt-md-0">
-                <button class="btn-primary" onclick="editProfile()">
-                  <i class="fas fa-edit"></i> Edit Profile
+              <div>
+                <button class="btn-primary" onclick="editProfile()" style="padding: 5px 11px; font-size: 0.7rem;">
+                  <i class="fas fa-edit"></i> Edit
                 </button>
               </div>
             </div>
 
-            <!-- Quick Stats -->
+            <!-- Stats — compact -->
             <div class="profile-stats">
               <div class="stat-item">
-                <div class="stat-value" id="statCourses">42</div>
-                <div class="stat-label">Courses Enrolled</div>
+                <div class="stat-value" id="statCourses">0</div>
+                <div class="stat-label">Courses</div>
               </div>
               <div class="stat-item">
-                <div class="stat-value" id="statDownloads">156</div>
+                <div class="stat-value" id="statDownloads">0</div>
                 <div class="stat-label">Downloads</div>
               </div>
               <div class="stat-item">
-                <div class="stat-value" id="statHours">328</div>
-                <div class="stat-label">Hours Learned</div>
+                <div class="stat-value" id="statHours">0</div>
+                <div class="stat-label">Hours</div>
               </div>
               <div class="stat-item">
-                <div class="stat-value" id="statAchievements">15</div>
-                <div class="stat-label">Achievements</div>
+                <div class="stat-value" id="statAchievements">0</div>
+                <div class="stat-label">Awards</div>
               </div>
             </div>
           </div>
@@ -978,294 +794,104 @@
       </div>
     </div>
 
-    <!-- Profile Tabs -->
+    <!-- COMPACT TABS -->
     <div class="profile-tabs">
-      <button class="profile-tab active" data-tab="overview">Overview</button>
-      <button class="profile-tab" data-tab="skills">Skills & Progress</button>
-      <button class="profile-tab" data-tab="downloads">Downloads</button>
-      <button class="profile-tab" data-tab="achievements">Achievements</button>
-      <button class="profile-tab" data-tab="activity">Activity</button>
-      <button class="profile-tab" data-tab="settings">Settings</button>
-    </div>
-
-    <!-- Overview Tab -->
-    <div id="overview" class="tab-content active">
-      <div class="row">
-        <div class="col-lg-8">
-          <div class="chart-container">
-            <h4>Learning Progress Overview</h4>
-            <canvas id="progressChart" style="width:100%; max-height:300px;"></canvas>
-          </div>
-
-          <div class="chart-container mt-4">
-            <h4>Recent Activity</h4>
-            <div class="timeline">
-              <div class="timeline-item">
-                <div class="timeline-date">2 hours ago</div>
-                <div class="timeline-title">Completed C Programming Module 3</div>
-                <div class="timeline-description">Finished pointers and memory management section with 92% score</div>
-              </div>
-              <div class="timeline-item">
-                <div class="timeline-date">Yesterday</div>
-                <div class="timeline-title">Downloaded OS Lecture Notes</div>
-                <div class="timeline-description">Operating Systems - Unit 4: Memory Management (5 files)</div>
-              </div>
-              <div class="timeline-item">
-                <div class="timeline-date">3 days ago</div>
-                <div class="timeline-title">Earned Achievement: "Quick Learner"</div>
-                <div class="timeline-description">Completed 5 courses in one month</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-4">
-          <div class="chart-container">
-            <h4>Course Distribution</h4>
-            <canvas id="courseChart" style="width:100%; max-height:250px;"></canvas>
-          </div>
-
-          <div class="chart-container mt-4">
-            <h4>Upcoming Deadlines</h4>
-            <div style="margin-top: 20px;">
-              <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; margin-bottom: 10px;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                  <div>
-                    <strong>C Programming Assignment</strong>
-                    <div style="font-size: 0.9rem; color: var(--warning);">Due in 2 days</div>
-                  </div>
-                  <span style="background: var(--warning); padding: 5px 10px; border-radius: 20px; font-size: 0.8rem;">High</span>
-                </div>
-              </div>
-              <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; margin-bottom: 10px;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                  <div>
-                    <strong>OS Quiz</strong>
-                    <div style="font-size: 0.9rem; color: var(--secondary);">Due in 5 days</div>
-                  </div>
-                  <span style="background: var(--secondary); padding: 5px 10px; border-radius: 20px; font-size: 0.8rem;">Medium</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Skills Tab -->
-    <div id="skills" class="tab-content">
-      <div class="row">
-        <div class="col-md-6">
-          <div class="chart-container">
-            <h4>Skill Proficiency</h4>
-            <canvas id="skillsChart" style="width:100%; max-height:300px;"></canvas>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="chart-container">
-            <h4>Learning Hours</h4>
-            <canvas id="hoursChart" style="width:100%; max-height:300px;"></canvas>
-          </div>
-        </div>
-      </div>
-
-      <div class="skills-grid mt-4">
-        <div class="skill-card">
-          <div class="skill-header">
-            <span class="skill-name">C Programming</span>
-            <span class="skill-percentage">92%</span>
-          </div>
-          <div class="skill-progress">
-            <div class="skill-progress-bar" style="width: 92%;"></div>
-          </div>
-          <p style="color: rgba(255,255,255,0.7); margin-top: 10px;">Advanced level - Completed 4 modules</p>
-        </div>
-
-        <div class="skill-card">
-          <div class="skill-header">
-            <span class="skill-name">C++ Programming</span>
-            <span class="skill-percentage">88%</span>
-          </div>
-          <div class="skill-progress">
-            <div class="skill-progress-bar" style="width: 88%;"></div>
-          </div>
-          <p style="color: rgba(255,255,255,0.7); margin-top: 10px;">Object-Oriented Programming mastered</p>
-        </div>
-
-        <div class="skill-card">
-          <div class="skill-header">
-            <span class="skill-name">Operating Systems</span>
-            <span class="skill-percentage">85%</span>
-          </div>
-          <div class="skill-progress">
-            <div class="skill-progress-bar" style="width: 85%;"></div>
-          </div>
-          <p style="color: rgba(255,255,255,0.7); margin-top: 10px;">Process management and scheduling completed</p>
-        </div>
-
-        <div class="skill-card">
-          <div class="skill-header">
-            <span class="skill-name">Database Management</span>
-            <span class="skill-percentage">82%</span>
-          </div>
-          <div class="skill-progress">
-            <div class="skill-progress-bar" style="width: 82%;"></div>
-          </div>
-          <p style="color: rgba(255,255,255,0.7); margin-top: 10px;">SQL and normalization mastered</p>
-        </div>
-      </div>
+      <button class="profile-tab active" data-tab="downloads">
+        <i class="fas fa-download"></i> <span>Downloads</span>
+      </button>
+      <button class="profile-tab" data-tab="activity">
+        <i class="fas fa-chart-line"></i> <span>Activity</span>
+      </button>
+      <button class="profile-tab" data-tab="settings">
+        <i class="fas fa-cog"></i> <span>Settings</span>
+      </button>
     </div>
 
     <!-- Downloads Tab -->
-    <div id="downloads" class="tab-content">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4>My Downloads</h4>
-        <button class="btn-secondary" onclick="clearDownloads()">
+    <div id="downloads" class="tab-content active">
+      <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+        <h4 style="display: flex; align-items: center; gap: 6px; font-size: 0.95rem; margin: 0;">
+          <i class="fas fa-download" style="color: var(--secondary);"></i> My Downloads
+        </h4>
+        <button class="btn-secondary" onclick="clearDownloads()" style="padding: 4px 10px; font-size: 0.7rem;">
           <i class="fas fa-trash"></i> Clear All
         </button>
       </div>
-
-      <div class="downloads-grid" id="downloadsGrid">
-        <!-- Downloads will be loaded here dynamically -->
-      </div>
-    </div>
-
-    <!-- Achievements Tab -->
-    <div id="achievements" class="tab-content">
-      <div class="achievements-grid">
-        <div class="achievement-card">
-          <div class="achievement-icon">
-            <i class="fas fa-rocket"></i>
-          </div>
-          <h4 class="achievement-name">Quick Learner</h4>
-          <p class="achievement-date">Earned on Jan 15, 2025</p>
-          <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">Completed 5 courses in one month</p>
-        </div>
-
-        <div class="achievement-card">
-          <div class="achievement-icon">
-            <i class="fas fa-download"></i>
-          </div>
-          <h4 class="achievement-name">Download Master</h4>
-          <p class="achievement-date">Earned on Dec 10, 2024</p>
-          <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">Downloaded 100+ study materials</p>
-        </div>
-
-        <div class="achievement-card">
-          <div class="achievement-icon">
-            <i class="fas fa-code"></i>
-          </div>
-          <h4 class="achievement-name">C Programming Expert</h4>
-          <p class="achievement-date">Earned on Nov 20, 2024</p>
-          <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">Completed all C programming modules</p>
-        </div>
-
-        <div class="achievement-card">
-          <div class="achievement-icon">
-            <i class="fas fa-users"></i>
-          </div>
-          <h4 class="achievement-name">Community Helper</h4>
-          <p class="achievement-date">Earned on Oct 5, 2024</p>
-          <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">Helped 50+ students in forums</p>
-        </div>
-      </div>
+      <div class="downloads-grid" id="downloadsGrid"></div>
     </div>
 
     <!-- Activity Tab -->
     <div id="activity" class="tab-content">
       <div class="chart-container">
-        <h4>Weekly Activity</h4>
-        <canvas id="weeklyChart" style="width:100%; max-height:300px;"></canvas>
+        <h4><i class="fas fa-calendar-week"></i> Weekly Activity</h4>
+        <div class="chart-wrap"><canvas id="weeklyChart"></canvas></div>
       </div>
 
-      <div class="timeline mt-4">
-        <h4>Detailed Activity Log</h4>
-        <div class="timeline-item">
-          <div class="timeline-date">Today, 10:30 AM</div>
-          <div class="timeline-title">Watched: OS - Process Scheduling</div>
-          <div class="timeline-description">Completed video lecture on CPU scheduling algorithms</div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-date">Today, 8:15 AM</div>
-          <div class="timeline-title">Downloaded: C Programming Notes</div>
-          <div class="timeline-description">Unit 4 - Pointers and Arrays (4 files)</div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-date">Yesterday, 3:45 PM</div>
-          <div class="timeline-title">Completed Quiz: Database Normalization</div>
-          <div class="timeline-description">Scored 95% (19/20 correct)</div>
-        </div>
+      <div class="chart-container">
+        <h4><i class="fas fa-list"></i> Detailed Activity Log</h4>
+        <div class="timeline" id="activityLog"></div>
       </div>
     </div>
 
-    <!-- Settings Tab -->
+    <!-- Settings Tab — compact -->
     <div id="settings" class="tab-content">
-      <div class="row">
+      <div class="row g-2">
         <div class="col-md-6">
-          <div class="chart-container">
-            <h4>Profile Settings</h4>
-            <div class="settings-form">
-              <div class="form-group">
-                <label class="form-label">Full Name</label>
-                <input type="text" class="form-input" id="settingsName" value="Ramesh Prasad">
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">Email Address</label>
-                <input type="email" class="form-input" id="settingsEmail" value="ramesh@example.com">
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">Location</label>
-                <input type="text" class="form-input" id="settingsLocation" value="New Delhi, India">
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">Bio</label>
-                <textarea class="form-input" rows="4" id="settingsBio">Computer Science student passionate about programming and operating systems.</textarea>
-              </div>
+          <div class="chart-container" style="margin-top: 0;">
+            <h4><i class="fas fa-user-edit"></i> Profile Settings</h4>
+            <div class="form-group">
+              <label class="form-label">Full Name</label>
+              <input type="text" class="form-input" id="settingsName" placeholder="Your name">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <input type="email" class="form-input" id="settingsEmail" placeholder="your@email.com">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Location</label>
+              <input type="text" class="form-input" id="settingsLocation" placeholder="City, Country">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Bio</label>
+              <textarea class="form-input" rows="2" id="settingsBio" placeholder="Tell us about yourself"></textarea>
             </div>
           </div>
         </div>
 
         <div class="col-md-6">
-          <div class="chart-container">
-            <h4>Preferences</h4>
-
+          <div class="chart-container" style="margin-top: 0;">
+            <h4><i class="fas fa-sliders-h"></i> Preferences</h4>
             <div class="toggle-switch">
               <span class="toggle-label">Email Notifications</span>
-              <div class="toggle active" onclick="toggleSetting(this, 'emailNotifications')"></div>
+              <div class="toggle active" data-setting="emailNotifications"></div>
             </div>
-
             <div class="toggle-switch">
               <span class="toggle-label">Dark Mode</span>
-              <div class="toggle active" onclick="toggleSetting(this, 'darkMode')"></div>
+              <div class="toggle active" data-setting="darkMode"></div>
             </div>
-
             <div class="toggle-switch">
               <span class="toggle-label">Auto-download Updates</span>
-              <div class="toggle" onclick="toggleSetting(this, 'autoDownload')"></div>
+              <div class="toggle" data-setting="autoDownload"></div>
             </div>
-
             <div class="toggle-switch">
               <span class="toggle-label">Public Profile</span>
-              <div class="toggle active" onclick="toggleSetting(this, 'publicProfile')"></div>
+              <div class="toggle active" data-setting="publicProfile"></div>
             </div>
 
-            <div style="margin-top: 30px;">
-              <button class="btn-primary" onclick="saveSettings()">
-                <i class="fas fa-save"></i> Save Changes
+            <div style="margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap;">
+              <button class="btn-primary" onclick="saveSettings()" style="padding: 5px 12px; font-size: 0.7rem;">
+                <i class="fas fa-save"></i> Save
               </button>
-              <button class="btn-secondary ms-3" onclick="resetSettings()">
+              <button class="btn-secondary" onclick="resetSettings()" style="padding: 5px 12px; font-size: 0.7rem;">
                 <i class="fas fa-undo"></i> Reset
               </button>
             </div>
           </div>
 
-          <div class="chart-container mt-4">
-            <h4>Danger Zone</h4>
-            <p style="color: rgba(255,255,255,0.7); margin-bottom: 20px;">These actions are irreversible</p>
-            <button class="btn-secondary" style="background: rgba(239, 68, 68, 0.2); border-color: var(--danger);" onclick="deleteAccount()">
+          <div class="chart-container">
+            <h4><i class="fas fa-exclamation-triangle"></i> Danger Zone</h4>
+            <p style="color: rgba(255,255,255,0.65); margin-bottom: 10px; font-size: 0.75rem;">This action is irreversible</p>
+            <button class="btn-secondary btn-danger" onclick="deleteAccount()" style="padding: 5px 12px; font-size: 0.7rem;">
               <i class="fas fa-trash"></i> Delete Account
             </button>
           </div>
@@ -1274,476 +900,376 @@
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer>
-    <div class="footer-container">
-      <div class="footer-brand">
-        <h3>Smart Classroom</h3>
-        <p>Transforming engineering education through technology.</p>
-      </div>
-
-      <div class="footer-links">
-        <h4>Quick Links</h4>
-        <a href="index.html" class="footer-link">Home</a>
-        <a href="profile.html" class="footer-link">Profile</a>
-        <a href="experience.html" class="footer-link">Experience</a>
-        <a href="library.html" class="footer-link">Library</a>
-        <a href="downloads.html" class="footer-link">Downloads</a>
-      </div>
-
-      <div class="footer-links">
-        <h4>Account</h4>
-        <a href="login.html" class="footer-link">Login</a>
-        <a href="signup.html" class="footer-link">Sign Up</a>
-        <a href="profile.html" class="footer-link">Settings</a>
-        <a href="contact.html" class="footer-link">Help Center</a>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      <p>© 2025 Smart Classroom | Empowering Engineering Education</p>
-      <p style="margin-top:10px;font-size:0.9rem;">
-        <i class="fas fa-envelope"></i> rameshprasadrp123@gmail.com |
-        <i class="fas fa-phone"></i> +91 7498147593
-      </p>
-    </div>
-  </footer>
+  <!-- Mobile Bottom Nav -->
+  <nav class="mobile-bottom-nav">
+    <a href="index.html"><i class="fas fa-home"></i><span>Home</span></a>
+    <a href="library.html"><i class="fas fa-book"></i><span>Library</span></a>
+    <a href="lectures.html"><i class="fas fa-play-circle"></i><span>Lectures</span></a>
+    <a href="downloads.html"><i class="fas fa-download"></i><span>Downloads</span></a>
+    <a href="profile.html" class="active"><i class="fas fa-user"></i><span>Profile</span></a>
+  </nav>
 
   <script>
-    // ================= PARTICLES BACKGROUND =================
+    /* ================= PARTICLES ================= */
     function createParticles() {
-      const container = document.getElementById('particlesContainer');
+      const c = document.getElementById('particlesContainer');
       const colors = ['#6366f1', '#22d3ee', '#f472b6', '#10b981'];
-
-      for (let i = 0; i < 50; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-
-        const size = Math.random() * 20 + 5;
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        const posX = Math.random() * 100;
-        const posY = Math.random() * 100;
-        const duration = Math.random() * 20 + 10;
-        const delay = Math.random() * 5;
-
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        particle.style.background = color;
-        particle.style.left = `${posX}%`;
-        particle.style.top = `${posY}%`;
-        particle.style.animationDuration = `${duration}s`;
-        particle.style.animationDelay = `${delay}s`;
-
-        container.appendChild(particle);
+      for (let i = 0; i < 25; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const size = Math.random() * 16 + 5;
+        p.style.width = size + 'px';
+        p.style.height = size + 'px';
+        p.style.background = colors[Math.floor(Math.random() * colors.length)];
+        p.style.left = (Math.random() * 100) + '%';
+        p.style.top = (Math.random() * 100) + '%';
+        p.style.animationDuration = (Math.random() * 25 + 15) + 's';
+        p.style.animationDelay = (Math.random() * 5) + 's';
+        c.appendChild(p);
       }
     }
 
-    // ================= NOTIFICATION SYSTEM =================
+    /* ================= NOTIFICATION ================= */
     function showNotification(message, type = 'success') {
-      const notification = document.getElementById('notification');
-      notification.innerHTML = `
-        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
-        <span>${message}</span>
-      `;
-      notification.className = `notification ${type}`;
-      notification.style.display = 'flex';
-
-      setTimeout(() => {
-        notification.style.display = 'none';
-      }, 3000);
+      const n = document.getElementById('notification');
+      n.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i><span>${message}</span>`;
+      n.className = `notification ${type}`;
+      n.style.display = 'flex';
+      clearTimeout(window._t);
+      window._t = setTimeout(() => { n.style.display = 'none'; }, 3000);
     }
 
-    // ================= USER AUTHENTICATION =================
+    /* ================= AUTH ================= */
     function checkAuth() {
       const user = localStorage.getItem('user');
-      const profileToggle = document.getElementById('profileToggle');
       const userName = document.getElementById('userName');
       const loginLink = document.getElementById('loginLink');
       const signupLink = document.getElementById('signupLink');
       const logoutLink = document.getElementById('logoutLink');
 
       if (user) {
-        const userData = JSON.parse(user);
-        userName.textContent = userData.name || 'User';
+        try {
+          const u = JSON.parse(user);
+          userName.textContent = u.name || 'User';
+          const avatarUrl = u.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(u.name || 'User')}`;
+          document.getElementById('navAvatar').src = avatarUrl;
+          document.getElementById('avatarImg').src = avatarUrl;
 
-        if (profileToggle) {
-          profileToggle.querySelector('img').src = userData.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + userData.name;
-        }
+          document.getElementById('profileName').textContent = u.name || 'Guest User';
+          document.getElementById('profileEmail').textContent = u.email || 'guest@example.com';
+          document.getElementById('profileLocation').textContent = u.location || 'India';
 
-        if (loginLink) loginLink.style.display = 'none';
-        if (signupLink) signupLink.style.display = 'none';
-        if (logoutLink) logoutLink.style.display = 'block';
+          document.getElementById('settingsName').value = u.name || '';
+          document.getElementById('settingsEmail').value = u.email || '';
+          document.getElementById('settingsLocation').value = u.location || '';
+          document.getElementById('settingsBio').value = u.bio || '';
+        } catch (e) { userName.textContent = 'User'; }
 
-        // Update profile with user data
-        document.getElementById('profileName').textContent = userData.name || 'Ramesh Prasad';
-        document.getElementById('profileEmail').textContent = userData.email || 'ramesh@example.com';
+        loginLink.style.display = 'none';
+        signupLink.style.display = 'none';
+        logoutLink.style.display = 'block';
       } else {
         userName.textContent = 'Guest';
-        if (loginLink) loginLink.style.display = 'block';
-        if (signupLink) signupLink.style.display = 'block';
-        if (logoutLink) logoutLink.style.display = 'none';
+        loginLink.style.display = 'block';
+        signupLink.style.display = 'block';
+        logoutLink.style.display = 'none';
       }
     }
 
-    // ================= PROFILE DROPDOWN =================
+    /* ================= DROPDOWN ================= */
     document.getElementById('profileToggle')?.addEventListener('click', (e) => {
       e.stopPropagation();
+      document.getElementById('profileMenu').classList.toggle('active');
+    });
+    document.addEventListener('click', (e) => {
       const menu = document.getElementById('profileMenu');
-      menu.classList.toggle('active');
+      const toggle = document.getElementById('profileToggle');
+      if (menu && toggle && !toggle.contains(e.target) && !menu.contains(e.target)) {
+        menu.classList.remove('active');
+      }
     });
 
-    document.addEventListener('click', () => {
-      const menu = document.getElementById('profileMenu');
-      if (menu) menu.classList.remove('active');
+    /* ================= MOBILE MENU ================= */
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const menuOverlay = document.getElementById('mobileMenuOverlay');
+    const menuPanel = document.getElementById('mobileMenuPanel');
+    const closeMenuBtn = document.getElementById('closeMenuBtn');
+
+    function openMenu() {
+      menuOverlay.classList.add('open');
+      menuPanel.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMenu() {
+      menuOverlay.classList.remove('open');
+      menuPanel.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    hamburgerBtn?.addEventListener('click', openMenu);
+    closeMenuBtn?.addEventListener('click', closeMenu);
+    menuOverlay?.addEventListener('click', (e) => { if (e.target === menuOverlay) closeMenu(); });
+    menuPanel?.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+    /* ================= MOBILE SEARCH ================= */
+    const searchToggle = document.getElementById('mobileSearchToggle');
+    const searchBar = document.getElementById('mobileSearchBar');
+
+    searchToggle?.addEventListener('click', () => {
+      const open = searchBar.style.display === 'block';
+      searchBar.style.display = open ? 'none' : 'block';
+      if (!open) setTimeout(() => document.getElementById('mobileSearchInput')?.focus(), 100);
     });
 
-    // ================= LOGOUT =================
+    function performMobileSearch() {
+      const q = document.getElementById('mobileSearchInput')?.value.trim();
+      if (!q) { showNotification('Please enter a search term', 'error'); return; }
+      sessionStorage.setItem('searchQuery', q);
+      showNotification(`Searching for "${q}"...`, 'success');
+      setTimeout(() => { window.location.href = `library.html?search=${encodeURIComponent(q)}`; }, 500);
+    }
+
+    /* ================= LOGOUT ================= */
     document.getElementById('logoutLink')?.addEventListener('click', (e) => {
       e.preventDefault();
       localStorage.removeItem('user');
+      localStorage.removeItem('loggedUser');
+      localStorage.removeItem('session_token');
       showNotification('Logged out successfully!', 'success');
-      setTimeout(() => {
-        window.location.href = 'index.html';
-      }, 1000);
+      setTimeout(() => { window.location.href = 'index.html'; }, 1000);
     });
 
-    // ================= PROFILE TABS =================
+    /* ================= TABS ================= */
     document.querySelectorAll('.profile-tab').forEach(tab => {
       tab.addEventListener('click', () => {
-        const tabId = tab.dataset.tab;
-
-        // Update active tab
+        const id = tab.dataset.tab;
         document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
-
-        // Update active content
-        document.querySelectorAll('.tab-content').forEach(content => {
-          content.classList.remove('active');
-          if (content.id === tabId) {
-            content.classList.add('active');
-          }
+        document.querySelectorAll('.tab-content').forEach(c => {
+          c.classList.remove('active');
+          if (c.id === id) c.classList.add('active');
         });
-
-        // Refresh charts if needed
-        if (tabId === 'overview') {
-          initCharts();
-        } else if (tabId === 'skills') {
-          initSkillsCharts();
-        } else if (tabId === 'activity') {
-          initWeeklyChart();
-        }
+        if (id === 'activity') initWeeklyChart();
       });
     });
 
-    // ================= CHARTS INITIALIZATION =================
-    function initCharts() {
-      // Progress Chart
-      const progressCtx = document.getElementById('progressChart')?.getContext('2d');
-      if (progressCtx) {
-        new Chart(progressCtx, {
-          type: 'line',
-          data: {
-            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'],
-            datasets: [{
-              label: 'Learning Hours',
-              data: [12, 19, 15, 22, 18, 25],
-              borderColor: '#6366f1',
-              backgroundColor: 'rgba(99, 102, 241, 0.1)',
-              tension: 0.4,
-              fill: true
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                labels: { color: 'white' }
-              }
-            },
-            scales: {
-              y: {
-                grid: { color: 'rgba(255,255,255,0.1)' },
-                ticks: { color: 'white' }
-              },
-              x: {
-                grid: { color: 'rgba(255,255,255,0.1)' },
-                ticks: { color: 'white' }
-              }
-            }
-          }
-        });
-      }
-
-      // Course Distribution Chart
-      const courseCtx = document.getElementById('courseChart')?.getContext('2d');
-      if (courseCtx) {
-        new Chart(courseCtx, {
-          type: 'doughnut',
-          data: {
-            labels: ['Completed', 'In Progress', 'Not Started'],
-            datasets: [{
-              data: [15, 8, 19],
-              backgroundColor: ['#10b981', '#f59e0b', '#6366f1'],
-              borderWidth: 0
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                labels: { color: 'white' }
-              }
-            }
-          }
-        });
-      }
-    }
-
-    function initSkillsCharts() {
-      const skillsCtx = document.getElementById('skillsChart')?.getContext('2d');
-      if (skillsCtx) {
-        new Chart(skillsCtx, {
-          type: 'radar',
-          data: {
-            labels: ['C', 'C++', 'OS', 'DBMS', 'DSA', 'Web Dev'],
-            datasets: [{
-              label: 'Skill Level',
-              data: [92, 88, 85, 82, 75, 70],
-              backgroundColor: 'rgba(99, 102, 241, 0.2)',
-              borderColor: '#6366f1',
-              pointBackgroundColor: '#22d3ee'
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                labels: { color: 'white' }
-              }
-            },
-            scales: {
-              r: {
-                grid: { color: 'rgba(255,255,255,0.1)' },
-                pointLabels: { color: 'white' },
-                ticks: { color: 'white', backdropColor: 'transparent' }
-              }
-            }
-          }
-        });
-      }
-
-      const hoursCtx = document.getElementById('hoursChart')?.getContext('2d');
-      if (hoursCtx) {
-        new Chart(hoursCtx, {
-          type: 'bar',
-          data: {
-            labels: ['C', 'C++', 'OS', 'DBMS'],
-            datasets: [{
-              label: 'Hours Spent',
-              data: [45, 38, 42, 35],
-              backgroundColor: '#6366f1',
-              borderRadius: 8
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                labels: { color: 'white' }
-              }
-            },
-            scales: {
-              y: {
-                grid: { color: 'rgba(255,255,255,0.1)' },
-                ticks: { color: 'white' }
-              },
-              x: {
-                grid: { display: false },
-                ticks: { color: 'white' }
-              }
-            }
-          }
-        });
-      }
-    }
+    /* ================= WEEKLY CHART ================= */
+    let weeklyChartInstance = null;
 
     function initWeeklyChart() {
-      const weeklyCtx = document.getElementById('weeklyChart')?.getContext('2d');
-      if (weeklyCtx) {
-        new Chart(weeklyCtx, {
-          type: 'line',
-          data: {
-            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-            datasets: [{
-              label: 'Activity (minutes)',
-              data: [45, 60, 35, 80, 55, 120, 90],
-              borderColor: '#f472b6',
-              backgroundColor: 'rgba(244, 114, 182, 0.1)',
-              tension: 0.4,
-              fill: true
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                labels: { color: 'white' }
-              }
-            },
-            scales: {
-              y: {
-                grid: { color: 'rgba(255,255,255,0.1)' },
-                ticks: { color: 'white' }
-              },
-              x: {
-                grid: { display: false },
-                ticks: { color: 'white' }
-              }
-            }
+      if (weeklyChartInstance) return;
+      const wCtx = document.getElementById('weeklyChart')?.getContext('2d');
+      if (!wCtx) return;
+
+      weeklyChartInstance = new Chart(wCtx, {
+        type: 'line',
+        data: {
+          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          datasets: [{
+            label: 'Activity (minutes)',
+            data: [45, 60, 35, 80, 55, 120, 90],
+            borderColor: '#f472b6',
+            backgroundColor: 'rgba(244, 114, 182, 0.15)',
+            tension: 0.3,
+            fill: true,
+            pointBackgroundColor: '#f472b6'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: { duration: 0 },
+          plugins: { legend: { labels: { color: 'white', font: { size: 10 } } } },
+          scales: {
+            y: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: 'white', font: { size: 9 } } },
+            x: { grid: { display: false }, ticks: { color: 'white', font: { size: 9 } } }
           }
-        });
-      }
+        }
+      });
     }
 
-    // ================= LOAD DOWNLOADS =================
-    function loadDownloads() {
-      const downloadsGrid = document.getElementById('downloadsGrid');
-      if (!downloadsGrid) return;
-
-      const downloads = JSON.parse(localStorage.getItem('downloads') || '[]');
-      
-      if (downloads.length === 0) {
-        downloadsGrid.innerHTML = '<p style="text-align: center; padding: 40px; color: rgba(255,255,255,0.7);">No downloads yet</p>';
-        return;
-      }
-
-      downloadsGrid.innerHTML = downloads.map(download => `
-        <div class="download-item">
-          <div class="download-icon">
-            <i class="fas fa-file-pdf"></i>
-          </div>
-          <div class="download-info">
-            <div class="download-name">${download.name}</div>
-            <div class="download-meta">
-              ${download.subject} • ${new Date(download.date).toLocaleDateString()}
-            </div>
-          </div>
-          <button class="btn-secondary" style="padding: 8px 12px;" onclick="viewDownload('${download.name}')">
-            <i class="fas fa-eye"></i>
-          </button>
+    /* ================= ACTIVITY LOG ================= */
+    function renderActivity() {
+      const log = [
+        { date: 'Today, 10:30 AM', title: 'Watched: OS - Process Scheduling', desc: 'Completed video lecture on CPU scheduling algorithms' },
+        { date: 'Today, 8:15 AM', title: 'Downloaded: C Programming Notes', desc: 'Unit 4 - Pointers and Arrays (4 files)' },
+        { date: 'Yesterday, 3:45 PM', title: 'Completed Quiz: Database Normalization', desc: 'Scored 95% (19/20 correct)' }
+      ];
+      document.getElementById('activityLog').innerHTML = log.map(i => `
+        <div class="timeline-item">
+          <div class="timeline-date">${i.date}</div>
+          <div class="timeline-title">${i.title}</div>
+          <div class="timeline-description">${i.desc}</div>
         </div>
       `).join('');
     }
 
+    /* ================= DOWNLOADS ================= */
+    function loadDownloads() {
+      const grid = document.getElementById('downloadsGrid');
+      const downloads = JSON.parse(localStorage.getItem('downloads') || '[]');
+
+      if (downloads.length === 0) {
+        grid.innerHTML = '<p style="text-align: center; padding: 24px; color: rgba(255,255,255,0.55); grid-column: 1/-1; font-size: 0.85rem;">No downloads yet — start exploring the library!</p>';
+        return;
+      }
+
+      grid.innerHTML = downloads.map(d => {
+        const safeName = (d.name || 'Unknown').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const safeSubject = (d.subject || 'library').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const dateStr = d.date ? new Date(d.date).toLocaleDateString() : '';
+        return `
+          <div class="download-item">
+            <div class="download-icon"><i class="fas fa-file-pdf"></i></div>
+            <div class="download-info">
+              <div class="download-name">${safeName}</div>
+              <div class="download-meta">${safeSubject} • ${dateStr}</div>
+            </div>
+            <button class="btn-secondary" style="padding: 3px 7px; font-size: 0.68rem;" onclick="viewDownload('${safeName.replace(/'/g, "\\'")}')">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
     function viewDownload(name) {
-      showNotification(`Opening ${name}...`, 'success');
+      showNotification(`Opening "${name}"... (Demo)`, 'success');
     }
 
     function clearDownloads() {
-      if (confirm('Clear all downloads?')) {
+      if (confirm('Clear all downloads? This cannot be undone.')) {
         localStorage.removeItem('downloads');
         loadDownloads();
+        loadStats();
         showNotification('Downloads cleared!', 'success');
       }
     }
 
-    // ================= PROFILE FUNCTIONS =================
+    /* ================= AVATAR ================= */
     function triggerAvatarUpload() {
       document.getElementById('avatarUpload').click();
     }
-
     document.getElementById('avatarUpload')?.addEventListener('change', function(e) {
       const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-          document.getElementById('avatarImg').src = event.target.result;
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024) { showNotification('Image must be less than 2MB', 'error'); return; }
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        const dataUrl = ev.target.result;
+        document.getElementById('avatarImg').src = dataUrl;
+        document.getElementById('navAvatar').src = dataUrl;
+        try {
+          const u = JSON.parse(localStorage.getItem('user') || '{}');
+          u.avatar = dataUrl;
+          localStorage.setItem('user', JSON.stringify(u));
+          localStorage.setItem('loggedUser', JSON.stringify(u));
           showNotification('Profile picture updated!', 'success');
-        };
-        reader.readAsDataURL(file);
-      }
+        } catch (err) {}
+      };
+      reader.readAsDataURL(file);
     });
 
+    /* ================= EDIT / SAVE / RESET ================= */
     function editProfile() {
       document.querySelector('.profile-tab[data-tab="settings"]').click();
+      setTimeout(() => document.getElementById('settingsName').focus(), 200);
     }
 
-    function toggleSetting(element, setting) {
-      element.classList.toggle('active');
-      const isActive = element.classList.contains('active');
-      localStorage.setItem(setting, isActive ? 'enabled' : 'disabled');
-      showNotification(`${setting} ${isActive ? 'enabled' : 'disabled'}`, 'success');
-    }
+    document.querySelectorAll('.toggle[data-setting]').forEach(t => {
+      t.addEventListener('click', function() {
+        this.classList.toggle('active');
+        const key = this.dataset.setting;
+        const active = this.classList.contains('active');
+        localStorage.setItem(key, active ? 'enabled' : 'disabled');
+        showNotification(`${key} ${active ? 'enabled' : 'disabled'}`, 'success');
+      });
+    });
 
     function saveSettings() {
-      const name = document.getElementById('settingsName').value;
-      const email = document.getElementById('settingsEmail').value;
-      const location = document.getElementById('settingsLocation').value;
+      const name = document.getElementById('settingsName').value.trim();
+      const email = document.getElementById('settingsEmail').value.trim();
+      const location = document.getElementById('settingsLocation').value.trim();
+      const bio = document.getElementById('settingsBio').value.trim();
 
-      // Update profile display
+      if (!name || !email) { showNotification('Name and email are required', 'error'); return; }
+
       document.getElementById('profileName').textContent = name;
       document.getElementById('profileEmail').textContent = email;
-      document.getElementById('profileLocation').textContent = location;
+      document.getElementById('profileLocation').textContent = location || 'India';
+      document.getElementById('userName').textContent = name;
 
-      // Update user in localStorage
-      const user = JSON.parse(localStorage.getItem('user') || '{}');
-      user.name = name;
-      user.email = email;
-      localStorage.setItem('user', JSON.stringify(user));
-
-      showNotification('Settings saved successfully!', 'success');
+      try {
+        const u = JSON.parse(localStorage.getItem('user') || '{}');
+        u.name = name; u.email = email; u.location = location; u.bio = bio;
+        localStorage.setItem('user', JSON.stringify(u));
+        localStorage.setItem('loggedUser', JSON.stringify(u));
+        showNotification('Settings saved!', 'success');
+      } catch (e) {}
     }
 
     function resetSettings() {
-      document.getElementById('settingsName').value = 'Ramesh Prasad';
-      document.getElementById('settingsEmail').value = 'ramesh@example.com';
-      document.getElementById('settingsLocation').value = 'New Delhi, India';
-      document.getElementById('settingsBio').value = 'Computer Science student passionate about programming and operating systems.';
-      
-      showNotification('Settings reset to default', 'success');
+      try {
+        const u = JSON.parse(localStorage.getItem('user') || '{}');
+        document.getElementById('settingsName').value = u.name || '';
+        document.getElementById('settingsEmail').value = u.email || '';
+        document.getElementById('settingsLocation').value = u.location || '';
+        document.getElementById('settingsBio').value = u.bio || '';
+        showNotification('Settings reset to saved values', 'success');
+      } catch (e) {}
     }
 
     function deleteAccount() {
-      if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+      if (confirm('Are you sure you want to delete your account? This cannot be undone.')) {
         localStorage.removeItem('user');
+        localStorage.removeItem('loggedUser');
+        localStorage.removeItem('session_token');
         localStorage.removeItem('downloads');
         showNotification('Account deleted', 'error');
-        setTimeout(() => {
-          window.location.href = 'index.html';
-        }, 1500);
+        setTimeout(() => { window.location.href = 'index.html'; }, 1200);
       }
     }
 
-    // ================= INITIALIZE ON LOAD =================
+    /* ================= STATS ================= */
+    function loadStats() {
+      const downloads = JSON.parse(localStorage.getItem('downloads') || '[]');
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+      document.getElementById('statDownloads').textContent = downloads.length;
+      document.getElementById('statCourses').textContent = (user.coursesEnrolled && user.coursesEnrolled.length) || downloads.length;
+      document.getElementById('statHours').textContent = (user.hoursLearned) || (downloads.length * 4);
+      document.getElementById('statAchievements').textContent = (user.achievements && user.achievements.length) || 0;
+    }
+
+    /* ================= INIT ================= */
     document.addEventListener('DOMContentLoaded', () => {
       createParticles();
       checkAuth();
+      loadStats();
       loadDownloads();
-      
+      renderActivity();
+
       setTimeout(() => {
-        initCharts();
-        initSkillsCharts();
-        initWeeklyChart();
+        if (localStorage.getItem('user')) {
+          showNotification('Welcome back!', 'success');
+        } else {
+          showNotification('Please login to access all features', 'error');
+        }
       }, 500);
 
-      // Update stats
-      const downloads = JSON.parse(localStorage.getItem('downloads') || '[]');
-      document.getElementById('statDownloads').textContent = downloads.length;
-
-      // Welcome notification
-      setTimeout(() => {
-        showNotification('Welcome to your profile!', 'success');
-      }, 1000);
+      document.addEventListener('keydown', (e) => {
+        if (e.ctrlKey && e.key === '/') {
+          e.preventDefault();
+          searchBar.style.display = 'block';
+          setTimeout(() => document.getElementById('mobileSearchInput')?.focus(), 100);
+        }
+        if (e.key === 'Escape') {
+          closeMenu();
+          searchBar.style.display = 'none';
+        }
+      });
     });
   </script>
 
-  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
