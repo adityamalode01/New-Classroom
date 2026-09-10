@@ -1,1870 +1,2280 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <link rel="shortcut icon" href="US.png" type="image/png">
-  <title>Settings | Smart Classroom</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Database System -->
-  <script src="database.js"></script>
-
-  <!-- Favicon -->
-  <link rel="shortcut icon" type="website icon" href="Smart classroom logo.png">
-
-  <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
-    rel="stylesheet">
-
-  <style>
-    :root {
-      --primary: #6366f1;
-      --secondary: #22d3ee;
-      --accent: #f472b6;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --dark: #020617;
-      --light: #f8fafc;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    body {
-      min-height: 100vh;
-      background: linear-gradient(135deg, #0a0a2a 0%, #020617 100%);
-      color: white;
-      overflow-x: hidden;
-      position: relative;
-    }
-
-    /* ================= ANIMATED BACKGROUND ================= */
-    .particles-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      pointer-events: none;
-    }
-
-    .particle {
-      position: absolute;
-      border-radius: 50%;
-      background: var(--primary);
-      opacity: 0.3;
-      animation: floatParticle 20s infinite linear;
-    }
-
-    @keyframes floatParticle {
-
-      0%,
-      100% {
-        transform: translate(0, 0) rotate(0deg);
-      }
-
-      25% {
-        transform: translate(100px, -150px) rotate(90deg);
-      }
-
-      50% {
-        transform: translate(-80px, 100px) rotate(180deg);
-      }
-
-      75% {
-        transform: translate(120px, 50px) rotate(270deg);
-      }
-    }
-
-    /* ================= NAVBAR ================= */
-    .navbar-custom {
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(25px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 15px 0;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    .navbar-brand {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: white !important;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-    }
-
-    .logo-circle {
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      color: white;
-    }
-
-    .nav-link-custom {
-      color: rgba(255, 255, 255, 0.9) !important;
-      font-weight: 500;
-      padding: 10px 20px !important;
-      border-radius: 12px;
-      transition: all 0.3s ease;
-      text-decoration: none;
-    }
-
-    .nav-link-custom:hover {
-      color: white !important;
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    .nav-link-custom.active {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: white !important;
-    }
-
-    /* Profile Dropdown */
-    .profile-dropdown {
-      position: relative;
-    }
-
-    .profile-btn {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: white;
-      padding: 8px 15px;
-      border-radius: 50px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-decoration: none;
-    }
-
-    .profile-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    .profile-img {
-      width: 35px;
-      height: 35px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--secondary);
-    }
-
-    .profile-menu {
-      position: absolute;
-      top: 100%;
-      right: 0;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 15px;
-      padding: 10px;
-      min-width: 200px;
-      display: none;
-      margin-top: 10px;
-      z-index: 1000;
-    }
-
-    .profile-menu.active {
-      display: block;
-      animation: fadeIn 0.3s ease;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .profile-menu a {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 12px 15px;
-      color: white;
-      text-decoration: none;
-      border-radius: 8px;
-      transition: all 0.3s ease;
-    }
-
-    .profile-menu a:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    /* ================= SETTINGS CONTAINER ================= */
-    .settings-container {
-      max-width: 1200px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-
-    .settings-header {
-      text-align: center;
-      margin-bottom: 50px;
-    }
-
-    .settings-title {
-      font-size: 2.5rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      margin-bottom: 10px;
-    }
-
-    .settings-subtitle {
-      color: rgba(255, 255, 255, 0.7);
-      font-size: 1.1rem;
-    }
-
-    /* ================= SETTINGS GRID ================= */
-    .settings-grid {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 30px;
-    }
-
-    /* Settings Sidebar */
-    .settings-sidebar {
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 25px;
-      padding: 25px;
-      height: fit-content;
-      position: sticky;
-      top: 100px;
-    }
-
-    .settings-nav {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .settings-nav-item {
-      margin-bottom: 10px;
-    }
-
-    .settings-nav-link {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 15px 20px;
-      color: rgba(255, 255, 255, 0.7);
-      text-decoration: none;
-      border-radius: 15px;
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
-
-    .settings-nav-link i {
-      width: 24px;
-      font-size: 1.2rem;
-    }
-
-    .settings-nav-link:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
-    }
-
-    .settings-nav-link.active {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: white;
-    }
-
-    /* Settings Content */
-    .settings-content {
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 25px;
-      padding: 35px;
-    }
-
-    .settings-section {
-      display: none;
-    }
-
-    .settings-section.active {
-      display: block;
-      animation: fadeIn 0.5s ease;
-    }
-
-    .section-title {
-      font-size: 1.8rem;
-      margin-bottom: 30px;
-      position: relative;
-      padding-bottom: 15px;
-    }
-
-    .section-title::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 80px;
-      height: 4px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      border-radius: 2px;
-    }
-
-    /* Form Styles */
-    .form-group {
-      margin-bottom: 25px;
-    }
-
-    .form-label {
-      display: block;
-      margin-bottom: 8px;
-      color: rgba(255, 255, 255, 0.9);
-      font-weight: 500;
-    }
-
-    .form-input,
-    .form-select,
-    .form-textarea {
-      width: 100%;
-      padding: 14px 18px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      color: white;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-    }
-
-    .form-input:focus,
-    .form-select:focus,
-    .form-textarea:focus {
-      outline: none;
-      border-color: var(--secondary);
-      background: rgba(255, 255, 255, 0.12);
-    }
-
-    .form-input::placeholder,
-    .form-textarea::placeholder {
-      color: rgba(255, 255, 255, 0.4);
-    }
-
-    .form-textarea {
-      min-height: 100px;
-      resize: vertical;
-    }
-
-    .form-select {
-      cursor: pointer;
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 18px center;
-      background-size: 16px;
-    }
-
-    .form-select option {
-      background: var(--dark);
-      color: white;
-    }
-
-    /* Toggle Switch */
-    .toggle-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .toggle-item:last-child {
-      border-bottom: none;
-    }
-
-    .toggle-info {
-      flex: 1;
-    }
-
-    .toggle-title {
-      font-weight: 600;
-      margin-bottom: 5px;
-    }
-
-    .toggle-description {
-      color: rgba(255, 255, 255, 0.6);
-      font-size: 0.9rem;
-    }
-
-    .toggle {
-      width: 60px;
-      height: 30px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 15px;
-      position: relative;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-left: 20px;
-    }
-
-    .toggle.active {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-    }
-
-    .toggle::after {
-      content: '';
-      position: absolute;
-      width: 26px;
-      height: 26px;
-      background: white;
-      border-radius: 50%;
-      top: 2px;
-      left: 2px;
-      transition: all 0.3s ease;
-    }
-
-    .toggle.active::after {
-      left: 32px;
-    }
-
-    /* Radio Group */
-    .radio-group {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .radio-option {
-      flex: 1;
-      min-width: 120px;
-    }
-
-    .radio-option input[type="radio"] {
-      display: none;
-    }
-
-    .radio-option label {
-      display: block;
-      padding: 15px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .radio-option input[type="radio"]:checked+label {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      border-color: transparent;
-    }
-
-    /* Danger Zone */
-    .danger-zone {
-      margin-top: 40px;
-      padding: 25px;
-      background: rgba(239, 68, 68, 0.1);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      border-radius: 20px;
-    }
-
-    .danger-title {
-      color: var(--danger);
-      font-size: 1.3rem;
-      margin-bottom: 15px;
-    }
-
-    .danger-description {
-      color: rgba(255, 255, 255, 0.7);
-      margin-bottom: 20px;
-    }
-
-    /* Buttons */
-    .btn-primary {
-      padding: 14px 30px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      border: none;
-      border-radius: 12px;
-      color: white;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      font-size: 1rem;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
-    }
-
-    .btn-secondary {
-      padding: 14px 30px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 12px;
-      color: white;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      font-size: 1rem;
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: translateY(-3px);
-    }
-
-    .btn-danger {
-      padding: 14px 30px;
-      background: rgba(239, 68, 68, 0.2);
-      border: 1px solid var(--danger);
-      border-radius: 12px;
-      color: var(--danger);
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .btn-danger:hover {
-      background: var(--danger);
-      color: white;
-      transform: translateY(-3px);
-    }
-
-    .button-group {
-      display: flex;
-      gap: 15px;
-      margin-top: 30px;
-      flex-wrap: wrap;
-    }
-
-    /* Notification */
-    .notification {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: rgba(255, 255, 255, 0.95);
-      color: #333;
-      padding: 15px 25px;
-      border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      z-index: 10000;
-      display: none;
-      align-items: center;
-      gap: 10px;
-      backdrop-filter: blur(10px);
-      animation: slideIn 0.3s ease;
-    }
-
-    @keyframes slideIn {
-      from {
-        transform: translateX(100%);
-        opacity: 0;
-      }
-
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-
-    .notification.success {
-      border-left: 5px solid var(--success);
-    }
-
-    .notification.error {
-      border-left: 5px solid var(--danger);
-    }
-
-    /* Footer */
-    footer {
-      background: rgba(0, 0, 0, 0.3);
-      padding: 60px 20px 30px;
-      margin-top: 80px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .footer-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 40px;
-    }
-
-    .footer-brand h3 {
-      font-size: 1.8rem;
-      margin-bottom: 15px;
-    }
-
-    .footer-links h4 {
-      color: var(--secondary);
-      margin-bottom: 20px;
-      font-size: 1.2rem;
-    }
-
-    .footer-links a {
-      display: block;
-      color: rgba(255, 255, 255, 0.7);
-      text-decoration: none;
-      margin-bottom: 12px;
-      transition: all 0.3s ease;
-    }
-
-    .footer-links a:hover {
-      color: var(--secondary);
-      transform: translateX(5px);
-    }
-
-    .footer-bottom {
-      text-align: center;
-      padding-top: 40px;
-      margin-top: 60px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      color: rgba(255, 255, 255, 0.5);
-    }
-
-    .creator-credit {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      font-weight: 600;
-    }
-
-    /* Responsive */
-    @media (max-width: 992px) {
-      .settings-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .settings-sidebar {
-        position: static;
-      }
-
-      .settings-nav {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-
-      .settings-nav-item {
-        flex: 1;
-        min-width: 120px;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .settings-title {
-        font-size: 2rem;
-      }
-
-      .settings-content {
-        padding: 25px;
-      }
-
-      .button-group {
-        flex-direction: column;
-      }
-
-      .button-group button {
-        width: 100%;
-      }
-
-      .radio-group {
-        flex-direction: column;
-        gap: 10px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .settings-nav-item {
-        min-width: 100%;
-      }
-
-      .section-title {
-        font-size: 1.5rem;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Settings | Smart Classroom</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="shortcut icon" type="image/png" href="Smart classroom logo.png">
+
+<!-- Poppins -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+/* ================= DESIGN SYSTEM ================= */
+:root{
+  --primary:#6366f1;
+  --secondary:#22d3ee;
+  --accent:#f472b6;
+  --success:#10b981;
+  --warning:#f59e0b;
+  --danger:#ef4444;
+  --dark:#020617;
+  --light:#f8fafc;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+/* ================= BODY ================= */
+body{
+  min-height:100vh;
+  background:linear-gradient(180deg, #0a0a2a 0%, #020617 100%);
+  background-attachment: fixed;
+  color:white;
+  overflow-x:hidden;
+  position:relative;
+}
+
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  background:
+    radial-gradient(600px circle at 12% 8%, rgba(99,102,241,0.18), transparent 60%),
+    radial-gradient(500px circle at 88% 30%, rgba(34,211,238,0.14), transparent 60%),
+    radial-gradient(500px circle at 20% 85%, rgba(244,114,182,0.10), transparent 60%);
+}
+
+nav.navbar-custom,
+.section-page,
+.mobile-search-bar,
+.mobile-bottom-nav,
+.notification {
+  position: relative;
+  z-index: 1;
+}
+
+/* ================= SCROLL REVEAL ================= */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ================= NAVBAR ================= */
+.navbar-custom {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 15px 0;
+  position: relative;
+  z-index: 1000;
+}
+
+.navbar-custom .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  gap: 10px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.navbar-brand {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: white !important;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.logo-circle {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+  flex-shrink: 0;
+  transition: transform 0.4s var(--ease);
+}
+
+.navbar-brand:hover .logo-circle {
+  transform: rotate(10deg) scale(1.05);
+}
+
+.nav-links-desktop {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.nav-link-custom {
+  color: rgba(255, 255, 255, 0.85) !important;
+  font-weight: 500;
+  padding: 10px 18px !important;
+  border-radius: 12px;
+  transition: all 0.3s var(--ease);
+  text-decoration: none;
+  white-space: nowrap;
+  font-size: 0.95rem;
+}
+
+.nav-link-custom:hover {
+  color: white !important;
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+.nav-link-custom.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white !important;
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.mobile-controls {
+  display: none;
+  align-items: center;
+  gap: 12px;
+}
+
+.hamburger-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.6rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  line-height: 1;
+  transition: transform 0.3s var(--ease);
+}
+
+.hamburger-btn:hover { transform: scale(1.1); }
+
+.mobile-search-btn {
+  color: rgba(255,255,255,0.8);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.3s var(--ease);
+}
+
+.mobile-search-btn:hover { color: var(--secondary); }
+
+/* ================= MOBILE SEARCH BAR ================= */
+.mobile-search-bar {
+  display: none;
+  padding: 12px 20px;
+  background: rgba(2, 6, 23, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  animation: slideDown 0.3s var(--ease);
+}
+
+.mobile-search-bar.active { display: block; }
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.mobile-search-bar form {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.mobile-search-bar input {
+  flex: 1;
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  color: white;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.3s var(--ease);
+  min-height: 44px;
+}
+
+.mobile-search-bar input:focus {
+  border-color: var(--secondary);
+  background: rgba(255,255,255,0.1);
+  box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.15);
+}
+
+.mobile-search-bar input::placeholder { color: rgba(255,255,255,0.4); }
+
+.mobile-search-bar button {
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  cursor: pointer;
+  font-size: 0.95rem;
+  min-height: 44px;
+  transition: all 0.3s var(--ease);
+}
+
+.mobile-search-bar button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(99, 102, 241, 0.35);
+}
+
+.mobile-search-bar button:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* ================= MOBILE MENU ================= */
+.mobile-menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s var(--ease);
+}
+
+.mobile-menu-overlay.open { display: block; opacity: 1; }
+
+.mobile-menu-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 300px;
+  max-width: 85vw;
+  background: rgba(2, 6, 23, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 30px 24px calc(30px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-100%);
+  transition: transform 0.35s var(--ease);
+  z-index: 2001;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  overflow-y: auto;
+}
+
+.mobile-menu-panel.open { transform: translateX(0); }
+
+.mobile-menu-panel .close-menu {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-bottom: 30px;
+  opacity: 0.6;
+  transition: opacity 0.3s var(--ease);
+}
+
+.mobile-menu-panel .close-menu:hover { opacity: 1; }
+
+.mobile-menu-panel a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255,255,255,0.8);
+  text-decoration: none;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.3s var(--ease);
+  min-height: 48px;
+}
+
+.mobile-menu-panel a:hover { color: white; padding-left: 10px; }
+.mobile-menu-panel a.active { color: var(--secondary); }
+
+/* ================= PROFILE DROPDOWN ================= */
+.profile-dropdown { position: relative; flex-shrink: 0; }
+
+.profile-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: white;
+  padding: 8px 15px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.3s var(--ease);
+  text-decoration: none;
+  white-space: nowrap;
+  min-height: 44px;
+}
+
+.profile-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  transform: translateY(-1px);
+}
+
+.profile-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--secondary);
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.1);
+}
+
+.profile-btn span {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.9rem;
+}
+
+.profile-chevron { font-size: 0.75rem; opacity: 0.7; }
+
+.profile-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: rgba(2, 6, 23, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 8px;
+  min-width: 220px;
+  display: none;
+  z-index: 1001;
+  box-shadow: 0 30px 100px rgba(0,0,0,0.6);
+}
+
+.profile-menu.active { display: block; animation: fadeIn 0.25s var(--ease); }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.profile-menu a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  border-radius: 10px;
+  transition: all 0.25s var(--ease);
+  font-size: 0.92rem;
+}
+
+.profile-menu a:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  transform: translateX(3px);
+}
+
+.profile-menu hr {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  margin: 8px 0;
+}
+
+/* ================= NOTIFICATION ================= */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(2, 6, 23, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: white;
+  padding: 14px 20px;
+  border-radius: 14px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  z-index: 10001;
+  display: none;
+  align-items: center;
+  gap: 12px;
+  animation: slideIn 0.35s var(--ease);
+  max-width: 360px;
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.notification.success { border-left: 4px solid var(--success); }
+.notification.success i { color: var(--success); }
+.notification.error { border-left: 4px solid var(--danger); }
+.notification.error i { color: var(--danger); }
+
+/* ================= SECTION PAGE ================= */
+.section-page{
+  max-width:1200px;
+  margin:32px auto;
+  background:rgba(255,255,255,0.06);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  padding:50px 40px;
+  border-radius:30px;
+  border:1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 30px 100px rgba(0,0,0,0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+.section-page::before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:4px;
+  background:linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+}
+
+.section-page h2{
+  text-align:center;
+  font-size:1.8rem;
+  margin-bottom:28px;
+  background:linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 600;
+}
+
+.section-page h2 i {
+  font-size: 1.6rem;
+  -webkit-text-fill-color: var(--secondary);
+  color: var(--secondary);
+}
+
+/* ================= SETTINGS TABS (PC) ================= */
+.settings-tabs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.settings-tab {
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.85);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s var(--ease);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: 'Poppins', sans-serif;
+  min-height: 46px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+}
+
+.settings-tab i {
+  font-size: 0.95rem;
+  flex-shrink: 0;
+  transition: transform 0.3s var(--ease);
+}
+
+.settings-tab:hover {
+  background: rgba(255,255,255,0.1);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* ===== Tab activate — glow + scale bounce (2B) ===== */
+.settings-tab.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.45),
+              0 0 0 4px rgba(99, 102, 241, 0.12);
+  transform: translateY(-2px) scale(1.03);
+  animation: tabPop 0.4s var(--ease);
+}
+
+.settings-tab.active i {
+  transform: scale(1.1);
+}
+
+@keyframes tabPop {
+  0%   { transform: translateY(-2px) scale(0.96); box-shadow: 0 0 0 0 rgba(99,102,241,0.5); }
+  55%  { transform: translateY(-2px) scale(1.05); box-shadow: 0 10px 28px rgba(99,102,241,0.5), 0 0 0 8px rgba(99,102,241,0.08); }
+  100% { transform: translateY(-2px) scale(1.03); box-shadow: 0 8px 24px rgba(99,102,241,0.45), 0 0 0 4px rgba(99,102,241,0.12); }
+}
+
+/* ================= SETTINGS DROPDOWN (MOBILE) ================= */
+.settings-dropdown-wrap {
+  display: none;
+  margin-bottom: 22px;
+}
+
+.settings-dropdown {
+  width: 100%;
+  padding: 13px 42px 13px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+  color: white;
+  font-size: 0.95rem;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 16px;
+  transition: all 0.3s var(--ease);
+  outline: none;
+  min-height: 46px;
+}
+
+.settings-dropdown:focus {
+  border-color: var(--secondary);
+  background-color: rgba(255,255,255,0.09);
+  box-shadow: 0 0 0 3px rgba(34,211,238,0.18);
+}
+
+.settings-dropdown option {
+  background: var(--dark);
+  color: white;
+}
+
+/* ================= SETTINGS CONTENT ================= */
+.settings-content {
+  position: relative;
+}
+
+/* ===== Section swap animation (1A — vertical slide) ===== */
+.settings-section {
+  display: none;
+}
+
+.settings-section.active {
+  display: block;
+  animation: sectionIn 0.4s var(--ease) both;
+}
+
+.settings-section.leaving {
+  display: block;
+  animation: sectionOut 0.22s var(--ease) both;
+}
+
+@keyframes sectionIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes sectionOut {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-10px); }
+}
+
+.section-title {
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin-bottom: 22px;
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  border-radius: 3px;
+}
+
+/* ================= FORM ELEMENTS ================= */
+.form-group { margin-bottom: 18px; }
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+  font-size: 0.88rem;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  color: white;
+  font-size: 0.95rem;
+  min-height: 44px;
+  transition: all 0.3s var(--ease);
+  font-family: 'Poppins', sans-serif;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--secondary);
+  background: rgba(255, 255, 255, 0.09);
+  box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.18);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder { color: rgba(255, 255, 255, 0.4); }
+
+.form-textarea {
+  min-height: 100px;
+  resize: vertical;
+  line-height: 1.55;
+}
+
+.form-select {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px;
+  padding-right: 42px;
+}
+
+.form-select option { background: var(--dark); color: white; }
+
+/* ================= TOGGLE ================= */
+.toggle-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.toggle-item:last-child { border-bottom: none; }
+.toggle-info { flex: 1; min-width: 0; }
+
+.toggle-title {
+  font-weight: 600;
+  margin-bottom: 3px;
+  font-size: 0.92rem;
+}
+
+.toggle-description {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.toggle {
+  width: 52px;
+  height: 28px;
+  min-width: 52px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.3s var(--ease);
+  flex-shrink: 0;
+}
+
+.toggle.active { background: linear-gradient(135deg, var(--primary), var(--secondary)); }
+
+.toggle::after {
+  content: '';
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  background: white;
+  border-radius: 50%;
+  top: 3px;
+  left: 3px;
+  transition: transform 0.3s var(--ease);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.toggle.active::after { transform: translateX(24px); }
+
+/* ================= RADIO ================= */
+.radio-group { display: flex; gap: 10px; flex-wrap: wrap; }
+.radio-option { flex: 1; min-width: 100px; }
+.radio-option input[type="radio"] { display: none; }
+
+.radio-option label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s var(--ease);
+  font-size: 0.9rem;
+  font-weight: 500;
+  min-height: 48px;
+}
+
+.radio-option label:hover { background: rgba(255, 255, 255, 0.1); }
+
+.radio-option input[type="radio"]:checked + label {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  border-color: transparent;
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+}
+
+/* ================= DANGER ZONE ================= */
+.danger-zone {
+  margin-top: 24px;
+  padding: 20px;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 16px;
+}
+
+.danger-title {
+  color: var(--danger);
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.danger-description {
+  color: rgba(255, 255, 255, 0.65);
+  margin-bottom: 16px;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+/* ================= BUTTONS ================= */
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s var(--ease);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  min-height: 44px;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(99, 102, 241, 0.4);
+}
+
+.btn-primary:active { transform: translateY(0) scale(0.98); }
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.14);
+  transform: translateY(-2px);
+}
+
+.btn-secondary:active { transform: translateY(0) scale(0.98); }
+
+.btn-danger {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid var(--danger);
+  color: #fecaca;
+}
+
+.btn-danger:hover {
+  background: var(--danger);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(239, 68, 68, 0.35);
+}
+
+.btn-danger:active { transform: translateY(0) scale(0.98); }
+
+.btn-sm {
+  padding: 8px 14px;
+  font-size: 0.82rem;
+  min-height: 36px;
+  border-radius: 10px;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 22px;
+  flex-wrap: wrap;
+}
+
+/* ================= INFO CARD ================= */
+.info-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 14px 16px;
+  border-radius: 14px;
+  margin-top: 8px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 0;
+  flex-wrap: wrap;
+}
+
+.info-row:not(:last-child) { border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+.info-row-main { flex: 1; min-width: 0; }
+
+.info-row-title {
+  font-weight: 500;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-row-sub {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.55);
+  margin-top: 3px;
+}
+
+.status-active {
+  color: var(--success);
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.storage-bar {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  height: 22px;
+  overflow: hidden;
+  margin: 10px 0;
+}
+
+.storage-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  border-radius: 10px;
+  transition: width 0.6s var(--ease);
+}
+
+.color-swatches { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.color-swatch {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: all 0.3s var(--ease);
+}
+
+.color-swatch:hover {
+  transform: scale(1.08);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.color-swatch.selected {
+  border-color: white;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.15);
+}
+
+.avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.avatar-preview {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  border: 3px solid var(--secondary);
+  object-fit: cover;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.avatar-hint {
+  color: rgba(255, 255, 255, 0.55);
+  margin-top: 8px;
+  font-size: 0.82rem;
+}
+
+/* ================= MOBILE BOTTOM NAV ================= */
+.mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(2, 6, 23, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 10px 0 env(safe-area-inset-bottom, 10px);
+  z-index: 1100;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.mobile-bottom-nav a {
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: none;
+  font-size: 0.7rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 12px;
+  border-radius: 40px;
+  transition: all 0.3s var(--ease);
+  min-height: 44px;
+  min-width: 56px;
+  justify-content: center;
+}
+
+.mobile-bottom-nav a i { font-size: 1.3rem; }
+.mobile-bottom-nav a:hover { color: white; }
+.mobile-bottom-nav a.active { color: var(--secondary); }
+.mobile-bottom-nav a span { font-weight: 500; letter-spacing: 0.3px; }
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:991px){
+  body { padding-bottom: 80px; }
+
+  .nav-links-desktop { display: none !important; }
+  .mobile-controls { display: flex !important; }
+  .mobile-bottom-nav { display: flex !important; }
+
+  .navbar-brand span { font-size: 1.15rem; }
+  .logo-circle { width: 38px; height: 38px; font-size: 1.2rem; }
+
+  .profile-btn { padding: 6px 10px; gap: 6px; }
+  .profile-btn span { max-width: 70px; font-size: 0.85rem; }
+  .profile-img { width: 30px; height: 30px; }
+
+  .notification {
+    top: 16px;
+    left: 16px;
+    right: 16px;
+    max-width: none;
+  }
+
+  /* Hide tabs on tablet, show dropdown */
+  .settings-tabs { display: none; }
+  .settings-dropdown-wrap { display: block; }
+}
+
+@media(max-width:768px){
+  .section-page{
+    margin:20px 12px;
+    padding:24px 18px;
+    border-radius: 22px;
+  }
+
+  .section-page h2{
+    font-size:1.35rem;
+    margin-bottom:18px;
+  }
+  .section-page h2 i { font-size: 1.15rem; }
+
+  .settings-dropdown { font-size: 0.88rem; padding: 11px 38px 11px 14px; min-height: 44px; }
+
+  .section-title {
+    font-size: 1.15rem;
+    margin-bottom: 18px;
+  }
+
+  .button-group { flex-direction: column; }
+
+  .button-group .btn-primary,
+  .button-group .btn-secondary,
+  .button-group .btn-danger {
+    width: 100%;
+  }
+
+  .radio-group { flex-direction: column; }
+  .radio-option { min-width: 100%; }
+}
+
+@media(max-width:480px){
+  .navbar-custom { padding: 10px 0; }
+  .navbar-brand { gap: 8px; font-size: 1.3rem; }
+  .navbar-brand span { font-size: 0.95rem; }
+  .logo-circle { width: 32px; height: 32px; font-size: 1rem; }
+
+  .profile-btn span { display: none; }
+  .profile-btn { padding: 6px; border-radius: 50%; }
+  .profile-chevron { display: none; }
+
+  .mobile-controls { gap: 6px; }
+  .hamburger-btn { font-size: 1.3rem; padding: 2px 4px; }
+  .mobile-search-btn { font-size: 1rem; }
+
+  .section-page {
+    margin: 12px 8px;
+    padding: 16px 12px;
+    border-radius: 18px;
+  }
+
+  .section-page h2 {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+  }
+  .section-page h2 i { font-size: 0.95rem; }
+
+  .settings-dropdown { font-size: 0.82rem; padding: 10px 34px 10px 12px; min-height: 42px; }
+
+  .section-title { font-size: 1.05rem; }
+
+  .form-input,
+  .form-select,
+  .form-textarea {
+    font-size: 0.9rem;
+    padding: 10px 12px;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-danger {
+    font-size: 0.85rem;
+    padding: 10px 16px;
+  }
+
+  .toggle-item { padding: 10px 0; }
+  .toggle-title { font-size: 0.85rem; }
+  .toggle-description { font-size: 0.72rem; }
+
+  .info-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .mobile-bottom-nav a { font-size: 0.6rem; padding: 4px 8px; }
+  .mobile-bottom-nav a i { font-size: 1.15rem; }
+}
+
+@media(max-width:360px){
+  .navbar-brand span { display: none; }
+  .section-title { font-size: 0.95rem; }
+  .mobile-bottom-nav a { font-size: 0.55rem; min-width: 48px; }
+  .mobile-bottom-nav a i { font-size: 1.05rem; }
+}
+</style>
 </head>
-
 <body>
 
-  <!-- Particles Background -->
-  <div class="particles-container" id="particlesContainer"></div>
+<div id="notification" class="notification"></div>
 
-  <!-- Notification -->
-  <div id="notification" class="notification"></div>
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar-custom">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">
+      <div class="logo-circle"><i class="fas fa-graduation-cap"></i></div>
+      <span>Smart Classroom</span>
+    </a>
 
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-custom">
-    <div class="container">
-      <a class="navbar-brand" href="index.html">
-        <div class="logo-circle">
-          <i class="fas fa-graduation-cap"></i>
-        </div>
-        <span>Smart Classroom</span>
-      </a>
+    <div class="nav-links-desktop">
+      <a class="nav-link nav-link-custom" href="index.html"><i class="fas fa-home"></i> Home</a>
+      <a class="nav-link nav-link-custom" href="profile.html"><i class="fas fa-user"></i> Profile</a>
+      <a class="nav-link nav-link-custom" href="library.html"><i class="fas fa-book"></i> Library</a>
+      <a class="nav-link nav-link-custom" href="lectures.html"><i class="fas fa-play-circle"></i> Lectures</a>
+      <a class="nav-link nav-link-custom" href="downloads.html"><i class="fas fa-download"></i> Downloads</a>
+      <a class="nav-link nav-link-custom active" href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+    </div>
 
-      <div class="navbar-nav ms-auto">
-        <a class="nav-link nav-link-custom" href="index.html">
-          <i class="fas fa-home"></i> Home
-        </a>
-        <a class="nav-link nav-link-custom" href="profile.html">
-          <i class="fas fa-user"></i> Profile
-        </a>
-        <a class="nav-link nav-link-custom" href="experience.html">
-          <i class="fas fa-briefcase"></i> Experience
-        </a>
-        <a class="nav-link nav-link-custom" href="library.html">
-          <i class="fas fa-book"></i> Library
-        </a>
-        <a class="nav-link nav-link-custom" href="downloads.html">
-          <i class="fas fa-download"></i> Downloads
-        </a>
-        <a class="nav-link nav-link-custom active" href="settings.html">
-          <i class="fas fa-cog"></i> Settings
-        </a>
-        <a class="nav-link nav-link-custom" href="contact.html">
-          <i class="fas fa-envelope"></i> Contact
-        </a>
+    <div class="header-right">
+      <div class="mobile-controls">
+        <span class="mobile-search-btn" id="mobileSearchToggle" title="Search">
+          <i class="fas fa-search"></i>
+        </span>
+        <button class="hamburger-btn" id="hamburgerBtn" title="Menu">
+          <i class="fas fa-bars"></i>
+        </button>
       </div>
 
-      <!-- Profile Dropdown -->
       <div class="profile-dropdown">
         <div class="profile-btn" id="profileToggle">
           <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Ramesh" alt="Profile" class="profile-img">
           <span id="userName">Guest</span>
-          <i class="fas fa-chevron-down"></i>
+          <i class="fas fa-chevron-down profile-chevron"></i>
         </div>
         <div class="profile-menu" id="profileMenu">
-          <a href="profile.html">
-            <i class="fas fa-user"></i> My Profile
-          </a>
-          <a href="downloads.html">
-            <i class="fas fa-download"></i> My Downloads
-          </a>
-          <a href="library.html">
-            <i class="fas fa-book"></i> Library
-          </a>
-          <a href="experience.html">
-            <i class="fas fa-chart-line"></i> Progress
-          </a>
-          <hr style="border-color: rgba(255,255,255,0.1); margin: 10px 0;">
-          <a href="login.html" id="loginLink">
-            <i class="fas fa-sign-in-alt"></i> Login
-          </a>
-          <a href="signup.html" id="signupLink">
-            <i class="fas fa-user-plus"></i> Sign Up
-          </a>
-          <a href="#" id="logoutLink" style="display: none;">
-            <i class="fas fa-sign-out-alt"></i> Logout
-          </a>
-        </div>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Settings Container -->
-  <div class="settings-container">
-    <div class="settings-header">
-      <h1 class="settings-title">Settings</h1>
-      <p class="settings-subtitle">Customize your learning experience and account preferences</p>
-    </div>
-
-    <div class="settings-grid">
-      <!-- Settings Sidebar Navigation -->
-      <div class="settings-sidebar">
-        <ul class="settings-nav">
-          <li class="settings-nav-item">
-            <a class="settings-nav-link active" data-section="profile">
-              <i class="fas fa-user-circle"></i> Profile Settings
-            </a>
-          </li>
-          <li class="settings-nav-item">
-            <a class="settings-nav-link" data-section="account">
-              <i class="fas fa-lock"></i> Account Security
-            </a>
-          </li>
-          <li class="settings-nav-item">
-            <a class="settings-nav-link" data-section="notifications">
-              <i class="fas fa-bell"></i> Notifications
-            </a>
-          </li>
-          <li class="settings-nav-item">
-            <a class="settings-nav-link" data-section="appearance">
-              <i class="fas fa-palette"></i> Appearance
-            </a>
-          </li>
-          <li class="settings-nav-item">
-            <a class="settings-nav-link" data-section="privacy">
-              <i class="fas fa-shield-alt"></i> Privacy
-            </a>
-          </li>
-          <li class="settings-nav-item">
-            <a class="settings-nav-link" data-section="downloads">
-              <i class="fas fa-download"></i> Download Settings
-            </a>
-          </li>
-          <li class="settings-nav-item">
-            <a class="settings-nav-link" data-section="language">
-              <i class="fas fa-language"></i> Language & Region
-            </a>
-          </li>
-          <li class="settings-nav-item">
-            <a class="settings-nav-link" data-section="accessibility">
-              <i class="fas fa-universal-access"></i> Accessibility
-            </a>
-          </li>
-          <li class="settings-nav-item">
-            <a class="settings-nav-link" data-section="data">
-              <i class="fas fa-database"></i> Data Management
-            </a>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Settings Content -->
-      <div class="settings-content">
-        <!-- Profile Settings Section -->
-        <div id="profile" class="settings-section active">
-          <h2 class="section-title">Profile Settings</h2>
-
-          <div class="form-group">
-            <label class="form-label">Profile Picture</label>
-            <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
-              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Ramesh" alt="Profile" 
-                   style="width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--secondary);">
-              <div>
-                <button class="btn-secondary" onclick="triggerAvatarUpload()">
-                  <i class="fas fa-upload"></i> Upload New
-                </button>
-                <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
-                <p style="color: rgba(255,255,255,0.6); margin-top: 10px; font-size: 0.9rem;">
-                  JPG, PNG or GIF. Max 2MB.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Full Name</label>
-            <input type="text" class="form-input" id="fullName" value="Ramesh Prasad" placeholder="Enter your full name">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Display Name</label>
-            <input type="text" class="form-input" id="displayName" value="Ramesh" placeholder="How others see you">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Email Address</label>
-            <input type="email" class="form-input" id="email" value="ramesh@example.com" placeholder="Enter your email">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Phone Number</label>
-            <input type="tel" class="form-input" id="phone" value="+91 7498147593" placeholder="Enter your phone number">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Location</label>
-            <input type="text" class="form-input" id="location" value="New Delhi, India" placeholder="City, Country">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Bio</label>
-            <textarea class="form-textarea" id="bio" placeholder="Tell us about yourself">Computer Science student passionate about programming and operating systems. Love to learn new technologies and share knowledge with others.</textarea>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Date of Birth</label>
-            <input type="date" class="form-input" id="dob" value="2000-01-01">
-          </div>
-
-          <div class="button-group">
-            <button class="btn-primary" onclick="saveProfileSettings()">
-              <i class="fas fa-save"></i> Save Changes
-            </button>
-            <button class="btn-secondary" onclick="resetProfileSettings()">
-              <i class="fas fa-undo"></i> Reset
-            </button>
-          </div>
-        </div>
-
-        <!-- Account Security Section -->
-        <div id="account" class="settings-section">
-          <h2 class="section-title">Account Security</h2>
-
-          <div class="form-group">
-            <label class="form-label">Current Password</label>
-            <input type="password" class="form-input" id="currentPassword" placeholder="Enter current password">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">New Password</label>
-            <input type="password" class="form-input" id="newPassword" placeholder="Enter new password">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Confirm New Password</label>
-            <input type="password" class="form-input" id="confirmPassword" placeholder="Confirm new password">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Two-Factor Authentication</label>
-            <div class="toggle-item">
-              <div class="toggle-info">
-                <div class="toggle-title">Enable 2FA</div>
-                <div class="toggle-description">Add an extra layer of security to your account</div>
-              </div>
-              <div class="toggle" id="twoFactorToggle" onclick="toggleSetting(this, '2fa')"></div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Login Alerts</label>
-            <div class="toggle-item">
-              <div class="toggle-info">
-                <div class="toggle-title">Email me on new login</div>
-                <div class="toggle-description">Get notified when someone logs into your account</div>
-              </div>
-              <div class="toggle active" id="loginAlertToggle" onclick="toggleSetting(this, 'loginAlerts')"></div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Active Sessions</label>
-            <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; margin-top: 10px;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <div>
-                  <div><i class="fas fa-laptop"></i> Windows PC - Chrome</div>
-                  <div style="font-size: 0.9rem; color: rgba(255,255,255,0.6);">New Delhi, India • Current session</div>
-                </div>
-                <span style="color: var(--success);">Active</span>
-              </div>
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                  <div><i class="fas fa-mobile-alt"></i> iPhone 13 - Safari</div>
-                  <div style="font-size: 0.9rem; color: rgba(255,255,255,0.6);">New Delhi, India • 2 days ago</div>
-                </div>
-                <button class="btn-secondary" style="padding: 5px 15px;" onclick="logoutDevice()">Logout</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="button-group">
-            <button class="btn-primary" onclick="updatePassword()">
-              <i class="fas fa-key"></i> Update Password
-            </button>
-          </div>
-        </div>
-
-        <!-- Notifications Section -->
-        <div id="notifications" class="settings-section">
-          <h2 class="section-title">Notification Preferences</h2>
-
-          <div class="toggle-item">
-            <div class="toggle-info">
-              <div class="toggle-title">Email Notifications</div>
-              <div class="toggle-description">Receive updates via email</div>
-            </div>
-            <div class="toggle active" onclick="toggleSetting(this, 'emailNotifications')"></div>
-          </div>
-
-          <div class="toggle-item">
-            <div class="toggle-info">
-              <div class="toggle-title">Push Notifications</div>
-              <div class="toggle-description">Browser push notifications</div>
-            </div>
-            <div class="toggle active" onclick="toggleSetting(this, 'pushNotifications')"></div>
-          </div>
-
-          <div class="toggle-item">
-            <div class="toggle-info">
-              <div class="toggle-title">Course Updates</div>
-              <div class="toggle-description">New materials and lectures</div>
-            </div>
-            <div class="toggle active" onclick="toggleSetting(this, 'courseUpdates')"></div>
-          </div>
-
-          <div class="toggle-item">
-            <div class="toggle-info">
-              <div class="toggle-title">Download Complete</div>
-              <div class="toggle-description">When downloads finish</div>
-            </div>
-            <div class="toggle active" onclick="toggleSetting(this, 'downloadComplete')"></div>
-          </div>
-
-          <div class="toggle-item">
-            <div class="toggle-info">
-              <div class="toggle-title">Assignment Reminders</div>
-              <div class="toggle-description">Upcoming deadlines</div>
-            </div>
-            <div class="toggle active" onclick="toggleSetting(this, 'assignmentReminders')"></div>
-          </div>
-
-          <div class="toggle-item">
-            <div class="toggle-info">
-              <div class="toggle-title">Community Activity</div>
-              <div class="toggle-description">Replies and mentions</div>
-            </div>
-            <div class="toggle" onclick="toggleSetting(this, 'communityActivity')"></div>
-          </div>
-
-          <div class="button-group">
-            <button class="btn-primary" onclick="saveNotificationSettings()">
-              <i class="fas fa-save"></i> Save Preferences
-            </button>
-          </div>
-        </div>
-
-        <!-- Appearance Section -->
-        <div id="appearance" class="settings-section">
-          <h2 class="section-title">Appearance</h2>
-
-          <div class="form-group">
-            <label class="form-label">Theme Mode</label>
-            <div class="radio-group">
-              <div class="radio-option">
-                <input type="radio" name="theme" id="themeLight" value="light">
-                <label for="themeLight">
-                  <i class="fas fa-sun"></i> Light
-                </label>
-              </div>
-              <div class="radio-option">
-                <input type="radio" name="theme" id="themeDark" value="dark" checked>
-                <label for="themeDark">
-                  <i class="fas fa-moon"></i> Dark
-                </label>
-              </div>
-              <div class="radio-option">
-                <input type="radio" name="theme" id="themeSystem" value="system">
-                <label for="themeSystem">
-                  <i class="fas fa-desktop"></i> System
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Primary Color</label>
-            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-              <div style="width: 50px; height: 50px; background: #6366f1; border-radius: 12px; cursor: pointer; border: 3px solid transparent;" onclick="setPrimaryColor('#6366f1')"></div>
-              <div style="width: 50px; height: 50px; background: #22d3ee; border-radius: 12px; cursor: pointer; border: 3px solid transparent;" onclick="setPrimaryColor('#22d3ee')"></div>
-              <div style="width: 50px; height: 50px; background: #f472b6; border-radius: 12px; cursor: pointer; border: 3px solid transparent;" onclick="setPrimaryColor('#f472b6')"></div>
-              <div style="width: 50px; height: 50px; background: #10b981; border-radius: 12px; cursor: pointer; border: 3px solid transparent;" onclick="setPrimaryColor('#10b981')"></div>
-              <div style="width: 50px; height: 50px; background: #f59e0b; border-radius: 12px; cursor: pointer; border: 3px solid transparent;" onclick="setPrimaryColor('#f59e0b')"></div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Font Size</label>
-            <select class="form-select" id="fontSize">
-              <option value="small">Small</option>
-              <option value="medium" selected>Medium</option>
-              <option value="large">Large</option>
-              <option value="xlarge">Extra Large</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Compact Mode</label>
-            <div class="toggle-item">
-              <div class="toggle-info">
-                <div class="toggle-description">Show more content with compact spacing</div>
-              </div>
-              <div class="toggle" onclick="toggleSetting(this, 'compactMode')"></div>
-            </div>
-          </div>
-
-          <div class="button-group">
-            <button class="btn-primary" onclick="saveAppearanceSettings()">
-              <i class="fas fa-save"></i> Apply Changes
-            </button>
-          </div>
-        </div>
-
-        <!-- Privacy Section -->
-        <div id="privacy" class="settings-section">
-          <h2 class="section-title">Privacy Settings</h2>
-
-          <div class="toggle-item">
-            <div class="toggle-info">
-              <div class="toggle-title">Public Profile</div>
-              <div class="toggle-description">Allow others to see your profile</div>
-            </div>
-            <div class="toggle active" onclick="toggleSetting(this, 'publicProfile')"></div>
-          </div>
-
-          <div class="toggle-item">
-            <div class="toggle-info">
-              <div class="toggle-title">Show Activity Status</div>
-              <div class="toggle-description">Let others see when you're online</div>
-            </div>
-            <div class="toggle active" onclick="toggleSetting(this, 'activityStatus')"></div>
-          </div>
-
-          <div class="toggle-item">
-            <div class="toggle-info">
-              <div class="toggle-title">Share Learning Progress</div>
-              <div class="toggle-description">Show your achievements on profile</div>
-            </div>
-            <div class="toggle active" onclick="toggleSetting(this, 'shareProgress')"></div>
-          </div>
-
-          <div class="toggle-item">
-            <div class="toggle-info">
-              <div class="toggle-title">Allow Search Engines</div>
-              <div class="toggle-description">Let search engines index your profile</div>
-            </div>
-            <div class="toggle" onclick="toggleSetting(this, 'searchEngines')"></div>
-          </div>
-
-          <div class="danger-zone">
-            <h3 class="danger-title">Danger Zone</h3>
-            <p class="danger-description">Once you delete your account, there is no going back. Please be certain.</p>
-            <button class="btn-danger" onclick="deleteAccount()">
-              <i class="fas fa-trash"></i> Delete Account
-            </button>
-          </div>
-        </div>
-
-        <!-- Download Settings Section -->
-        <div id="downloads" class="settings-section">
-          <h2 class="section-title">Download Settings</h2>
-
-          <div class="form-group">
-            <label class="form-label">Download Location</label>
-            <div style="display: flex; gap: 10px;">
-              <input type="text" class="form-input" id="downloadPath" value="C:/Users/Ramesh/Downloads/Smart Classroom">
-              <button class="btn-secondary" onclick="browseFolder()">
-                <i class="fas fa-folder-open"></i> Browse
-              </button>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Maximum Download Speed</label>
-            <select class="form-select" id="downloadSpeed">
-              <option value="unlimited">Unlimited</option>
-              <option value="1">1 MB/s</option>
-              <option value="2">2 MB/s</option>
-              <option value="5" selected>5 MB/s</option>
-              <option value="10">10 MB/s</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Simultaneous Downloads</label>
-            <select class="form-select" id="simultaneousDownloads">
-              <option value="1">1 at a time</option>
-              <option value="2">2 at a time</option>
-              <option value="3" selected>3 at a time</option>
-              <option value="5">5 at a time</option>
-            </select>
-          </div>
-
-          <div class="toggle-item">
-            <div class="toggle-info">
-              <div class="toggle-title">Auto-download Updates</div>
-              <div class="toggle-description">Automatically download new versions</div>
-            </div>
-            <div class="toggle active" onclick="toggleSetting(this, 'autoDownloadUpdates')"></div>
-          </div>
-
-          <div class="toggle-item">
-            <div class="toggle-info">
-              <div class="toggle-title">Download on Wi-Fi Only</div>
-              <div class="toggle-description">Save mobile data</div>
-            </div>
-            <div class="toggle" onclick="toggleSetting(this, 'wifiOnly')"></div>
-          </div>
-
-          <div class="button-group">
-            <button class="btn-primary" onclick="saveDownloadSettings()">
-              <i class="fas fa-save"></i> Save Settings
-            </button>
-          </div>
-        </div>
-
-        <!-- Language & Region Section -->
-        <div id="language" class="settings-section">
-          <h2 class="section-title">Language & Region</h2>
-
-          <div class="form-group">
-            <label class="form-label">Language</label>
-            <select class="form-select" id="language">
-              <option value="en" selected>English (US)</option>
-              <option value="en-gb">English (UK)</option>
-              <option value="hi">Hindi</option>
-              <option value="es">Spanish</option>
-              <option value="fr">French</option>
-              <option value="de">German</option>
-              <option value="zh">Chinese</option>
-              <option value="ja">Japanese</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Region</label>
-            <select class="form-select" id="region">
-              <option value="us">United States</option>
-              <option value="uk">United Kingdom</option>
-              <option value="in" selected>India</option>
-              <option value="ca">Canada</option>
-              <option value="au">Australia</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Time Zone</label>
-            <select class="form-select" id="timezone">
-              <option value="est">Eastern Time (EST)</option>
-              <option value="cst">Central Time (CST)</option>
-              <option value="ist" selected>Indian Standard Time (IST)</option>
-              <option value="gmt">Greenwich Mean Time (GMT)</option>
-              <option value="pst">Pacific Time (PST)</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Date Format</label>
-            <select class="form-select" id="dateFormat">
-              <option value="mdy">MM/DD/YYYY</option>
-              <option value="dmy" selected>DD/MM/YYYY</option>
-              <option value="ymd">YYYY/MM/DD</option>
-            </select>
-          </div>
-
-          <div class="button-group">
-            <button class="btn-primary" onclick="saveLanguageSettings()">
-              <i class="fas fa-save"></i> Save Settings
-            </button>
-          </div>
-        </div>
-
-        <!-- Accessibility Section -->
-        <div id="accessibility" class="settings-section">
-          <h2 class="section-title">Accessibility Settings</h2>
-
-          <div class="form-group">
-            <label class="form-label">Contrast Mode</label>
-            <select class="form-select" id="contrastMode">
-              <option value="normal" selected>Normal</option>
-              <option value="high">High Contrast</option>
-              <option value="inverted">Inverted Colors</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Font Family</label>
-            <select class="form-select" id="fontFamily">
-              <option value="poppins" selected>Poppins (Default)</option>
-              <option value="arial">Arial</option>
-              <option value="verdana">Verdana</option>
-              <option value="opendyslexic">OpenDyslexic</option>
-            </select>
-          </div>
-
-          <div class="toggle-item">
-            <div class="toggle-info">
-              <div class="toggle-title">Screen Reader Optimized</div>
-              <div class="toggle-description">Enhanced support for screen readers</div>
-            </div>
-            <div class="toggle" onclick="toggleSetting(this, 'screenReader')"></div>
-          </div>
-
-          <div class="toggle-item">
-            <div class="toggle-info">
-              <div class="toggle-title">Reduce Motion</div>
-              <div class="toggle-description">Minimize animations</div>
-            </div>
-            <div class="toggle" onclick="toggleSetting(this, 'reduceMotion')"></div>
-          </div>
-
-          <div class="toggle-item">
-            <div class="toggle-info">
-              <div class="toggle-title">Keyboard Navigation</div>
-              <div class="toggle-description">Enhanced keyboard shortcuts</div>
-            </div>
-            <div class="toggle active" onclick="toggleSetting(this, 'keyboardNav')"></div>
-          </div>
-
-          <div class="button-group">
-            <button class="btn-primary" onclick="saveAccessibilitySettings()">
-              <i class="fas fa-save"></i> Save Settings
-            </button>
-          </div>
-        </div>
-
-        <!-- Data Management Section -->
-        <div id="data" class="settings-section">
-          <h2 class="section-title">Data Management</h2>
-
-          <div style="margin-bottom: 30px;">
-            <h4 style="margin-bottom: 15px;">Storage Usage</h4>
-            <div style="background: rgba(255,255,255,0.1); border-radius: 10px; height: 30px; overflow: hidden; margin-bottom: 10px;">
-              <div style="width: 45%; height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary));"></div>
-            </div>
-            <div style="display: flex; justify-content: space-between; color: rgba(255,255,255,0.7);">
-              <span>2.3 GB used</span>
-              <span>of 5 GB</span>
-            </div>
-          </div>
-
-          <div style="margin-bottom: 30px;">
-            <h4 style="margin-bottom: 15px;">Downloaded Content</h4>
-            <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <div>
-                  <div><i class="fas fa-file-pdf"></i> Study Materials</div>
-                  <div style="font-size: 0.9rem; color: rgba(255,255,255,0.6);">42 files • 850 MB</div>
-                </div>
-                <button class="btn-secondary" style="padding: 8px 15px;" onclick="clearContent('materials')">Clear</button>
-              </div>
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                  <div><i class="fas fa-video"></i> Video Lectures</div>
-                  <div style="font-size: 0.9rem; color: rgba(255,255,255,0.6);">15 videos • 1.5 GB</div>
-                </div>
-                <button class="btn-secondary" style="padding: 8px 15px;" onclick="clearContent('videos')">Clear</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Export Data</label>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-              <button class="btn-secondary" onclick="exportData('profile')">
-                <i class="fas fa-user"></i> Profile Data
-              </button>
-              <button class="btn-secondary" onclick="exportData('downloads')">
-                <i class="fas fa-download"></i> Downloads
-              </button>
-              <button class="btn-secondary" onclick="exportData('progress')">
-                <i class="fas fa-chart-line"></i> Progress
-              </button>
-              <button class="btn-secondary" onclick="exportData('all')">
-                <i class="fas fa-database"></i> All Data
-              </button>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Import Data</label>
-            <div>
-              <input type="file" class="form-input" accept=".json" id="importFile">
-              <button class="btn-secondary mt-3" onclick="importData()">
-                <i class="fas fa-upload"></i> Import Data
-              </button>
-            </div>
-          </div>
-
-          <div class="danger-zone">
-            <h3 class="danger-title">Clear All Data</h3>
-            <p class="danger-description">This will remove all downloaded content and reset your settings.</p>
-            <button class="btn-danger" onclick="clearAllData()">
-              <i class="fas fa-trash"></i> Clear All Data
-            </button>
-          </div>
+          <a href="profile.html"><i class="fas fa-user"></i> My Profile</a>
+          <a href="downloads.html"><i class="fas fa-download"></i> My Downloads</a>
+          <a href="library.html"><i class="fas fa-book"></i> Library</a>
+          <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+          <hr>
+          <a href="login.html" id="loginLink"><i class="fas fa-sign-in-alt"></i> Login</a>
+          <a href="signup.html" id="signupLink"><i class="fas fa-user-plus"></i> Sign Up</a>
+          <a href="#" id="logoutLink" style="display: none;"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </div>
       </div>
     </div>
   </div>
+</nav>
 
-  <!-- Footer -->
-  <footer>
-    <div class="footer-container">
-      <div class="footer-brand">
-        <h3>Smart Classroom</h3>
-        <p>Transforming engineering education through technology.</p>
-        <p style="margin-top: 15px; font-size: 0.9rem;">
-          <i class="fas fa-code"></i> Created with <i class="fas fa-heart" style="color: var(--danger);"></i> by <span class="creator-credit">Ramesh Prasad</span>
-        </p>
+<!-- ================= MOBILE SEARCH BAR ================= -->
+<div class="mobile-search-bar" id="mobileSearchBar">
+  <form id="mobileSearchForm" onsubmit="event.preventDefault(); applyMobileSearch();">
+    <input type="text" placeholder="Search settings..." id="mobileSearchInput">
+    <button type="submit" title="Search"><i class="fas fa-search"></i></button>
+  </form>
+</div>
+
+<!-- ================= MOBILE MENU ================= -->
+<div class="mobile-menu-overlay" id="mobileMenuOverlay">
+  <div class="mobile-menu-panel" id="mobileMenuPanel">
+    <button class="close-menu" id="closeMenuBtn"><i class="fas fa-times"></i></button>
+    <a href="index.html"><i class="fas fa-home"></i> Home</a>
+    <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+    <a href="library.html"><i class="fas fa-book"></i> Library</a>
+    <a href="lectures.html"><i class="fas fa-play-circle"></i> Lectures</a>
+    <a href="downloads.html"><i class="fas fa-download"></i> Downloads</a>
+    <a href="settings.html" class="active"><i class="fas fa-cog"></i> Settings</a>
+    <hr style="border-color: rgba(255,255,255,0.05); margin: 16px 0;">
+    <a href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+    <a href="signup.html"><i class="fas fa-user-plus"></i> Sign Up</a>
+  </div>
+</div>
+
+<!-- ================= SETTINGS PAGE ================= -->
+<div class="section-page reveal">
+  <h2><i class="fas fa-cog"></i> Settings</h2>
+
+  <!-- Tabs (PC) -->
+  <div class="settings-tabs" id="settingsTabs">
+    <button class="settings-tab active" data-section="profile"><i class="fas fa-user-circle"></i> Profile</button>
+    <button class="settings-tab" data-section="account"><i class="fas fa-lock"></i> Account</button>
+    <button class="settings-tab" data-section="notifications"><i class="fas fa-bell"></i> Notifications</button>
+    <button class="settings-tab" data-section="appearance"><i class="fas fa-palette"></i> Appearance</button>
+    <button class="settings-tab" data-section="privacy"><i class="fas fa-shield-alt"></i> Privacy</button>
+    <button class="settings-tab" data-section="downloads"><i class="fas fa-download"></i> Downloads</button>
+    <button class="settings-tab" data-section="language"><i class="fas fa-language"></i> Language</button>
+    <button class="settings-tab" data-section="accessibility"><i class="fas fa-universal-access"></i> Accessibility</button>
+    <button class="settings-tab" data-section="data"><i class="fas fa-database"></i> Data</button>
+  </div>
+
+  <!-- Dropdown (Mobile) -->
+  <div class="settings-dropdown-wrap">
+    <select class="settings-dropdown" id="settingsDropdown">
+      <option value="profile">Profile Settings</option>
+      <option value="account">Account Security</option>
+      <option value="notifications">Notifications</option>
+      <option value="appearance">Appearance</option>
+      <option value="privacy">Privacy</option>
+      <option value="downloads">Download Settings</option>
+      <option value="language">Language &amp; Region</option>
+      <option value="accessibility">Accessibility</option>
+      <option value="data">Data Management</option>
+    </select>
+  </div>
+
+  <!-- Content -->
+  <div class="settings-content">
+
+    <!-- ===== Profile ===== -->
+    <div id="profile" class="settings-section active">
+      <h3 class="section-title">Profile Settings</h3>
+
+      <div class="form-group">
+        <label class="form-label">Profile Picture</label>
+        <div class="avatar-row">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Ramesh" alt="Profile" class="avatar-preview" id="avatarPreview">
+          <div>
+            <button class="btn-secondary" onclick="triggerAvatarUpload()">
+              <i class="fas fa-upload"></i> Upload New
+            </button>
+            <input type="file" id="avatarUpload" accept="image/*" style="display:none;">
+            <p class="avatar-hint">JPG, PNG or GIF. Max 2MB.</p>
+          </div>
+        </div>
       </div>
 
-      <div class="footer-links">
-        <h4>Quick Links</h4>
-        <a href="index.html" class="footer-link">Home</a>
-        <a href="profile.html" class="footer-link">Profile</a>
-        <a href="experience.html" class="footer-link">Experience</a>
-        <a href="library.html" class="footer-link">Library</a>
-        <a href="downloads.html" class="footer-link">Downloads</a>
-        <a href="settings.html" class="footer-link">Settings</a>
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input type="text" class="form-input" id="fullName" placeholder="Enter your full name">
       </div>
 
-      <div class="footer-links">
-        <h4>Account</h4>
-        <a href="login.html" class="footer-link">Login</a>
-        <a href="signup.html" class="footer-link">Sign Up</a>
-        <a href="settings.html" class="footer-link">Settings</a>
-        <a href="contact.html" class="footer-link">Help Center</a>
+      <div class="form-group">
+        <label class="form-label">Display Name</label>
+        <input type="text" class="form-input" id="displayName" placeholder="How others see you">
       </div>
 
-      <div class="footer-links">
-        <h4>Connect</h4>
-        <a href="#" class="footer-link"><i class="fab fa-github"></i> GitHub</a>
-        <a href="#" class="footer-link"><i class="fab fa-linkedin"></i> LinkedIn</a>
-        <a href="#" class="footer-link"><i class="fab fa-twitter"></i> Twitter</a>
-        <a href="#" class="footer-link"><i class="fab fa-instagram"></i> Instagram</a>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" class="form-input" id="email" placeholder="Enter your email">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Phone Number</label>
+        <input type="tel" class="form-input" id="phone" placeholder="Enter your phone number">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Location</label>
+        <input type="text" class="form-input" id="location" placeholder="City, Country">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Bio</label>
+        <textarea class="form-textarea" id="bio" placeholder="Tell us about yourself"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Date of Birth</label>
+        <input type="date" class="form-input" id="dob">
+      </div>
+
+      <div class="button-group">
+        <button class="btn-primary" onclick="saveProfileSettings()">
+          <i class="fas fa-save"></i> Save Changes
+        </button>
+        <button class="btn-secondary" onclick="resetProfileSettings()">
+          <i class="fas fa-undo"></i> Reset
+        </button>
       </div>
     </div>
 
-    <div class="footer-bottom">
-      <p>© 2025 Smart Classroom | All Rights Reserved</p>
-      <p style="margin-top:10px;font-size:0.9rem;">
-        <i class="fas fa-envelope"></i> rameshprasadrp123@gmail.com |
-        <i class="fas fa-phone"></i> +91 7498147593
-      </p>
-      <p style="margin-top:15px; font-size:0.9rem; color: var(--secondary);">
-        Developed by <span style="font-weight: 700; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent;">Ramesh Prasad</span>
-      </p>
+    <!-- ===== Account ===== -->
+    <div id="account" class="settings-section">
+      <h3 class="section-title">Account Security</h3>
+
+      <div class="form-group">
+        <label class="form-label">Current Password</label>
+        <input type="password" class="form-input" id="currentPassword" placeholder="Enter current password">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">New Password</label>
+        <input type="password" class="form-input" id="newPassword" placeholder="Enter new password">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Confirm New Password</label>
+        <input type="password" class="form-input" id="confirmPassword" placeholder="Confirm new password">
+      </div>
+
+      <div class="toggle-item">
+        <div class="toggle-info">
+          <div class="toggle-title">Enable 2FA</div>
+          <div class="toggle-description">Add an extra layer of security to your account</div>
+        </div>
+        <div class="toggle" onclick="toggleSetting(this, '2fa')"></div>
+      </div>
+
+      <div class="toggle-item">
+        <div class="toggle-info">
+          <div class="toggle-title">Email me on new login</div>
+          <div class="toggle-description">Get notified when someone logs into your account</div>
+        </div>
+        <div class="toggle active" onclick="toggleSetting(this, 'loginAlerts')"></div>
+      </div>
+
+      <div class="form-group" style="margin-top:18px;">
+        <label class="form-label">Active Sessions</label>
+        <div class="info-card">
+          <div class="info-row">
+            <div class="info-row-main">
+              <div class="info-row-title"><i class="fas fa-laptop"></i> Windows PC · Chrome</div>
+              <div class="info-row-sub">New Delhi, India · Current session</div>
+            </div>
+            <span class="status-active">Active</span>
+          </div>
+          <div class="info-row">
+            <div class="info-row-main">
+              <div class="info-row-title"><i class="fas fa-mobile-alt"></i> iPhone 13 · Safari</div>
+              <div class="info-row-sub">New Delhi, India · 2 days ago</div>
+            </div>
+            <button class="btn-secondary btn-sm" onclick="logoutDevice()">Logout</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="button-group">
+        <button class="btn-primary" onclick="updatePassword()">
+          <i class="fas fa-key"></i> Update Password
+        </button>
+      </div>
     </div>
-  </footer>
 
-  <script>
-    // ================= PARTICLES BACKGROUND =================
-    function createParticles() {
-      const container = document.getElementById('particlesContainer');
-      if (!container) return;
-      
-      const colors = ['#6366f1', '#22d3ee', '#f472b6', '#10b981'];
+    <!-- ===== Notifications ===== -->
+    <div id="notifications" class="settings-section">
+      <h3 class="section-title">Notification Preferences</h3>
 
-      for (let i = 0; i < 50; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
+      <div class="toggle-item">
+        <div class="toggle-info">
+          <div class="toggle-title">Email Notifications</div>
+          <div class="toggle-description">Receive updates via email</div>
+        </div>
+        <div class="toggle active" onclick="toggleSetting(this, 'emailNotifications')"></div>
+      </div>
 
-        const size = Math.random() * 20 + 5;
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        const posX = Math.random() * 100;
-        const posY = Math.random() * 100;
-        const duration = Math.random() * 20 + 10;
-        const delay = Math.random() * 5;
+      <div class="toggle-item">
+        <div class="toggle-info">
+          <div class="toggle-title">Push Notifications</div>
+          <div class="toggle-description">Browser push notifications</div>
+        </div>
+        <div class="toggle active" onclick="toggleSetting(this, 'pushNotifications')"></div>
+      </div>
 
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        particle.style.background = color;
-        particle.style.left = `${posX}%`;
-        particle.style.top = `${posY}%`;
-        particle.style.animationDuration = `${duration}s`;
-        particle.style.animationDelay = `${delay}s`;
+      <div class="toggle-item">
+        <div class="toggle-info">
+          <div class="toggle-title">Course Updates</div>
+          <div class="toggle-description">New materials and lectures</div>
+        </div>
+        <div class="toggle active" onclick="toggleSetting(this, 'courseUpdates')"></div>
+      </div>
 
-        container.appendChild(particle);
-      }
-    }
+      <div class="toggle-item">
+        <div class="toggle-info">
+          <div class="toggle-title">Download Complete</div>
+          <div class="toggle-description">When downloads finish</div>
+        </div>
+        <div class="toggle active" onclick="toggleSetting(this, 'downloadComplete')"></div>
+      </div>
 
-    // ================= NOTIFICATION SYSTEM =================
-    function showNotification(message, type = 'success') {
-      const notification = document.getElementById('notification');
-      notification.innerHTML = `
-        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
-        <span>${message}</span>
-      `;
-      notification.className = `notification ${type}`;
-      notification.style.display = 'flex';
+      <div class="toggle-item">
+        <div class="toggle-info">
+          <div class="toggle-title">Assignment Reminders</div>
+          <div class="toggle-description">Upcoming deadlines</div>
+        </div>
+        <div class="toggle active" onclick="toggleSetting(this, 'assignmentReminders')"></div>
+      </div>
 
-      setTimeout(() => {
-        notification.style.display = 'none';
-      }, 3000);
-    }
+      <div class="toggle-item">
+        <div class="toggle-info">
+          <div class="toggle-title">Community Activity</div>
+          <div class="toggle-description">Replies and mentions</div>
+        </div>
+        <div class="toggle" onclick="toggleSetting(this, 'communityActivity')"></div>
+      </div>
 
-    // ================= USER AUTHENTICATION =================
-    function checkAuth() {
-      const user = localStorage.getItem('user');
-      const userName = document.getElementById('userName');
-      const loginLink = document.getElementById('loginLink');
-      const signupLink = document.getElementById('signupLink');
-      const logoutLink = document.getElementById('logoutLink');
+      <div class="button-group">
+        <button class="btn-primary" onclick="saveNotificationSettings()">
+          <i class="fas fa-save"></i> Save Preferences
+        </button>
+      </div>
+    </div>
 
-      if (user) {
+    <!-- ===== Appearance ===== -->
+    <div id="appearance" class="settings-section">
+      <h3 class="section-title">Appearance</h3>
+
+      <div class="form-group">
+        <label class="form-label">Theme Mode</label>
+        <div class="radio-group">
+          <div class="radio-option">
+            <input type="radio" name="theme" id="themeLight" value="light">
+            <label for="themeLight"><i class="fas fa-sun"></i> Light</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" name="theme" id="themeDark" value="dark" checked>
+            <label for="themeDark"><i class="fas fa-moon"></i> Dark</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" name="theme" id="themeSystem" value="system">
+            <label for="themeSystem"><i class="fas fa-desktop"></i> System</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Primary Color</label>
+        <div class="color-swatches">
+          <div class="color-swatch" style="background:#6366f1;" data-color="#6366f1"></div>
+          <div class="color-swatch" style="background:#22d3ee;" data-color="#22d3ee"></div>
+          <div class="color-swatch" style="background:#f472b6;" data-color="#f472b6"></div>
+          <div class="color-swatch" style="background:#10b981;" data-color="#10b981"></div>
+          <div class="color-swatch" style="background:#f59e0b;" data-color="#f59e0b"></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Font Size</label>
+        <select class="form-select" id="fontSize">
+          <option value="small">Small</option>
+          <option value="medium" selected>Medium</option>
+          <option value="large">Large</option>
+          <option value="xlarge">Extra Large</option>
+        </select>
+      </div>
+
+      <div class="toggle-item">
+        <div class="toggle-info">
+          <div class="toggle-title">Compact Mode</div>
+          <div class="toggle-description">Show more content with compact spacing</div>
+        </div>
+        <div class="toggle" onclick="toggleSetting(this, 'compactMode')"></div>
+      </div>
+
+      <div class="button-group">
+        <button class="btn-primary" onclick="saveAppearanceSettings()">
+          <i class="fas fa-save"></i> Apply Changes
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== Privacy ===== -->
+    <div id="privacy" class="settings-section">
+      <h3 class="section-title">Privacy Settings</h3>
+
+      <div class="toggle-item">
+        <div class="toggle-info">
+          <div class="toggle-title">Public Profile</div>
+          <div class="toggle-description">Allow others to see your profile</div>
+        </div>
+        <div class="toggle active" onclick="toggleSetting(this, 'publicProfile')"></div>
+      </div>
+
+      <div class="toggle-item">
+        <div class="toggle-info">
+          <div class="toggle-title">Show Activity Status</div>
+          <div class="toggle-description">Let others see when you're online</div>
+        </div>
+        <div class="toggle active" onclick="toggleSetting(this, 'activityStatus')"></div>
+      </div>
+
+      <div class="toggle-item">
+        <div class="toggle-info">
+          <div class="toggle-title">Share Learning Progress</div>
+          <div class="toggle-description">Show your achievements on profile</div>
+        </div>
+        <div class="toggle active" onclick="toggleSetting(this, 'shareProgress')"></div>
+      </div>
+
+      <div class="toggle-item">
+        <div class="toggle-info">
+          <div class="toggle-title">Allow Search Engines</div>
+          <div class="toggle-description">Let search engines index your profile</div>
+        </div>
+        <div class="toggle" onclick="toggleSetting(this, 'searchEngines')"></div>
+      </div>
+
+      <div class="danger-zone">
+        <h3 class="danger-title">Danger Zone</h3>
+        <p class="danger-description">Once you delete your account, there is no going back. Please be certain.</p>
+        <button class="btn-danger" onclick="deleteAccount()">
+          <i class="fas fa-trash"></i> Delete Account
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== Downloads ===== -->
+    <div id="downloads" class="settings-section">
+      <h3 class="section-title">Download Settings</h3>
+
+      <div class="form-group">
+        <label class="form-label">Download Location</label>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <input type="text" class="form-input" id="downloadPath" placeholder="Default folder" style="flex:1; min-width:200px;">
+          <button class="btn-secondary" onclick="browseFolder()">
+            <i class="fas fa-folder-open"></i> Browse
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Maximum Download Speed</label>
+        <select class="form-select" id="downloadSpeed">
+          <option value="unlimited">Unlimited</option>
+          <option value="1">1 MB/s</option>
+          <option value="2">2 MB/s</option>
+          <option value="5" selected>5 MB/s</option>
+          <option value="10">10 MB/s</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Simultaneous Downloads</label>
+        <select class="form-select" id="simultaneousDownloads">
+          <option value="1">1 at a time</option>
+          <option value="2">2 at a time</option>
+          <option value="3" selected>3 at a time</option>
+          <option value="5">5 at a time</option>
+        </select>
+      </div>
+
+      <div class="toggle-item">
+        <div class="toggle-info">
+          <div class="toggle-title">Auto-download Updates</div>
+          <div class="toggle-description">Automatically download new versions</div>
+        </div>
+        <div class="toggle active" onclick="toggleSetting(this, 'autoDownloadUpdates')"></div>
+      </div>
+
+      <div class="toggle-item">
+        <div class="toggle-info">
+          <div class="toggle-title">Download on Wi-Fi Only</div>
+          <div class="toggle-description">Save mobile data</div>
+        </div>
+        <div class="toggle" onclick="toggleSetting(this, 'wifiOnly')"></div>
+      </div>
+
+      <div class="button-group">
+        <button class="btn-primary" onclick="saveDownloadSettings()">
+          <i class="fas fa-save"></i> Save Settings
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== Language ===== -->
+    <div id="language" class="settings-section">
+      <h3 class="section-title">Language &amp; Region</h3>
+
+      <div class="form-group">
+        <label class="form-label">Language</label>
+        <select class="form-select" id="languageSelect">
+          <option value="en" selected>English (US)</option>
+          <option value="en-gb">English (UK)</option>
+          <option value="hi">Hindi</option>
+          <option value="es">Spanish</option>
+          <option value="fr">French</option>
+          <option value="de">German</option>
+          <option value="zh">Chinese</option>
+          <option value="ja">Japanese</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Region</label>
+        <select class="form-select" id="region">
+          <option value="us">United States</option>
+          <option value="uk">United Kingdom</option>
+          <option value="in" selected>India</option>
+          <option value="ca">Canada</option>
+          <option value="au">Australia</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Time Zone</label>
+        <select class="form-select" id="timezone">
+          <option value="est">Eastern Time (EST)</option>
+          <option value="cst">Central Time (CST)</option>
+          <option value="ist" selected>Indian Standard Time (IST)</option>
+          <option value="gmt">Greenwich Mean Time (GMT)</option>
+          <option value="pst">Pacific Time (PST)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Date Format</label>
+        <select class="form-select" id="dateFormat">
+          <option value="mdy">MM/DD/YYYY</option>
+          <option value="dmy" selected>DD/MM/YYYY</option>
+          <option value="ymd">YYYY/MM/DD</option>
+        </select>
+      </div>
+
+      <div class="button-group">
+        <button class="btn-primary" onclick="saveLanguageSettings()">
+          <i class="fas fa-save"></i> Save Settings
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== Accessibility ===== -->
+    <div id="accessibility" class="settings-section">
+      <h3 class="section-title">Accessibility Settings</h3>
+
+      <div class="form-group">
+        <label class="form-label">Contrast Mode</label>
+        <select class="form-select" id="contrastMode">
+          <option value="normal" selected>Normal</option>
+          <option value="high">High Contrast</option>
+          <option value="inverted">Inverted Colors</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Font Family</label>
+        <select class="form-select" id="fontFamily">
+          <option value="poppins" selected>Poppins (Default)</option>
+          <option value="arial">Arial</option>
+          <option value="verdana">Verdana</option>
+          <option value="opendyslexic">OpenDyslexic</option>
+        </select>
+      </div>
+
+      <div class="toggle-item">
+        <div class="toggle-info">
+          <div class="toggle-title">Screen Reader Optimized</div>
+          <div class="toggle-description">Enhanced support for screen readers</div>
+        </div>
+        <div class="toggle" onclick="toggleSetting(this, 'screenReader')"></div>
+      </div>
+
+      <div class="toggle-item">
+        <div class="toggle-info">
+          <div class="toggle-title">Reduce Motion</div>
+          <div class="toggle-description">Minimize animations</div>
+        </div>
+        <div class="toggle" onclick="toggleSetting(this, 'reduceMotion')"></div>
+      </div>
+
+      <div class="toggle-item">
+        <div class="toggle-info">
+          <div class="toggle-title">Keyboard Navigation</div>
+          <div class="toggle-description">Enhanced keyboard shortcuts</div>
+        </div>
+        <div class="toggle active" onclick="toggleSetting(this, 'keyboardNav')"></div>
+      </div>
+
+      <div class="button-group">
+        <button class="btn-primary" onclick="saveAccessibilitySettings()">
+          <i class="fas fa-save"></i> Save Settings
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== Data ===== -->
+    <div id="data" class="settings-section">
+      <h3 class="section-title">Data Management</h3>
+
+      <div class="form-group">
+        <label class="form-label">Storage Usage</label>
+        <div class="storage-bar">
+          <div class="storage-fill" style="width:45%;"></div>
+        </div>
+        <div style="display:flex; justify-content:space-between; color:rgba(255,255,255,0.65); font-size:0.82rem;">
+          <span>2.3 GB used</span>
+          <span>of 5 GB</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Downloaded Content</label>
+        <div class="info-card">
+          <div class="info-row">
+            <div class="info-row-main">
+              <div class="info-row-title"><i class="fas fa-file-pdf"></i> Study Materials</div>
+              <div class="info-row-sub">42 files · 850 MB</div>
+            </div>
+            <button class="btn-secondary btn-sm" onclick="clearContent('materials')">Clear</button>
+          </div>
+          <div class="info-row">
+            <div class="info-row-main">
+              <div class="info-row-title"><i class="fas fa-video"></i> Video Lectures</div>
+              <div class="info-row-sub">15 videos · 1.5 GB</div>
+            </div>
+            <button class="btn-secondary btn-sm" onclick="clearContent('videos')">Clear</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Export Data</label>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn-secondary btn-sm" onclick="exportData('profile')">
+            <i class="fas fa-user"></i> Profile
+          </button>
+          <button class="btn-secondary btn-sm" onclick="exportData('downloads')">
+            <i class="fas fa-download"></i> Downloads
+          </button>
+          <button class="btn-secondary btn-sm" onclick="exportData('progress')">
+            <i class="fas fa-chart-line"></i> Progress
+          </button>
+          <button class="btn-secondary btn-sm" onclick="exportData('all')">
+            <i class="fas fa-database"></i> All Data
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Import Data</label>
+        <input type="file" class="form-input" accept=".json" id="importFile">
+        <div class="button-group" style="margin-top:12px;">
+          <button class="btn-secondary" onclick="importData()">
+            <i class="fas fa-upload"></i> Import Data
+          </button>
+        </div>
+      </div>
+
+      <div class="danger-zone">
+        <h3 class="danger-title">Clear All Data</h3>
+        <p class="danger-description">This will remove all downloaded content and reset your settings.</p>
+        <button class="btn-danger" onclick="clearAllData()">
+          <i class="fas fa-trash"></i> Clear All Data
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================= MOBILE BOTTOM NAV ================= -->
+<nav class="mobile-bottom-nav">
+  <a href="index.html"><i class="fas fa-home"></i><span>Home</span></a>
+  <a href="library.html"><i class="fas fa-book"></i><span>Library</span></a>
+  <a href="lectures.html"><i class="fas fa-play-circle"></i><span>Lectures</span></a>
+  <a href="downloads.html"><i class="fas fa-download"></i><span>Downloads</span></a>
+  <a href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a>
+</nav>
+
+<script>
+/* ================= NOTIFICATION ================= */
+function showNotification(message, type = 'success') {
+  const notification = document.getElementById('notification');
+  notification.innerHTML = `
+    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+    <span>${message}</span>
+  `;
+  notification.className = `notification ${type}`;
+  notification.style.display = 'flex';
+  clearTimeout(window._notifTimer);
+  window._notifTimer = setTimeout(() => { notification.style.display = 'none'; }, 3000);
+}
+
+/* ================= AUTH ================= */
+function checkAuth() {
+  const user = localStorage.getItem('user') || localStorage.getItem('loggedUser');
+  const token = localStorage.getItem('session_token');
+  const userName = document.getElementById('userName');
+  const loginLink = document.getElementById('loginLink');
+  const signupLink = document.getElementById('signupLink');
+  const logoutLink = document.getElementById('logoutLink');
+
+  if (user || token) {
+    let displayName = 'User';
+    if (user) {
+      try {
         const userData = JSON.parse(user);
-        userName.textContent = userData.name || 'User';
-
-        if (loginLink) loginLink.style.display = 'none';
-        if (signupLink) signupLink.style.display = 'none';
-        if (logoutLink) logoutLink.style.display = 'block';
-      } else {
-        userName.textContent = 'Guest';
-        if (loginLink) loginLink.style.display = 'block';
-        if (signupLink) signupLink.style.display = 'block';
-        if (logoutLink) logoutLink.style.display = 'none';
-      }
+        displayName = userData.name || userData.displayName || userData.email?.split('@')[0] || 'User';
+      } catch (e) { displayName = 'User'; }
     }
+    userName.textContent = displayName;
+    if (loginLink) loginLink.style.display = 'none';
+    if (signupLink) signupLink.style.display = 'none';
+    if (logoutLink) logoutLink.style.display = 'flex';
+  } else {
+    userName.textContent = 'Guest';
+    if (loginLink) loginLink.style.display = 'flex';
+    if (signupLink) signupLink.style.display = 'flex';
+    if (logoutLink) logoutLink.style.display = 'none';
+  }
+}
 
-    // ================= PROFILE DROPDOWN =================
-    document.getElementById('profileToggle')?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const menu = document.getElementById('profileMenu');
-      menu.classList.toggle('active');
-    });
+/* ================= LOGOUT ================= */
+document.getElementById('logoutLink')?.addEventListener('click', (e) => {
+  e.preventDefault();
+  localStorage.removeItem('user');
+  localStorage.removeItem('loggedUser');
+  localStorage.removeItem('session_token');
+  showNotification('Logged out successfully!', 'success');
+  setTimeout(() => { window.location.href = 'index.html'; }, 900);
+});
 
-    document.addEventListener('click', () => {
-      const menu = document.getElementById('profileMenu');
-      if (menu) menu.classList.remove('active');
-    });
+/* ================= PROFILE DROPDOWN ================= */
+const profileToggle = document.getElementById('profileToggle');
+const profileMenu = document.getElementById('profileMenu');
 
-    // ================= LOGOUT =================
-    document.getElementById('logoutLink')?.addEventListener('click', (e) => {
-      e.preventDefault();
-      localStorage.removeItem('user');
-      showNotification('Logged out successfully!', 'success');
-      setTimeout(() => {
-        window.location.href = 'index.html';
-      }, 1000);
-    });
+profileToggle?.addEventListener('click', (e) => {
+  e.stopPropagation();
+  profileMenu.classList.toggle('active');
+});
 
-    // ================= SETTINGS NAVIGATION =================
-    document.querySelectorAll('.settings-nav-link').forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const sectionId = link.dataset.section;
+document.addEventListener('click', (e) => {
+  if (profileMenu && !profileMenu.contains(e.target) && !profileToggle.contains(e.target)) {
+    profileMenu.classList.remove('active');
+  }
+});
 
-        // Update active nav link
-        document.querySelectorAll('.settings-nav-link').forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
+/* ================= MOBILE MENU ================= */
+const hamburgerBtn = document.getElementById('hamburgerBtn');
+const menuOverlay = document.getElementById('mobileMenuOverlay');
+const menuPanel = document.getElementById('mobileMenuPanel');
+const closeMenuBtn = document.getElementById('closeMenuBtn');
 
-        // Update active section
-        document.querySelectorAll('.settings-section').forEach(section => {
-          section.classList.remove('active');
-          if (section.id === sectionId) {
-            section.classList.add('active');
-          }
-        });
-      });
-    });
+function openMenu() {
+  menuOverlay.classList.add('open');
+  menuPanel.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMenu() {
+  menuOverlay.classList.remove('open');
+  menuPanel.classList.remove('open');
+  document.body.style.overflow = '';
+}
+hamburgerBtn?.addEventListener('click', openMenu);
+closeMenuBtn?.addEventListener('click', closeMenu);
+menuOverlay?.addEventListener('click', (e) => { if (e.target === menuOverlay) closeMenu(); });
+menuPanel?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
 
-    // ================= AVATAR UPLOAD =================
-    function triggerAvatarUpload() {
-      document.getElementById('avatarUpload').click();
-    }
+/* ================= MOBILE SEARCH ================= */
+const searchToggle = document.getElementById('mobileSearchToggle');
+const searchBar = document.getElementById('mobileSearchBar');
+const mobileSearchInput = document.getElementById('mobileSearchInput');
 
-    document.getElementById('avatarUpload')?.addEventListener('change', function(e) {
-      const file = e.target.files[0];
-      if (file) {
-        if (file.size > 2 * 1024 * 1024) {
-          showNotification('File size must be less than 2MB', 'error');
-          return;
+searchToggle?.addEventListener('click', () => {
+  const isOpen = searchBar.classList.contains('active');
+  if (isOpen) {
+    searchBar.classList.remove('active');
+  } else {
+    searchBar.classList.add('active');
+    setTimeout(() => mobileSearchInput?.focus(), 100);
+  }
+});
+
+function applyMobileSearch() {
+  const q = mobileSearchInput?.value.trim();
+  if (!q) {
+    showNotification('Please enter a search term', 'error');
+    mobileSearchInput?.focus();
+    return;
+  }
+  window.location.href = `library.html?search=${encodeURIComponent(q)}`;
+}
+
+/* ================= SETTINGS SECTION SWITCHER ================= */
+/* 1A — vertical slide out/in animation.
+   2B — tab glow + scale bounce on activation. */
+let isSwitching = false;
+
+function switchSection(sectionId) {
+  const current = document.querySelector('.settings-section.active');
+  const next = document.getElementById(sectionId);
+  if (!next || (current && current.id === sectionId) || isSwitching) return;
+
+  isSwitching = true;
+
+  // Update tabs immediately (visual feedback)
+  document.querySelectorAll('.settings-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.section === sectionId);
+  });
+
+  // Update dropdown
+  const dropdown = document.getElementById('settingsDropdown');
+  if (dropdown) dropdown.value = sectionId;
+
+  // Outgoing animation
+  if (current) {
+    current.classList.add('leaving');
+    current.classList.remove('active');
+
+    setTimeout(() => {
+      current.classList.remove('leaving');
+      // Incoming animation
+      next.classList.add('active');
+      isSwitching = false;
+      // Scroll content into view if it's off-screen (mobile)
+      const contentBox = next.closest('.settings-content');
+      if (contentBox) {
+        const rect = contentBox.getBoundingClientRect();
+        if (rect.top < 0) {
+          contentBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-        
-        const reader = new FileReader();
-        reader.onload = function(event) {
-          document.querySelector('.profile-btn img').src = event.target.result;
-          showNotification('Profile picture updated!', 'success');
-        };
-        reader.readAsDataURL(file);
+      }
+    }, 200);
+  } else {
+    next.classList.add('active');
+    isSwitching = false;
+  }
+}
+
+// Tab click
+document.querySelectorAll('.settings-tab').forEach(tab => {
+  tab.addEventListener('click', () => switchSection(tab.dataset.section));
+});
+
+// Dropdown change
+document.getElementById('settingsDropdown')?.addEventListener('change', (e) => {
+  switchSection(e.target.value);
+});
+
+/* ================= AVATAR UPLOAD ================= */
+function triggerAvatarUpload() {
+  document.getElementById('avatarUpload').click();
+}
+
+document.getElementById('avatarUpload')?.addEventListener('change', function (e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) {
+    showNotification('File size must be less than 2MB', 'error');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function (event) {
+    document.querySelector('.profile-btn .profile-img').src = event.target.result;
+    document.getElementById('avatarPreview').src = event.target.result;
+    showNotification('Profile picture updated!', 'success');
+  };
+  reader.readAsDataURL(file);
+});
+
+/* ================= TOGGLE ================= */
+function toggleSetting(element, setting) {
+  element.classList.toggle('active');
+  const isActive = element.classList.contains('active');
+  localStorage.setItem(setting, isActive ? 'enabled' : 'disabled');
+  const label = setting.replace(/([A-Z])/g, ' $1').toLowerCase().trim();
+  showNotification(`${label} ${isActive ? 'enabled' : 'disabled'}`, 'success');
+}
+
+/* ================= PROFILE ================= */
+function saveProfileSettings() {
+  const settings = {
+    fullName: document.getElementById('fullName').value,
+    displayName: document.getElementById('displayName').value,
+    email: document.getElementById('email').value,
+    phone: document.getElementById('phone').value,
+    location: document.getElementById('location').value,
+    bio: document.getElementById('bio').value,
+    dob: document.getElementById('dob').value
+  };
+  localStorage.setItem('profileSettings', JSON.stringify(settings));
+  showNotification('Profile settings saved successfully!', 'success');
+}
+
+function resetProfileSettings() {
+  ['fullName','displayName','email','phone','location','bio','dob'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  localStorage.removeItem('profileSettings');
+  showNotification('Profile settings reset', 'success');
+}
+
+/* ================= SECURITY ================= */
+function updatePassword() {
+  const cp = document.getElementById('currentPassword').value;
+  const np = document.getElementById('newPassword').value;
+  const cf = document.getElementById('confirmPassword').value;
+
+  if (!cp || !np || !cf) {
+    showNotification('Please fill in all password fields', 'error');
+    return;
+  }
+  if (np !== cf) {
+    showNotification('New passwords do not match', 'error');
+    return;
+  }
+  if (np.length < 8) {
+    showNotification('Password must be at least 8 characters', 'error');
+    return;
+  }
+  showNotification('Password updated successfully!', 'success');
+  document.getElementById('currentPassword').value = '';
+  document.getElementById('newPassword').value = '';
+  document.getElementById('confirmPassword').value = '';
+}
+
+function logoutDevice() {
+  showNotification('Device logged out successfully!', 'success');
+}
+
+/* ================= SAVE HANDLERS ================= */
+function saveNotificationSettings() {
+  showNotification('Notification preferences saved!', 'success');
+}
+
+function setPrimaryColor(color) {
+  document.documentElement.style.setProperty('--primary', color);
+  localStorage.setItem('primaryColor', color);
+  showNotification('Primary color updated!', 'success');
+}
+
+document.querySelectorAll('.color-swatch').forEach(swatch => {
+  swatch.addEventListener('click', () => {
+    document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+    swatch.classList.add('selected');
+    setPrimaryColor(swatch.dataset.color);
+  });
+});
+
+function saveAppearanceSettings() {
+  const theme = document.querySelector('input[name="theme"]:checked')?.value || 'dark';
+  const fontSize = document.getElementById('fontSize').value;
+  localStorage.setItem('theme', theme);
+  localStorage.setItem('fontSize', fontSize);
+  showNotification('Appearance settings saved!', 'success');
+}
+
+function browseFolder() {
+  showNotification('Folder browser would open here (simulated)', 'success');
+}
+
+function saveDownloadSettings() {
+  const settings = {
+    downloadPath: document.getElementById('downloadPath').value,
+    downloadSpeed: document.getElementById('downloadSpeed').value,
+    simultaneousDownloads: document.getElementById('simultaneousDownloads').value
+  };
+  localStorage.setItem('downloadSettings', JSON.stringify(settings));
+  showNotification('Download settings saved!', 'success');
+}
+
+function saveLanguageSettings() {
+  const settings = {
+    language: document.getElementById('languageSelect').value,
+    region: document.getElementById('region').value,
+    timezone: document.getElementById('timezone').value,
+    dateFormat: document.getElementById('dateFormat').value
+  };
+  localStorage.setItem('languageSettings', JSON.stringify(settings));
+  showNotification('Language settings saved!', 'success');
+}
+
+function saveAccessibilitySettings() {
+  const settings = {
+    contrastMode: document.getElementById('contrastMode').value,
+    fontFamily: document.getElementById('fontFamily').value
+  };
+  localStorage.setItem('accessibilitySettings', JSON.stringify(settings));
+  showNotification('Accessibility settings saved!', 'success');
+}
+
+/* ================= DATA MANAGEMENT ================= */
+function clearContent(type) {
+  if (confirm(`Are you sure you want to clear all ${type}?`)) {
+    showNotification(`${type} cleared successfully!`, 'success');
+  }
+}
+
+function exportData(type) {
+  let data = {};
+  switch (type) {
+    case 'profile':
+      data = JSON.parse(localStorage.getItem('profileSettings') || '{}');
+      break;
+    case 'downloads':
+      data = JSON.parse(localStorage.getItem('downloads') || '[]');
+      break;
+    case 'progress':
+      data = JSON.parse(localStorage.getItem('progress') || '{}');
+      break;
+    case 'all':
+      data = {
+        profile: JSON.parse(localStorage.getItem('profileSettings') || '{}'),
+        downloads: JSON.parse(localStorage.getItem('downloads') || '[]'),
+        settings: JSON.parse(localStorage.getItem('settings') || '{}')
+      };
+      break;
+  }
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${type}-data-${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showNotification(`${type} data exported successfully!`, 'success');
+}
+
+function importData() {
+  const file = document.getElementById('importFile').files[0];
+  if (!file) {
+    showNotification('Please select a file to import', 'error');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (data.profile) localStorage.setItem('profileSettings', JSON.stringify(data.profile));
+      if (data.downloads) localStorage.setItem('downloads', JSON.stringify(data.downloads));
+      if (data.settings) localStorage.setItem('settings', JSON.stringify(data.settings));
+      showNotification('Data imported successfully!', 'success');
+    } catch (err) {
+      showNotification('Invalid JSON file', 'error');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function clearAllData() {
+  if (confirm('WARNING: This will delete all your data. This action cannot be undone. Are you sure?')) {
+    const rememberMe = localStorage.getItem('remember_me');
+    localStorage.clear();
+    if (rememberMe) localStorage.setItem('remember_me', rememberMe);
+    showNotification('All data cleared!', 'success');
+    setTimeout(() => window.location.reload(), 1200);
+  }
+}
+
+function deleteAccount() {
+  if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+    const rememberMe = localStorage.getItem('remember_me');
+    localStorage.clear();
+    if (rememberMe) localStorage.setItem('remember_me', rememberMe);
+    showNotification('Account deleted', 'error');
+    setTimeout(() => { window.location.href = 'index.html'; }, 1200);
+  }
+}
+
+/* ================= LOAD SAVED SETTINGS ================= */
+function loadSavedSettings() {
+  const profile = JSON.parse(localStorage.getItem('profileSettings') || '{}');
+  ['fullName','displayName','email','phone','location','bio','dob'].forEach(id => {
+    if (profile[id]) {
+      const el = document.getElementById(id);
+      if (el) el.value = profile[id];
+    }
+  });
+
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme) {
+    const el = document.querySelector(`input[name="theme"][value="${savedTheme}"]`);
+    if (el) el.checked = true;
+  }
+
+  const primaryColor = localStorage.getItem('primaryColor');
+  if (primaryColor) {
+    document.documentElement.style.setProperty('--primary', primaryColor);
+    document.querySelectorAll('.color-swatch').forEach(s => {
+      if (s.dataset.color === primaryColor) s.classList.add('selected');
+    });
+  }
+
+  const dl = JSON.parse(localStorage.getItem('downloadSettings') || '{}');
+  if (dl.downloadPath) { const el = document.getElementById('downloadPath'); if (el) el.value = dl.downloadPath; }
+  if (dl.downloadSpeed) { const el = document.getElementById('downloadSpeed'); if (el) el.value = dl.downloadSpeed; }
+  if (dl.simultaneousDownloads) { const el = document.getElementById('simultaneousDownloads'); if (el) el.value = dl.simultaneousDownloads; }
+
+  const lang = JSON.parse(localStorage.getItem('languageSettings') || '{}');
+  if (lang.language) { const el = document.getElementById('languageSelect'); if (el) el.value = lang.language; }
+  if (lang.region) { const el = document.getElementById('region'); if (el) el.value = lang.region; }
+  if (lang.timezone) { const el = document.getElementById('timezone'); if (el) el.value = lang.timezone; }
+  if (lang.dateFormat) { const el = document.getElementById('dateFormat'); if (el) el.value = lang.dateFormat; }
+
+  const toggles = [
+    'emailNotifications', 'pushNotifications', 'courseUpdates',
+    'downloadComplete', 'assignmentReminders', 'communityActivity',
+    'publicProfile', 'activityStatus', 'shareProgress', 'searchEngines',
+    'autoDownloadUpdates', 'wifiOnly', 'screenReader', 'reduceMotion', 'keyboardNav',
+    '2fa', 'loginAlerts', 'compactMode'
+  ];
+  toggles.forEach(key => {
+    const el = document.querySelector(`[onclick*="'${key}'"]`);
+    if (!el) return;
+    const saved = localStorage.getItem(key);
+    if (saved === 'enabled') el.classList.add('active');
+    else if (saved === 'disabled') el.classList.remove('active');
+  });
+}
+
+/* ================= SCROLL REVEAL ================= */
+function setupScrollReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
       }
     });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 
-    // ================= TOGGLE SETTINGS =================
-    function toggleSetting(element, setting) {
-      element.classList.toggle('active');
-      const isActive = element.classList.contains('active');
-      localStorage.setItem(setting, isActive ? 'enabled' : 'disabled');
-      showNotification(`${setting.replace(/([A-Z])/g, ' $1').toLowerCase()} ${isActive ? 'enabled' : 'disabled'}`, 'success');
-    }
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
 
-    // ================= PROFILE SETTINGS =================
-    function saveProfileSettings() {
-      const settings = {
-        fullName: document.getElementById('fullName').value,
-        displayName: document.getElementById('displayName').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        location: document.getElementById('location').value,
-        bio: document.getElementById('bio').value,
-        dob: document.getElementById('dob').value
-      };
+/* ================= KEYBOARD SHORTCUTS ================= */
+document.addEventListener('keydown', (e) => {
+  if (e.ctrlKey && e.key === '/') {
+    e.preventDefault();
+    searchBar.classList.add('active');
+    setTimeout(() => mobileSearchInput?.focus(), 100);
+  }
+  if (e.key === 'Escape') {
+    closeMenu();
+    searchBar.classList.remove('active');
+  }
+});
 
-      localStorage.setItem('profileSettings', JSON.stringify(settings));
-      showNotification('Profile settings saved successfully!', 'success');
-    }
+/* ================= INIT ================= */
+document.addEventListener('DOMContentLoaded', () => {
+  checkAuth();
+  loadSavedSettings();
+  setupScrollReveal();
+});
+</script>
 
-    function resetProfileSettings() {
-      document.getElementById('fullName').value = 'Ramesh Prasad';
-      document.getElementById('displayName').value = 'Ramesh';
-      document.getElementById('email').value = 'ramesh@example.com';
-      document.getElementById('phone').value = '+91 7498147593';
-      document.getElementById('location').value = 'New Delhi, India';
-      document.getElementById('bio').value = 'Computer Science student passionate about programming and operating systems. Love to learn new technologies and share knowledge with others.';
-      document.getElementById('dob').value = '2000-01-01';
-      
-      showNotification('Profile settings reset to default', 'success');
-    }
-
-    // ================= ACCOUNT SECURITY =================
-    function updatePassword() {
-      const currentPassword = document.getElementById('currentPassword').value;
-      const newPassword = document.getElementById('newPassword').value;
-      const confirmPassword = document.getElementById('confirmPassword').value;
-
-      if (!currentPassword || !newPassword || !confirmPassword) {
-        showNotification('Please fill in all password fields', 'error');
-        return;
-      }
-
-      if (newPassword !== confirmPassword) {
-        showNotification('New passwords do not match', 'error');
-        return;
-      }
-
-      if (newPassword.length < 8) {
-        showNotification('Password must be at least 8 characters long', 'error');
-        return;
-      }
-
-      showNotification('Password updated successfully!', 'success');
-      
-      // Clear fields
-      document.getElementById('currentPassword').value = '';
-      document.getElementById('newPassword').value = '';
-      document.getElementById('confirmPassword').value = '';
-    }
-
-    function logoutDevice() {
-      showNotification('Device logged out successfully!', 'success');
-    }
-
-    // ================= NOTIFICATION SETTINGS =================
-    function saveNotificationSettings() {
-      showNotification('Notification preferences saved!', 'success');
-    }
-
-    // ================= APPEARANCE SETTINGS =================
-    function setPrimaryColor(color) {
-      document.documentElement.style.setProperty('--primary', color);
-      localStorage.setItem('primaryColor', color);
-      showNotification('Primary color updated!', 'success');
-    }
-
-    function saveAppearanceSettings() {
-      const theme = document.querySelector('input[name="theme"]:checked').value;
-      const fontSize = document.getElementById('fontSize').value;
-      
-      localStorage.setItem('theme', theme);
-      localStorage.setItem('fontSize', fontSize);
-      
-      showNotification('Appearance settings saved!', 'success');
-    }
-
-    // ================= DOWNLOAD SETTINGS =================
-    function browseFolder() {
-      showNotification('Folder browser would open here (simulated)', 'success');
-    }
-
-    function saveDownloadSettings() {
-      const settings = {
-        downloadPath: document.getElementById('downloadPath').value,
-        downloadSpeed: document.getElementById('downloadSpeed').value,
-        simultaneousDownloads: document.getElementById('simultaneousDownloads').value
-      };
-      
-      localStorage.setItem('downloadSettings', JSON.stringify(settings));
-      showNotification('Download settings saved!', 'success');
-    }
-
-    // ================= LANGUAGE SETTINGS =================
-    function saveLanguageSettings() {
-      const settings = {
-        language: document.getElementById('language').value,
-        region: document.getElementById('region').value,
-        timezone: document.getElementById('timezone').value,
-        dateFormat: document.getElementById('dateFormat').value
-      };
-      
-      localStorage.setItem('languageSettings', JSON.stringify(settings));
-      showNotification('Language settings saved!', 'success');
-    }
-
-    // ================= ACCESSIBILITY SETTINGS =================
-    function saveAccessibilitySettings() {
-      const settings = {
-        contrastMode: document.getElementById('contrastMode').value,
-        fontFamily: document.getElementById('fontFamily').value
-      };
-      
-      localStorage.setItem('accessibilitySettings', JSON.stringify(settings));
-      showNotification('Accessibility settings saved!', 'success');
-    }
-
-    // ================= DATA MANAGEMENT =================
-    function clearContent(type) {
-      if (confirm(`Are you sure you want to clear all ${type}?`)) {
-        showNotification(`${type} cleared successfully!`, 'success');
-      }
-    }
-
-    function exportData(type) {
-      let data = {};
-      
-      switch(type) {
-        case 'profile':
-          data = JSON.parse(localStorage.getItem('profileSettings') || '{}');
-          break;
-        case 'downloads':
-          data = JSON.parse(localStorage.getItem('downloads') || '[]');
-          break;
-        case 'progress':
-          data = JSON.parse(localStorage.getItem('progress') || '{}');
-          break;
-        case 'all':
-          data = {
-            profile: JSON.parse(localStorage.getItem('profileSettings') || '{}'),
-            downloads: JSON.parse(localStorage.getItem('downloads') || '[]'),
-            settings: JSON.parse(localStorage.getItem('settings') || '{}')
-          };
-          break;
-      }
-      
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${type}-data-${new Date().toISOString().split('T')[0]}.json`;
-      a.click();
-      
-      showNotification(`${type} data exported successfully!`, 'success');
-    }
-
-    function importData() {
-      const file = document.getElementById('importFile').files[0];
-      if (!file) {
-        showNotification('Please select a file to import', 'error');
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        try {
-          const data = JSON.parse(e.target.result);
-          showNotification('Data imported successfully!', 'success');
-        } catch (error) {
-          showNotification('Invalid JSON file', 'error');
-        }
-      };
-      reader.readAsText(file);
-    }
-
-    function clearAllData() {
-      if (confirm('WARNING: This will delete all your data. This action cannot be undone. Are you sure?')) {
-        localStorage.clear();
-        showNotification('All data cleared!', 'success');
-        setTimeout(() => {
-          window.location.reload();
-        }, 1500);
-      }
-    }
-
-    function deleteAccount() {
-      if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-        localStorage.clear();
-        showNotification('Account deleted', 'error');
-        setTimeout(() => {
-          window.location.href = 'index.html';
-        }, 1500);
-      }
-    }
-
-    // ================= LOAD SAVED SETTINGS =================
-    function loadSavedSettings() {
-      // Load profile settings
-      const profileSettings = JSON.parse(localStorage.getItem('profileSettings') || '{}');
-      if (profileSettings.fullName) document.getElementById('fullName').value = profileSettings.fullName;
-      if (profileSettings.displayName) document.getElementById('displayName').value = profileSettings.displayName;
-      if (profileSettings.email) document.getElementById('email').value = profileSettings.email;
-      if (profileSettings.phone) document.getElementById('phone').value = profileSettings.phone;
-      if (profileSettings.location) document.getElementById('location').value = profileSettings.location;
-      if (profileSettings.bio) document.getElementById('bio').value = profileSettings.bio;
-      if (profileSettings.dob) document.getElementById('dob').value = profileSettings.dob;
-
-      // Load theme
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) {
-        document.querySelector(`input[value="${savedTheme}"]`).checked = true;
-      }
-
-      // Load primary color
-      const primaryColor = localStorage.getItem('primaryColor');
-      if (primaryColor) {
-        document.documentElement.style.setProperty('--primary', primaryColor);
-      }
-
-      // Load download settings
-      const downloadSettings = JSON.parse(localStorage.getItem('downloadSettings') || '{}');
-      if (downloadSettings.downloadPath) document.getElementById('downloadPath').value = downloadSettings.downloadPath;
-      if (downloadSettings.downloadSpeed) document.getElementById('downloadSpeed').value = downloadSettings.downloadSpeed;
-      if (downloadSettings.simultaneousDownloads) document.getElementById('simultaneousDownloads').value = downloadSettings.simultaneousDownloads;
-
-      // Load language settings
-      const languageSettings = JSON.parse(localStorage.getItem('languageSettings') || '{}');
-      if (languageSettings.language) document.getElementById('language').value = languageSettings.language;
-      if (languageSettings.region) document.getElementById('region').value = languageSettings.region;
-      if (languageSettings.timezone) document.getElementById('timezone').value = languageSettings.timezone;
-      if (languageSettings.dateFormat) document.getElementById('dateFormat').value = languageSettings.dateFormat;
-
-      // Load toggles
-      const toggles = ['emailNotifications', 'pushNotifications', 'courseUpdates', 'downloadComplete', 'assignmentReminders'];
-      toggles.forEach(toggle => {
-        if (localStorage.getItem(toggle) === 'enabled') {
-          const element = document.querySelector(`[onclick*="${toggle}"]`);
-          if (element) element.classList.add('active');
-        }
-      });
-    }
-
-    // ================= INITIALIZE ON LOAD =================
-    document.addEventListener('DOMContentLoaded', () => {
-      createParticles();
-      checkAuth();
-      loadSavedSettings();
-      
-      // Welcome notification
-      setTimeout(() => {
-        showNotification('Welcome to Settings!', 'success');
-      }, 1000);
-    });
-  </script>
-
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
