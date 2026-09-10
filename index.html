@@ -41,9 +41,7 @@
       font-family: 'Poppins', sans-serif;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
       min-height: 100vh;
@@ -810,14 +808,20 @@
     .notification.success { border-left: 5px solid var(--success); }
     .notification.error { border-left: 5px solid var(--danger); }
 
-    /* ================= MOBILE BOTTOM NAV (NOT fixed) ================= */
+    /* =====================================================
+       ✅ MOBILE BOTTOM NAV — NOW FIXED TO SCREEN BOTTOM
+       ===================================================== */
     .mobile-bottom-nav {
       display: none;
-      background: rgba(2, 6, 23, 0.9);
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(2, 6, 23, 0.95);
       backdrop-filter: blur(20px);
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      padding: 10px 0;
-      margin-top: 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 10px 0 env(safe-area-inset-bottom, 10px);
+      z-index: 1100;
       justify-content: space-around;
       align-items: center;
     }
@@ -867,6 +871,8 @@
 
     /* ================= RESPONSIVE ================= */
     @media (max-width: 991px) {
+      body { padding-bottom: 80px; }
+
       .nav-links-desktop { display: none !important; }
       .mobile-controls { display: flex !important; }
       .mobile-bottom-nav { display: flex !important; }
@@ -990,12 +996,12 @@
         <span>Smart Classroom</span>
       </a>
 
-      <!-- Desktop Nav Links -->
+      <!-- Desktop Nav Links (Experience removed) -->
       <div class="nav-links-desktop">
         <a class="nav-link nav-link-custom active" href="index.html"><i class="fas fa-home"></i> Home</a>
         <a class="nav-link nav-link-custom" href="profile.html"><i class="fas fa-user"></i> Profile</a>
-        <a class="nav-link nav-link-custom" href="experience.html"><i class="fas fa-briefcase"></i> Experience</a>
         <a class="nav-link nav-link-custom" href="library.html"><i class="fas fa-book"></i> Library</a>
+        <a class="nav-link nav-link-custom" href="lectures.html"><i class="fas fa-play-circle"></i> Lectures</a>
         <a class="nav-link nav-link-custom" href="downloads.html"><i class="fas fa-download"></i> Downloads</a>
         <a class="nav-link nav-link-custom" href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
       </div>
@@ -1031,7 +1037,7 @@
     </div>
   </nav>
 
-  <!-- Mobile Search Bar (now a working form) -->
+  <!-- Mobile Search Bar -->
   <div class="mobile-search-bar" id="mobileSearchBar">
     <form id="mobileSearchForm" onsubmit="event.preventDefault(); performSearch();">
       <input type="text" placeholder="Search for subjects, notes, videos..." id="mobileSearchInput">
@@ -1039,14 +1045,14 @@
     </form>
   </div>
 
-  <!-- Mobile Menu Overlay -->
+  <!-- Mobile Menu Overlay (Experience removed) -->
   <div class="mobile-menu-overlay" id="mobileMenuOverlay">
     <div class="mobile-menu-panel" id="mobileMenuPanel">
       <button class="close-menu" id="closeMenuBtn"><i class="fas fa-times"></i></button>
       <a href="index.html" class="active"><i class="fas fa-home"></i> Home</a>
       <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
-      <a href="experience.html"><i class="fas fa-briefcase"></i> Experience</a>
       <a href="library.html"><i class="fas fa-book"></i> Library</a>
+      <a href="lectures.html"><i class="fas fa-play-circle"></i> Lectures</a>
       <a href="downloads.html"><i class="fas fa-download"></i> Downloads</a>
       <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
       <hr style="border-color: rgba(255,255,255,0.05); margin: 16px 0;">
@@ -1061,7 +1067,7 @@
     <p class="hero-subtitle">Access notes, video lectures, and study materials for all engineering subjects</p>
   </section>
 
-  <!-- Features Section -->
+  <!-- Features Section (Experience card replaced with Lectures link) -->
   <section class="features-section">
     <h2 class="section-title reveal">Platform Features</h2>
 
@@ -1078,7 +1084,7 @@
         <p>Intelligent download manager with progress tracking</p>
       </a>
 
-      <a href="experience.html" class="feature-card reveal">
+      <a href="profile.html" class="feature-card reveal">
         <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
         <h4>Progress Tracking</h4>
         <p>Track your learning progress and achievements</p>
@@ -1156,15 +1162,13 @@
     </div>
   </section>
 
- 
-
   <!-- Footer -->
   <footer>
     <div class="footer-bottom">
       <p>© 2025 Smart Classroom | All Rights Reserved</p>
       <p style="margin-top:10px;font-size:0.9rem;">
         <i class="fas fa-envelope"></i> rameshprasadrp123@gmail.com |
-        <i class="fas fa-phone"></i> +91 7498147593
+        <i class="fas fa-phone"></i> +91 9421883246
       </p>
       <p style="margin-top:15px; font-size:0.9rem;">
         Follow me on 
@@ -1206,13 +1210,14 @@
       <div id="videosModalContent"></div>
     </div>
   </div>
-   <!-- Mobile Bottom Navigation (now at bottom of content, not fixed) -->
+
+  <!-- Mobile Bottom Navigation (FIXED at screen bottom) -->
   <nav class="mobile-bottom-nav">
     <a href="index.html" class="active"><i class="fas fa-home"></i><span>Home</span></a>
     <a href="library.html"><i class="fas fa-book"></i><span>Library</span></a>
+    <a href="lectures.html"><i class="fas fa-play-circle"></i><span>Lectures</span></a>
     <a href="downloads.html"><i class="fas fa-download"></i><span>Downloads</span></a>
     <a href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a>
-    <a href="contact.html"><i class="fas fa-envelope"></i><span>Contact</span></a>
   </nav>
 
   <script>
@@ -1303,6 +1308,7 @@
     document.getElementById('logoutLink')?.addEventListener('click', (e) => {
       e.preventDefault();
       localStorage.removeItem('user');
+      localStorage.removeItem('loggedUser');
       localStorage.removeItem('session_token');
       showNotification('Logged out successfully!', 'success');
       setTimeout(() => { window.location.reload(); }, 1000);
@@ -1332,7 +1338,6 @@
       if (e.target === menuOverlay) closeMenu();
     });
 
-    // Auto-close mobile menu when a link is clicked
     menuPanel?.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => closeMenu());
     });
@@ -1349,7 +1354,6 @@
       }
     });
 
-    // Improved search function — routes to library page with query
     function performSearch() {
       const input = document.getElementById('mobileSearchInput');
       const query = input?.value.trim();
@@ -1358,7 +1362,6 @@
         input?.focus();
         return;
       }
-      // Store search in session and redirect to library with query
       sessionStorage.setItem('searchQuery', query);
       showNotification(`Searching for "${query}"...`, 'success');
       setTimeout(() => {
@@ -1429,19 +1432,13 @@
             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
               <button onclick="downloadNote('${subject}', '${note.name}')" 
                       style="padding: 8px 14px; background: linear-gradient(135deg, var(--primary), var(--secondary)); 
-                             border: none; border-radius: 8px; color: white; cursor: pointer; font-size: 0.85rem;
-                             transition: transform 0.25s var(--ease);"
-                      onmouseover="this.style.transform='translateY(-2px)'"
-                      onmouseout="this.style.transform='translateY(0)'">
+                             border: none; border-radius: 8px; color: white; cursor: pointer; font-size: 0.85rem;">
                 <i class="fas fa-download"></i> Download
               </button>
               <button onclick="viewNote('${subject}', '${note.name}')"
                       style="padding: 8px 14px; background: rgba(255,255,255,0.1); 
                              border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; 
-                             color: white; cursor: pointer; font-size: 0.85rem;
-                             transition: transform 0.25s var(--ease);"
-                      onmouseover="this.style.transform='translateY(-2px)'"
-                      onmouseout="this.style.transform='translateY(0)'">
+                             color: white; cursor: pointer; font-size: 0.85rem;">
                 <i class="fas fa-eye"></i> View
               </button>
             </div>
@@ -1457,10 +1454,7 @@
         <div style="text-align: center; margin-top: 25px;">
           <button onclick="downloadAllNotes('${subject}')" 
                   style="padding: 12px 28px; background: linear-gradient(135deg, var(--warning), var(--accent)); 
-                         border: none; border-radius: 10px; color: white; cursor: pointer; font-size: 0.95rem;
-                         transition: transform 0.25s var(--ease);"
-                  onmouseover="this.style.transform='translateY(-2px)'"
-                  onmouseout="this.style.transform='translateY(0)'">
+                         border: none; border-radius: 10px; color: white; cursor: pointer; font-size: 0.95rem;">
             <i class="fas fa-download"></i> Download All Notes
           </button>
         </div>
@@ -1520,10 +1514,7 @@
             </div>
             <button onclick="watchVideo('${subject}', ${index})" 
                     style="padding: 8px 14px; background: linear-gradient(135deg, var(--danger), var(--warning)); 
-                           border: none; border-radius: 8px; color: white; cursor: pointer; font-size: 0.85rem;
-                           transition: transform 0.25s var(--ease);"
-                    onmouseover="this.style.transform='translateY(-2px)'"
-                    onmouseout="this.style.transform='translateY(0)'">
+                           border: none; border-radius: 8px; color: white; cursor: pointer; font-size: 0.85rem;">
               <i class="fas fa-play"></i> Watch
             </button>
           </div>
@@ -1538,10 +1529,7 @@
         <div style="text-align: center; margin-top: 25px;">
           <button onclick="showNotification('Playlist feature coming soon!', 'success')" 
                   style="padding: 12px 28px; background: linear-gradient(135deg, var(--primary), var(--secondary)); 
-                         border: none; border-radius: 10px; color: white; cursor: pointer; font-size: 0.95rem;
-                         transition: transform 0.25s var(--ease);"
-                  onmouseover="this.style.transform='translateY(-2px)'"
-                  onmouseout="this.style.transform='translateY(0)'">
+                         border: none; border-radius: 10px; color: white; cursor: pointer; font-size: 0.95rem;">
             <i class="fas fa-list"></i> Save as Playlist
           </button>
         </div>
@@ -1640,21 +1628,16 @@
         position: fixed; inset: 0;
         background: rgba(0,0,0,0.9); z-index: 10000;
         display: flex; align-items: center; justify-content: center; padding: 20px;
-        animation: fadeIn 0.3s var(--ease);
       `;
 
       videoModal.innerHTML = `
         <div style="background: rgba(30, 30, 60, 0.97); backdrop-filter: blur(20px); 
                     border: 1px solid rgba(255,255,255,0.15);
                     border-radius: 22px; padding: 30px; max-width: 800px; width: 100%;
-                    max-height: 90vh; overflow-y: auto; position: relative;
-                    animation: modalPop 0.35s var(--ease);">
+                    max-height: 90vh; overflow-y: auto; position: relative;">
           <button onclick="this.closest('.modal-overlay').remove(); document.body.style.overflow = '';" 
                   style="position: absolute; top: 16px; right: 16px; background: none; 
-                         border: none; color: white; font-size: 1.5rem; cursor: pointer;
-                         transition: transform 0.3s var(--ease);"
-                  onmouseover="this.style.transform='rotate(90deg)'"
-                  onmouseout="this.style.transform='rotate(0)'">
+                         border: none; color: white; font-size: 1.5rem; cursor: pointer;">
             <i class="fas fa-times"></i>
           </button>
           ${videoContents[subject][videoIndex % 2]}
@@ -1662,18 +1645,12 @@
             <button onclick="showNotification('Added to favorites!', 'success')" 
                     style="padding: 10px 20px; background: rgba(255,255,255,0.08); 
                            border: 1px solid rgba(255,255,255,0.18); border-radius: 10px; 
-                           color: white; cursor: pointer;
-                           transition: transform 0.25s var(--ease);"
-                    onmouseover="this.style.transform='translateY(-2px)'"
-                    onmouseout="this.style.transform='translateY(0)'">
+                           color: white; cursor: pointer;">
               <i class="fas fa-heart"></i> Favorite
             </button>
             <button onclick="showNotification('Download started!', 'success')" 
                     style="padding: 10px 20px; background: linear-gradient(135deg, var(--primary), var(--secondary)); 
-                           border: none; border-radius: 10px; color: white; cursor: pointer;
-                           transition: transform 0.25s var(--ease);"
-                    onmouseover="this.style.transform='translateY(-2px)'"
-                    onmouseout="this.style.transform='translateY(0)'">
+                           border: none; border-radius: 10px; color: white; cursor: pointer;">
               <i class="fas fa-download"></i> Download
             </button>
           </div>
@@ -1697,7 +1674,6 @@
       checkAuth();
       setupScrollReveal();
 
-      // Check for query param search (if coming back from library)
       const urlParams = new URLSearchParams(window.location.search);
       const searchQuery = urlParams.get('search');
       if (searchQuery && searchBar) {
